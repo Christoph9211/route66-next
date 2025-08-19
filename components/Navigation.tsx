@@ -12,13 +12,13 @@ import { useCart } from '../hooks/useCart'
  * @param {Array} products - Array of products to be used in the search navigation.
  * @return {JSX.Element} The navigation component.
  */
-function Navigation({ products = [] }) {
+function Navigation({ products = [] }: { products?: any[] }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [activeSection, setActiveSection] = useState('home')
-    const [activeDropdown, setActiveDropdown] = useState(null)
-    const [dropdownTimeout, setDropdownTimeout] = useState(null)
-    const { cart, openCart } = useCart()
+    const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+    const [dropdownTimeout, setDropdownTimeout] = useState<ReturnType<typeof setTimeout> | null>(null)
+    const { cart, openCart } = useCart() as any
 
     // Handle scroll effects
     useEffect(() => {
@@ -53,7 +53,7 @@ function Navigation({ products = [] }) {
      * Handles mouse enter event for dropdown menus
      * @param {string} itemId - The ID of the menu item
      */
-    const handleDropdownEnter = (itemId) => {
+    const handleDropdownEnter = (itemId: string) => {
         if (dropdownTimeout) {
             clearTimeout(dropdownTimeout)
             setDropdownTimeout(null)
@@ -65,7 +65,7 @@ function Navigation({ products = [] }) {
      * Handles mouse leave event for dropdown menus with delay
      * @param {string} itemId - The ID of the menu item
      */
-    const handleDropdownLeave = (itemId) => {
+    const handleDropdownLeave = (itemId: string) => {
         const timeout = setTimeout(() => {
             setActiveDropdown(null)
         }, 600) // 600ms delay for smooth user experience
@@ -144,7 +144,11 @@ function Navigation({ products = [] }) {
      * @param {string} id - The id of the link that was clicked.
      * @return {void} This function does not return anything.
      */
-    const handleNavClick = (e, href, id) => {
+    const handleNavClick = (
+        e: React.MouseEvent<HTMLAnchorElement>,
+        href: string,
+        id: string
+    ) => {
         e.preventDefault()
         setActiveSection(id)
         closeMenu()
@@ -329,7 +333,7 @@ function Navigation({ products = [] }) {
                                 aria-label={`Open cart ${
                                     cart.items.length > 0
                                         ? `with ${cart.items.reduce(
-                                              (sum, i) => sum + i.qty,
+                                              (sum: number, i: any) => sum + i.qty,
                                               0
                                           )} items`
                                         : ''
@@ -344,7 +348,7 @@ function Navigation({ products = [] }) {
                                 {cart.items.length > 0 && (
                                     <span className="absolute -right-1 -top-1 rounded-full bg-red-600 px-1 text-xs text-white">
                                         {cart.items.reduce(
-                                            (sum, i) => sum + i.qty,
+                                            (sum: number, i: any) => sum + i.qty,
                                             0
                                         )}
                                     </span>

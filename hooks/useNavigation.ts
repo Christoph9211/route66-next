@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, use, SetStateAction } from 'react'
+import { useState, useEffect } from 'react'
 
 /**
  * Custom hook that provides navigation functionality for the page.
@@ -127,9 +127,10 @@ export function useKeyboardNavigation() {
      * @param {KeyboardEvent} event - The keyboard event.
      * @return {void} No return value.
      */
-        const handleKeyDown = (event: { target: { tagName: string; }; key: any; }) => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            const target = event.target as HTMLElement
             // Skip if user is typing in an input
-            if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+            if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
                 return
             }
 

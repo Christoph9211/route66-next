@@ -2,6 +2,15 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { slugify } from '../utils/slugify'
 
+interface Product {
+    name: string
+    category: string
+    size_options: string[]
+    thca_percentage?: number
+    prices: Record<string, number>
+    banner?: string
+}
+
 /**
  * SearchNavigation is a React component that provides a search functionality for products, categories, and sizes.
  * It displays a search bar and allows users to search for products based on their names, categories, or sizes.
@@ -11,13 +20,13 @@ import { slugify } from '../utils/slugify'
  * @param {Array} products - An array of product objects to search through.
  * @return {JSX.Element} A React component that displays a search bar and search results dropdown.
  */
-function SearchNavigation({ products = [] }) {
+function SearchNavigation({ products = [] }: { products?: Product[] }) {
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState('')
-    const [results, setResults] = useState([])
+    const [results, setResults] = useState<Product[]>([])
     const [selectedIndex, setSelectedIndex] = useState(-1)
-    const searchRef = useRef(null)
-    const resultsRef = useRef(null)
+    const searchRef = useRef<HTMLDivElement | null>(null)
+    const resultsRef = useRef<HTMLDivElement | null>(null)
 
     // Filter products based on search query
     useEffect(() => {
@@ -51,7 +60,7 @@ function SearchNavigation({ products = [] }) {
      * @param {KeyboardEvent} e - The keyboard event.
      * @return {void}
      */
-        const handleKeyDown = (e: { key: any; preventDefault: () => void; }) => {
+        const handleKeyDown = (e: KeyboardEvent) => {
             if (!isOpen) return
 
             switch (e.key) {
@@ -93,10 +102,10 @@ function SearchNavigation({ products = [] }) {
          *
          * @param {Event} event - the click event
          */
-        const handleClickOutside = (event: { target: any; }) => {
+        const handleClickOutside = (event: MouseEvent) => {
             if (
                 searchRef.current &&
-                !searchRef.current.contains(event.target)
+                !searchRef.current.contains(event.target as Node)
             ) {
                 setIsOpen(false)
             }
@@ -116,7 +125,7 @@ function SearchNavigation({ products = [] }) {
      * Navigates to the product or category section on the page 
      * and closes the search bar.
      */
-    const handleResultClick = (product: never) => {
+    const handleResultClick = (product: Product) => {
         // Navigate to product or category
         const categoryElement = document.getElementById(
             slugify(product.category)
@@ -135,13 +144,11 @@ function SearchNavigation({ products = [] }) {
      * @param {string} query - The query to search for in the text.
      * @return {JSX.Element[]} An array of JSX elements, where the occurrences of the query are wrapped in a mark element.
      */
-    const highlightMatch = (text: string, query: string) => {
+    const highlightMatch = (text: string, query: string): React.ReactNode => {
         if (!query) return text
 
         const regex = new RegExp(`(${query})`, 'gi')
-        const parts = text.split(regex)
-
-        return parts.map((part: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined, index: React.Key | null | undefined) =>
+        return text.split(regex).map((part, index) =>
             regex.test(part) ? (
                 <mark key={index} className="bg-yellow-200 dark:bg-yellow-800">
                     {part}

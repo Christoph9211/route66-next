@@ -20,7 +20,7 @@ import ContactSection from '@/components/ContactSection'
 import ProductSection from '@/components/ProductSection'
 
 export default function HomePage() {
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
@@ -29,8 +29,8 @@ export default function HomePage() {
 
     useEffect(() => {
         fetch('/products/products.json')
-            .then(res => res.json())
-            .then(data => setProducts(data))
+            .then(res => res.json() as Promise<any[]>)
+            .then((data) => setProducts(data))
             .catch(err => {
                 setError('Failed to load products')
                 console.error(err)
@@ -103,7 +103,7 @@ export default function HomePage() {
                                 <ProductSection
                                     key={cat}
                                     title={cat}
-                                    products={list}
+                                    products={list as any[]}
                                     categoryId={slugify(cat)}
                                 />
                             ))}
