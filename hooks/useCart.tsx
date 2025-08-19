@@ -7,15 +7,45 @@ import React, {
     useCallback,
 } from 'react'
 
-const CartContext = createContext({} as any)
+interface CartItem {
+    productId: string
+    variantId: string
+    name: string
+    image: string
+    unitPrice: number
+    currency: string
+    qty: number
+}
+
+interface Cart {
+    items: CartItem[]
+    subtotal: number
+    total: number
+}
+
+interface CartContextType {
+    cart: Cart
+    addItem: (item: CartItem) => void
+    updateItem: (variantId: string, qty: number) => void
+    removeItem: (variantId: string) => void
+    clearCart: () => void
+    isOpen: boolean
+    openCart: () => void
+    closeCart: () => void
+    isPageOpen: boolean
+    openCartPage: () => void
+    closeCartPage: () => void
+}
+
+const CartContext = createContext<CartContextType>({} as CartContextType)
 
 
 /**
  * Returns the initial cart data from local storage or an empty cart object if an error occurs.
  *
- * @return {Object} An object representing the initial cart data with properties 'items' (an array of cart items), 'subtotal' (the total price of all items), and 'total' (the total price of all items). If an error occurs, returns an object with empty 'items', 'subtotal', and 'total' properties.
+ * @return {Cart} An object representing the initial cart data with properties 'items' (an array of cart items), 'subtotal' (the total price of all items), and 'total' (the total price of all items). If an error occurs, returns an object with empty 'items', 'subtotal', and 'total' properties.
  */
-function getInitialCart() {
+function getInitialCart(): Cart {
     try {
         const stored = localStorage.getItem('cart')
         return stored
@@ -35,7 +65,7 @@ function getInitialCart() {
  * @param {ReactNode} props.children - The child components.
  * @return {ReactNode} The context provider component.
  */
-export function CartProvider({ children }) {
+export function CartProvider({ children }: { children: React.ReactNode }) {
     const [cart, setCart] = useState(getInitialCart)
     const [isOpen, setIsOpen] = useState(false)
     const [isPageOpen, setIsPageOpen] = useState(false)
@@ -44,10 +74,10 @@ export function CartProvider({ children }) {
     /**
      * Recalculates the subtotal and total price of the given array of cart items.
      *
-     * @param {Array} items - An array of cart items.
-     * @return {Object} An object with properties 'items' (the original array of cart items), 'subtotal' (the total price of all items), and 'total' (the total price of all items).
+     * @param {CartItem[]} items - An array of cart items.
+     * @return {Cart} An object with properties 'items' (the original array of cart items), 'subtotal' (the total price of all items), and 'total' (the total price of all items).
      */
-    const recalc = (items) => {
+    const recalc = (items: CartItem[]): Cart => {
         const subtotal = items.reduce(
             (sum, item) => sum + item.unitPrice * item.qty,
             0
@@ -59,10 +89,10 @@ export function CartProvider({ children }) {
     /**
      * Persists the cart data to local storage.
      *
-     * @param {Object} data - The cart data object.
+     * @param {Cart} data - The cart data object.
      * @return {void}
      */
-    const persist = (data) => {
+    const persist = (data: Cart) => {
         setCart(data)
         try {
             localStorage.setItem('cart', JSON.stringify(data))
@@ -71,7 +101,7 @@ export function CartProvider({ children }) {
         }
     }
 
-    const addItem = useCallback((item) => {
+    const addItem = useCallback((item: CartItem) => {
         setCart((prev) => {
             const existing = prev.items.find(
                 (i) => i.variantId === item.variantId
@@ -92,7 +122,7 @@ export function CartProvider({ children }) {
         })
     }, [])
 
-    const updateItem = useCallback((variantId, qty) => {
+    const updateItem = useCallback((variantId: string, qty: number) => {
         setCart((prev) => {
             const items = prev.items
                 .map((i) => (i.variantId === variantId ? { ...i, qty } : i))
@@ -103,7 +133,7 @@ export function CartProvider({ children }) {
         })
     }, [])
 
-    const removeItem = useCallback((variantId) => {
+    const removeItem = useCallback((variantId: string) => {
         setCart((prev) => {
             const items = prev.items.filter((i) => i.variantId !== variantId)
             const updated = recalc(items)
@@ -121,25 +151,25 @@ export function CartProvider({ children }) {
         /**
          * Adds an item to the cart and opens the cart drawer.
          *
-         * @param {Event} e - The event object.
+         * @param {CustomEvent} e - The event object.
          * @return {void}
          */
-        const handleAdd = (e) => {
+        const handleAdd = (e: CustomEvent) => {
             addItem(e.detail)
             setIsOpen(true)
         }
-        const handleUpdate = (e) => updateItem(e.detail.variantId, e.detail.qty)
-        const handleRemove = (e) => removeItem(e.detail.variantId)
+        const handleUpdate = (e: CustomEvent) => updateItem(e.detail.variantId, e.detail.qty)
+        const handleRemove = (e: CustomEvent) => removeItem(e.detail.variantId)
         const handleClear = () => clearCart()
 
-        window.addEventListener('cart:add', handleAdd)
-        window.addEventListener('cart:update', handleUpdate)
-        window.addEventListener('cart:remove', handleRemove)
+        window.addEventListener('cart:add', handleAdd as EventListener)
+        window.addEventListener('cart:update', handleUpdate as EventListener)
+        window.addEventListener('cart:remove', handleRemove as EventListener)
         window.addEventListener('cart:clear', handleClear)
         return () => {
-            window.removeEventListener('cart:add', handleAdd)
-            window.removeEventListener('cart:update', handleUpdate)
-            window.removeEventListener('cart:remove', handleRemove)
+            window.removeEventListener('cart:add', handleAdd as EventListener)
+            window.removeEventListener('cart:update', handleUpdate as EventListener)
+            window.removeEventListener('cart:remove', handleRemove as EventListener)
             window.removeEventListener('cart:clear', handleClear)
         }
     }, [addItem, updateItem, removeItem, clearCart])
@@ -191,8 +221,8 @@ export function CartProvider({ children }) {
  * within a CartProvider component.
  *
  * @throws {Error} Throws an error if not used within a CartProvider.
- * @return {Object} The current cart state and functions.
+ * @return {CartContextType} The current cart state and functions.
  */
-export function useCart() {
+export function useCart(): CartContextType {
     return useContext(CartContext)
 }

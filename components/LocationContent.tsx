@@ -139,7 +139,7 @@ function LocationContent() {
                             <p className="text-sm text-gray-700 dark:text-white">
                                 As a locally-owned business in{' '}
                                 {locationData?.city || 'our city'}, we
-                                understand our community's needs and
+                                understand our community&apos;s needs and
                                 preferences.
                             </p>
                         </div>

@@ -1,7 +1,16 @@
 import ProductCard from './ProductCard'
-import { slugify } from '@/utils/slugify'
 
-export default function ProductSection({ title, products, categoryId }: { title: string, products: any[], categoryId: string }) {
+interface Product {
+    name: string
+    category: string
+    size_options: string[]
+    prices: Record<string, number>
+    thca_percentage?: number
+    banner?: string
+    availability?: Record<string, boolean>
+}
+
+export default function ProductSection({ title, products, categoryId }: { title: string, products: Product[], categoryId: string }) {
     if (!products || products.length === 0) return null
 
     return (
