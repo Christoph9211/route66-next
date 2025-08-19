@@ -88,7 +88,7 @@ function GoogleBusinessIntegration() {
                                             />
                                         ))}
                                         <span className="ml-2 text-xs text-black dark:text-white">
-                                            {(review as any).date}
+                                            {review.date || ''}
                                         </span>
                                     </div>
                                 </div>

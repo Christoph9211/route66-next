@@ -2,7 +2,17 @@
 import { useState, useEffect } from 'react'
 import { slugify } from '@/utils/slugify'
 
-export default function ProductCard({ product }: { product: any }) {
+interface Product {
+    name: string
+    category: string
+    size_options: string[]
+    prices: Record<string, number>
+    thca_percentage?: number
+    banner?: string
+    availability?: Record<string, boolean>
+}
+
+export default function ProductCard({ product }: { product: Product }) {
     const [selectedSize, setSelectedSize] = useState(product.size_options[0])
     const [isAvailable, setIsAvailable] = useState(true)
 

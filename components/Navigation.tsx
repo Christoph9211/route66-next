@@ -63,9 +63,8 @@ function Navigation({ products = [] }) {
 
     /**
      * Handles mouse leave event for dropdown menus with delay
-     * @param {string} itemId - The ID of the menu item
      */
-    const handleDropdownLeave = (itemId) => {
+    const handleDropdownLeave = () => {
         const timeout = setTimeout(() => {
             setActiveDropdown(null)
         }, 600) // 600ms delay for smooth user experience

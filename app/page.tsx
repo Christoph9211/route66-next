@@ -19,18 +19,27 @@ import AboutSection from '@/components/AboutSection'
 import ContactSection from '@/components/ContactSection'
 import ProductSection from '@/components/ProductSection'
 
+interface Product {
+    name: string
+    category: string
+    size_options: string[]
+    prices: Record<string, number>
+    thca_percentage?: number
+    banner?: string
+    availability?: Record<string, boolean>
+}
+
 export default function HomePage() {
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    const { activeSection } = useNavigation()
     useKeyboardNavigation()
 
     useEffect(() => {
         fetch('/products/products.json')
             .then(res => res.json())
-            .then(data => setProducts(data))
+            .then((data: Product[]) => setProducts(data))
             .catch(err => {
                 setError('Failed to load products')
                 console.error(err)
@@ -46,7 +55,7 @@ export default function HomePage() {
         applyAutoContrast()
     }, [products])
 
-    const productsByCategory = products.reduce((acc: any, product: any) => {
+    const productsByCategory = products.reduce((acc: Record<string, Product[]>, product: Product) => {
         const cat = product.category || 'Uncategorized'
         if (!acc[cat]) acc[cat] = []
         acc[cat].push(product)
@@ -54,8 +63,8 @@ export default function HomePage() {
     }, {})
 
     Object.keys(productsByCategory).forEach(cat => {
-        productsByCategory[cat].sort((a: any, b: any) => {
-            const rank = (p: any) =>
+        productsByCategory[cat].sort((a: Product, b: Product) => {
+            const rank = (p: Product) =>
                 p.banner === 'New' ? 0 : p.banner === 'Out of Stock' ? 2 : 1
             return rank(a) - rank(b) || a.name.localeCompare(b.name)
         })
@@ -103,7 +112,7 @@ export default function HomePage() {
                                 <ProductSection
                                     key={cat}
                                     title={cat}
-                                    products={list}
+                                    products={list as Product[]}
                                     categoryId={slugify(cat)}
                                 />
                             ))}

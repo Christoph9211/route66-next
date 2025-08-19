@@ -9,7 +9,7 @@ export default function AboutSection() {
                             Located in the heart of St Robert, Missouri, Route 66 Hemp has been serving the Pulaski County community with premium hemp products since 2025.
                         </p>
                         <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                            We're committed to providing high-quality, lab-tested hemp products that meet the highest standards of purity and potency.
+                            We&apos;re committed to providing high-quality, lab-tested hemp products that meet the highest standards of purity and potency.
                         </p>
                         <div className="mt-8">
                             <a href="#location" className="inline-flex items-center rounded-lg bg-green-600 px-6 py-3 font-medium text-white hover:bg-green-700">

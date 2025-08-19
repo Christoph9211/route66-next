@@ -8,7 +8,7 @@ import { useCart } from '../hooks/useCart'
  * @return {JSX.Element} The shopping cart drawer component.
  */
 export default function CartDrawer() {
-    const { cart, isOpen, closeCart, openCartPage } = useCart() as any
+    const { cart, isOpen, closeCart, openCartPage } = useCart()
     const ref = useRef(null)
 
     useEffect(() => {

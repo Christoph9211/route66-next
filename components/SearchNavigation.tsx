@@ -2,6 +2,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { slugify } from '../utils/slugify'
 
+interface Product {
+    name: string
+    category: string
+    size_options: string[]
+    prices: Record<string, number>
+    thca_percentage?: number
+    banner?: string
+    availability?: Record<string, boolean>
+}
+
 /**
  * SearchNavigation is a React component that provides a search functionality for products, categories, and sizes.
  * It displays a search bar and allows users to search for products based on their names, categories, or sizes.
@@ -11,10 +21,10 @@ import { slugify } from '../utils/slugify'
  * @param {Array} products - An array of product objects to search through.
  * @return {JSX.Element} A React component that displays a search bar and search results dropdown.
  */
-function SearchNavigation({ products = [] }) {
+function SearchNavigation({ products = [] }: { products: Product[] }) {
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState('')
-    const [results, setResults] = useState([])
+    const [results, setResults] = useState<Product[]>([])
     const [selectedIndex, setSelectedIndex] = useState(-1)
     const searchRef = useRef(null)
     const resultsRef = useRef(null)
@@ -48,7 +58,7 @@ function SearchNavigation({ products = [] }) {
     /**
      * Handles keydown events for search navigation.
      *
-     * @param {KeyboardEvent} e - The keyboard event.
+     * @param {object} e - The keyboard event.
      * @return {void}
      */
         const handleKeyDown = (e: { key: any; preventDefault: () => void; }) => {
@@ -91,7 +101,7 @@ function SearchNavigation({ products = [] }) {
          * If the click event target is not within the search box,
          * it closes the search box.
          *
-         * @param {Event} event - the click event
+         * @param {object} event - the click event
          */
         const handleClickOutside = (event: { target: any; }) => {
             if (
@@ -116,7 +126,7 @@ function SearchNavigation({ products = [] }) {
      * Navigates to the product or category section on the page 
      * and closes the search bar.
      */
-    const handleResultClick = (product: never) => {
+    const handleResultClick = (product: Product) => {
         // Navigate to product or category
         const categoryElement = document.getElementById(
             slugify(product.category)
@@ -207,7 +217,7 @@ function SearchNavigation({ products = [] }) {
                                         className="fas fa-search mb-2 text-2xl"
                                         aria-hidden="true"
                                     />
-                                    <p>No products found for "{query}"</p>
+                                    <p>No products found for &quot;{query}&quot;</p>
                                 </div>
                             )}
 
