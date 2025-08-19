@@ -38,7 +38,7 @@ function LocalSEOFAQ() {
         },
     ]
 
-    const [openIndex, setOpenIndex] = React.useState(null)
+    const [openIndex, setOpenIndex] = React.useState<number | null>(null)
 
     /**
      * Toggles the openIndex state based on the provided index. 
@@ -48,7 +48,7 @@ function LocalSEOFAQ() {
      * @param {number} index - The index to toggle the openIndex state with.
      * @return {void}
      */
-    const toggleFAQ = (index) => {
+    const toggleFAQ = (index: number) => {
         setOpenIndex(openIndex === index ? null : index)
     }
 

@@ -8,8 +8,17 @@
  * @return {JSX.Element} The component for displaying customer reviews and a
  * call to action to find and leave a review on Google Business Profile.
  */
+interface Review {
+    id: number
+    author: string
+    rating: number
+    text: string
+    verified: boolean
+    date?: string
+}
+
 function GoogleBusinessIntegration() {
-    const reviews = [
+    const reviews: Review[] = [
         {
             id: 1,
             author: 'Ray',

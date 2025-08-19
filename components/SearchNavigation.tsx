@@ -145,7 +145,7 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
      * @param {string} query - The query to search for in the text.
      * @return {JSX.Element[]} An array of JSX elements, where the occurrences of the query are wrapped in a mark element.
      */
-    const highlightMatch = (text: string, query: string): JSX.Element[] => {
+    const highlightMatch = (text: string, query: string): React.ReactNode[] => {
         if (!query) return [text]
 
         const regex = new RegExp(`(${query})`, 'gi')

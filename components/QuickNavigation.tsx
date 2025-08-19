@@ -69,7 +69,7 @@ function QuickNavigation() {
      *                     If "top", scrolls to the top of the page smoothly.
      *                     Otherwise, scrolls to the element with the given ID.
      */
-    const handleQuickNavClick = (id) => {
+    const handleQuickNavClick = (id: string) => {
         if (id === 'top') {
             window.scrollTo({ top: 0, behavior: 'smooth' })
         } else {

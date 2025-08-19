@@ -6,18 +6,28 @@ import { slugify } from '../utils/slugify'
 import { useCart } from '../hooks/useCart'
 
 
+interface Product {
+    name: string
+    category: string
+    size_options: string[]
+    prices: Record<string, number>
+    thca_percentage?: number
+    banner?: string
+    availability?: Record<string, boolean>
+}
+
 /**
  * Navigation component for the header of the website.
  *
  * @param {Array} products - Array of products to be used in the search navigation.
  * @return {JSX.Element} The navigation component.
  */
-function Navigation({ products = [] }) {
+function Navigation({ products = [] }: { products: Product[] }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [activeSection, setActiveSection] = useState('home')
-    const [activeDropdown, setActiveDropdown] = useState(null)
-    const [dropdownTimeout, setDropdownTimeout] = useState(null)
+    const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+    const [dropdownTimeout, setDropdownTimeout] = useState<ReturnType<typeof setTimeout> | null>(null)
     const { cart, openCart } = useCart()
 
     // Handle scroll effects
@@ -53,7 +63,7 @@ function Navigation({ products = [] }) {
      * Handles mouse enter event for dropdown menus
      * @param {string} itemId - The ID of the menu item
      */
-    const handleDropdownEnter = (itemId) => {
+    const handleDropdownEnter = (itemId: string) => {
         if (dropdownTimeout) {
             clearTimeout(dropdownTimeout)
             setDropdownTimeout(null)
@@ -143,7 +153,11 @@ function Navigation({ products = [] }) {
      * @param {string} id - The id of the link that was clicked.
      * @return {void} This function does not return anything.
      */
-    const handleNavClick = (e, href, id) => {
+    const handleNavClick = (
+        e: React.MouseEvent<HTMLAnchorElement>,
+        href: string,
+        id: string
+    ) => {
         e.preventDefault()
         setActiveSection(id)
         closeMenu()
@@ -201,7 +215,7 @@ function Navigation({ products = [] }) {
                                         key={item.id}
                                         className="relative"
                                         onMouseEnter={() => item.submenu && handleDropdownEnter(item.id)}
-                                        onMouseLeave={() => item.submenu && handleDropdownLeave(item.id)}
+                                        onMouseLeave={() => item.submenu && handleDropdownLeave()}
                                     >
                                         <a
                                             href={item.href}
