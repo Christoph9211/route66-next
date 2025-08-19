@@ -9,7 +9,7 @@ import { useCart } from '../hooks/useCart'
  */
 export default function CartDrawer() {
     const { cart, isOpen, closeCart, openCartPage } = useCart()
-    const ref = useRef(null)
+    const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
 
@@ -20,7 +20,7 @@ export default function CartDrawer() {
          * @param {KeyboardEvent} e - The keyboard event.
          * @return {void} This function does not return anything.
          */
-        const handleEsc = (e) => {
+        const handleEsc = (e: { key: string; }) => {
             if (e.key === 'Escape') closeCart()
         }
         if (isOpen) document.addEventListener('keydown', handleEsc)

@@ -26,8 +26,8 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
     const [query, setQuery] = useState('')
     const [results, setResults] = useState<Product[]>([])
     const [selectedIndex, setSelectedIndex] = useState(-1)
-    const searchRef = useRef(null)
-    const resultsRef = useRef(null)
+    const searchRef = useRef<HTMLDivElement>(null);
+    const resultsRef = useRef<HTMLDivElement | null>(null);
 
     // Filter products based on search query
     useEffect(() => {
@@ -58,10 +58,10 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
     /**
      * Handles keydown events for search navigation.
      *
-     * @param {object} e - The keyboard event.
+     * @param {KeyboardEvent} e - The keyboard event.
      * @return {void}
      */
-        const handleKeyDown = (e: { key: any; preventDefault: () => void; }) => {
+        const handleKeyDown = (e: KeyboardEvent): void => {
             if (!isOpen) return
 
             switch (e.key) {
@@ -101,12 +101,12 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
          * If the click event target is not within the search box,
          * it closes the search box.
          *
-         * @param {object} event - the click event
+         * @param {MouseEvent} event - the click event
          */
-        const handleClickOutside = (event: { target: any; }) => {
+        const handleClickOutside = (event: MouseEvent) => {
             if (
                 searchRef.current &&
-                !searchRef.current.contains(event.target)
+                !searchRef.current.contains(event.target as Node)
             ) {
                 setIsOpen(false)
             }
@@ -145,14 +145,14 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
      * @param {string} query - The query to search for in the text.
      * @return {JSX.Element[]} An array of JSX elements, where the occurrences of the query are wrapped in a mark element.
      */
-    const highlightMatch = (text: string, query: string) => {
-        if (!query) return text
+    const highlightMatch = (text: string, query: string): JSX.Element[] => {
+        if (!query) return [text]
 
         const regex = new RegExp(`(${query})`, 'gi')
         const parts = text.split(regex)
 
-        return parts.map((part: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined, index: React.Key | null | undefined) =>
-            regex.test(part) ? (
+        return parts.map((part: string, index: number) =>
+            typeof part === 'string' && regex.test(part) ? (
                 <mark key={index} className="bg-yellow-200 dark:bg-yellow-800">
                     {part}
                 </mark>

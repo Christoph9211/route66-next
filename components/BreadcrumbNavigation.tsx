@@ -10,14 +10,27 @@ import React from 'react'
  *   - productName: The name of the current product.
  * @return {JSX.Element|null} The breadcrumb navigation component or null if there is only one breadcrumb.
  */
-function BreadcrumbNavigation({ currentPage, category, productName }) {
+
+interface BreadcrumbNavigationProps {
+    currentPage: string | null;
+    category: string | null;
+    productName: string | null;
+    label: string;
+    href?: string;
+    icon?: string;
+}
+
+function BreadcrumbNavigation({ currentPage, category, productName }: BreadcrumbNavigationProps): React.JSX.Element | null {
     const breadcrumbs = [
-        { label: 'Home', href: '#home', icon: 'fas fa-home' },
+         { currentPage: 'Home' as string | null, category: 'Home' as string | null, productName: null as string | null, label: 'Home', href: '#home' as string | null, icon: 'fas fa-home' },
     ];
 
     // Add category if provided
     if (category) {
         breadcrumbs.push({
+            currentPage: null,
+            category: category,
+            productName: null,
             label: category,
             href: `#${category.toLowerCase().replace(/\s+/g, '-')}`,
             icon: '',
@@ -27,6 +40,9 @@ function BreadcrumbNavigation({ currentPage, category, productName }) {
     // Add current page
     if (currentPage && currentPage !== 'Home') {
         breadcrumbs.push({
+            currentPage: currentPage,
+            category: null,
+            productName: productName,
             label: productName || currentPage,
             href: null, 
             icon: '',
