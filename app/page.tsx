@@ -19,6 +19,7 @@ import AboutSection from '@/components/AboutSection'
 import ContactSection from '@/components/ContactSection'
 import ProductSection from '@/components/ProductSection'
 
+
 export default function HomePage() {
     const [products, setProducts] = useState([])
     const [loading, setLoading] = useState(true)

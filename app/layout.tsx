@@ -3,6 +3,7 @@ import { Inter, Montserrat } from 'next/font/google'
 import { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import type { Viewport } from 'next'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
 const montserrat = Montserrat({ subsets: ['latin'], variable: '--font-montserrat', display: 'swap' })
@@ -30,10 +31,14 @@ export const metadata: Metadata = {
         ],
         apple: '/apple-touch-icon.png',
     },
-    themeColor: '#ffffff',
-    viewport: 'width=device-width, initial-scale=1.0',
     authors: [{ name: 'Christopher Gibbons', url: 'mailto:route66hemp@gmail.com' }],
 }
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: 'black', // optional
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
