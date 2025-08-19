@@ -1,0 +1,463 @@
+'use client';
+import React, { useState, useEffect } from 'react'
+import LocalBusinessInfo from './LocalBusinessInfo'
+import SearchNavigation from './SearchNavigation'
+import { slugify } from '../utils/slugify'
+import { useCart } from '../hooks/useCart'
+
+
+/**
+ * Navigation component for the header of the website.
+ *
+ * @param {Array} products - Array of products to be used in the search navigation.
+ * @return {JSX.Element} The navigation component.
+ */
+function Navigation({ products = [] }) {
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isScrolled, setIsScrolled] = useState(false)
+    const [activeSection, setActiveSection] = useState('home')
+    const [activeDropdown, setActiveDropdown] = useState(null)
+    const [dropdownTimeout, setDropdownTimeout] = useState(null)
+    const { cart, openCart } = useCart()
+
+    // Handle scroll effects
+    useEffect(() => {
+
+    /**
+     * Handles the scroll event and updates the state of whether the user has
+     * scrolled more than 20 pixels from the top of the page.
+     *
+     * This function is called whenever the window is scrolled. It checks if the
+     * scroll position is greater than 20 pixels from the top of the page and
+     * updates the `isScrolled` state accordingly.
+     *
+     * @return {void} No return value.
+     */
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20)
+        }
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (dropdownTimeout) {
+                clearTimeout(dropdownTimeout)
+            }
+        }
+    }, [dropdownTimeout])
+
+    /**
+     * Handles mouse enter event for dropdown menus
+     * @param {string} itemId - The ID of the menu item
+     */
+    const handleDropdownEnter = (itemId) => {
+        if (dropdownTimeout) {
+            clearTimeout(dropdownTimeout)
+            setDropdownTimeout(null)
+        }
+        setActiveDropdown(itemId)
+    }
+
+    /**
+     * Handles mouse leave event for dropdown menus with delay
+     * @param {string} itemId - The ID of the menu item
+     */
+    const handleDropdownLeave = (itemId) => {
+        const timeout = setTimeout(() => {
+            setActiveDropdown(null)
+        }, 600) // 600ms delay for smooth user experience
+        setDropdownTimeout(timeout)
+    }
+
+    // Navigation items with clear hierarchy
+    const navigationItems = [
+        {
+            id: 'home',
+            label: 'Home',
+            href: '#home',
+            icon: 'fas fa-home',
+        },
+        {
+            id: 'products',
+            label: 'Products',
+            href: '#products',
+            icon: 'fas fa-cannabis',
+            submenu: [
+                { label: 'Flower', category: 'Flower' },
+                { label: 'Concentrates', category: 'Concentrates' },
+                { label: 'Diamonds & Sauce', category: 'Diamonds & Sauce' },
+                { label: 'Vapes & Carts', category: 'Vapes & Carts' },
+                { label: 'Edibles', category: 'Edibles' },
+                { label: 'Pre-rolls', category: 'Pre-Rolls' },
+            ],
+        },
+        {
+            id: 'about',
+            label: 'About Us',
+            href: '#about',
+            icon: 'fas fa-info-circle',
+        },
+        {
+            id: 'location',
+            label: 'Visit Us',
+            href: '#location',
+            icon: 'fas fa-map-marker-alt',
+        },
+        {
+            id: 'contact',
+            label: 'Contact',
+            href: '#contact',
+            icon: 'fas fa-phone',
+        },
+    ]
+
+    /**
+     * Toggles the menu open and closed.
+     *
+     * This function toggles the value of `isMenuOpen` state. If the menu is
+     * currently closed, it will be opened. If it is currently open, it will be
+     * closed.
+     *
+     * @return {void} This function does not return anything.
+     */
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen)
+    }
+
+    /**
+     * Closes the menu by setting the `isMenuOpen` state to `false`.
+     *
+     * @return {void} This function does not return anything.
+     */
+    const closeMenu = () => {
+        setIsMenuOpen(false)
+    }
+
+    /**
+     * Handles a click on a navigation link.
+     *
+     * @param {Event} e - The click event.
+     * @param {string} href - The href of the link that was clicked.
+     * @param {string} id - The id of the link that was clicked.
+     * @return {void} This function does not return anything.
+     */
+    const handleNavClick = (e, href, id) => {
+        e.preventDefault()
+        setActiveSection(id)
+        closeMenu()
+
+        // Smooth scroll to section
+        const element = document.querySelector(href)
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+        }
+    }
+
+    return (
+        <>
+            {/* Main Navigation Header */}
+            <header
+                className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
+                    isScrolled
+                        ? 'bg-white/95 shadow-lg backdrop-blur-md dark:bg-gray-900/95'
+                        : 'bg-transparent'
+                }`}
+            >
+                <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="flex h-16 items-center justify-between">
+                        {/* Logo/Brand */}
+                        <div className="flex items-center">
+                            <a
+                                href="#home"
+                                className="flex items-center space-x-2"
+                                onClick={(e) =>
+                                    handleNavClick(e, '#home', 'home')
+                                }
+                            >
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600">
+                                    <i
+                                        className="fas fa-cannabis text-white"
+                                        aria-hidden="true"
+                                    />
+                                </div>
+                                <div className="hidden sm:block">
+                                    <span className="text-xl font-bold text-gray-900 dark:text-white">
+                                        Route 66 Hemp
+                                    </span>
+                                    <div className="text-xs text-gray-600 dark:text-gray-300">
+                                        St Robert, MO
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        {/* Desktop Navigation */}
+                        <div className="hidden md:block">
+                            <div className="ml-10 flex items-baseline space-x-4">
+                                {navigationItems.map((item) => (
+                                    <div
+                                        key={item.id}
+                                        className="relative"
+                                        onMouseEnter={() => item.submenu && handleDropdownEnter(item.id)}
+                                        onMouseLeave={() => item.submenu && handleDropdownLeave(item.id)}
+                                    >
+                                        <a
+                                            href={item.href}
+                                            onClick={(e) =>
+                                                handleNavClick(
+                                                    e,
+                                                    item.href,
+                                                    item.id
+                                                )
+                                            }
+                                            aria-current={
+                                                activeSection === item.id
+                                                    ? 'page'
+                                                    : undefined
+                                            }
+                                            aria-haspopup={
+                                                item.submenu
+                                                    ? 'true'
+                                                    : undefined
+                                            }
+                                            aria-expanded={
+                                                item.submenu
+                                                    ? activeDropdown === item.id ? 'true' : 'false'
+                                                    : undefined
+                                            }
+                                            className={`flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                                                activeSection === item.id
+                                                    ? 'bg-green-600 text-white'
+                                                    : 'text-gray-700 hover:bg-green-50 hover:text-green-600 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-400'
+                                            }`}
+                                        >
+                                            <i
+                                                className={`${item.icon} mr-2 text-sm auto-contrast`}
+                                                aria-hidden="true"
+                                            />
+                                            {item.label}
+                                            {item.submenu && (
+                                                <i
+                                                    className={`fas fa-chevron-down ml-1 text-xs transition-transform duration-200 ${
+                                                        activeDropdown === item.id ? 'rotate-180' : ''
+                                                    }`}
+                                                    aria-hidden="true"
+                                                />
+                                            )}
+                                        </a>
+
+                                        {/* Desktop Dropdown */}
+                                        {item.submenu && (
+                                            <div
+                                                className={`absolute left-0 mt-2 w-48 font-bold text-white rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-200 dark:bg-gray-800 ${
+                                                    activeDropdown === item.id
+                                                        ? 'visible opacity-100 translate-y-0'
+                                                        : 'invisible opacity-0 -translate-y-2 pointer-events-none'
+                                                }`}
+                                                role="menu"
+                                                aria-label={`${item.label} submenu`}
+                                            >
+                                                <div
+                                                    className="flex flex-col py-1 font-extrabold"
+                                                    role="none"
+                                                >
+                                                    {item.submenu.map(
+                                                        (subItem) => {
+                                                            const subHref = `#${slugify(
+                                                                subItem.category
+                                                            )}`
+                                                            return (
+                                                                <a
+                                                                    key={
+                                                                        subItem.label
+                                                                    }
+                                                                    href={
+                                                                        subHref
+                                                                    }
+                                                                    onClick={(
+                                                                        e
+                                                                    ) =>
+                                                                        handleNavClick(
+                                                                            e,
+                                                                            subHref,
+                                                                            item.id
+                                                                        )
+                                                                    }
+                                                                    className="block px-4 py-2 text-white hover:bg-green-50 hover:text-green-600 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-400"
+                                                                    role="menuitem"
+                                                                >
+                                                                    {
+                                                                        subItem.label
+                                                                    }
+                                                                </a>
+                                                            )
+                                                        }
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Contact Info & Mobile Menu Button */}
+                        <div className="flex items-center space-x-4">
+                            {/* Search Component */}
+                            <SearchNavigation products={products} />
+
+                            {/* Quick Contact (Desktop) */}
+                            <div className="hidden items-center space-x-4 text-sm lg:flex">
+                                <a
+                                    href="tel:+15736776418"
+                                    className="flex items-center text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
+                                >
+                                    <i
+                                        className="fas fa-phone mr-1"
+                                        aria-hidden="true"
+                                    />
+                                    (573) 677-6418
+                                </a>
+                            </div>
+
+                            {/* Cart Button */}
+                            <button
+                                onClick={openCart}
+                                aria-label={`Open cart ${
+                                    cart.items.length > 0
+                                        ? `with ${cart.items.reduce(
+                                              (sum, i) => sum + i.qty,
+                                              0
+                                          )} items`
+                                        : ''
+                                }`}
+                                className="relative rounded p-2 text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
+                            >
+                                <span className="sr-only">Open cart</span>
+                                <i
+                                    className="fas fa-shopping-cart"
+                                    aria-hidden="true"
+                                />
+                                {cart.items.length > 0 && (
+                                    <span className="absolute -right-1 -top-1 rounded-full bg-red-600 px-1 text-xs text-white">
+                                        {cart.items.reduce(
+                                            (sum, i) => sum + i.qty,
+                                            0
+                                        )}
+                                    </span>
+                                )}
+                            </button>
+
+                            {/* Mobile menu button */}
+                            <button
+                                onClick={toggleMenu}
+                                aria-expanded={isMenuOpen}
+                                aria-controls="mobile-menu"
+                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-green-50 hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500 md:hidden dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-400"
+                            >
+                                <span className="sr-only">{isMenuOpen ? 'Close main menu' : 'Open main menu'}</span>
+                                <i
+                                    className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}
+                                    aria-hidden="true"
+                                />
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+
+                {/* Mobile Navigation Menu */}
+                <div
+                    className={`transition-all duration-300 ease-in-out md:hidden ${
+                        isMenuOpen
+                            ? 'max-h-screen opacity-100'
+                            : 'max-h-0 overflow-hidden opacity-0'
+                    }`}
+                    id="mobile-menu"
+                >
+                    <div className="border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                        <div className="space-y-1 px-2 pb-3 pt-2">
+                            {navigationItems.map((item) => (
+                                <div key={item.id}>
+                                    <a
+                                        href={item.href}
+                                        onClick={(e) =>
+                                            handleNavClick(
+                                                e,
+                                                item.href,
+                                                item.id
+                                            )
+                                        }
+                                        aria-current={
+                                            activeSection === item.id
+                                                ? 'page'
+                                                : undefined
+                                        }
+                                        className={`flex items-center rounded-md px-3 py-2 text-base font-medium transition-colors ${
+                                            activeSection === item.id
+                                                ? 'bg-green-600 text-white'
+                                                : 'text-gray-700 hover:bg-green-50 hover:text-green-600 dark:text-gray-300 dark:hover:bg-gray-700'
+                                        }`}
+                                    >
+                                        <i
+                                            className={`${item.icon} mr-3`}
+                                            aria-hidden="true"
+                                        />
+                                        {item.label}
+                                    </a>
+
+                                    {/* Mobile Submenu */}
+                                    {item.submenu && (
+                                        <div
+                                            className=" auto-contrast ml-6 mt-1 space-y-1"
+                                            role="menu"
+                                            aria-label={`${item.label} submenu`}
+                                        >
+                                            {item.submenu.map((subItem) => {
+                                                const subHref = `#${slugify(
+                                                    subItem.category
+                                                )}`
+                                                return (
+                                                    <a
+                                                        key={subItem.label}
+                                                        href={subHref}
+                                                        onClick={(e) =>
+                                                            handleNavClick(
+                                                                e,
+                                                                subHref,
+                                                                item.id
+                                                            )
+                                                        }
+                                                        className="block px-3 py-2 text-gray-600 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400"
+                                                        role="menuitem"
+                                                    >
+                                                        {subItem.label}
+                                                    </a>
+                                                )
+                                            })}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Mobile Contact Info */}
+                        <div className="border-t border-gray-200 px-4 py-3 dark:border-gray-700">
+                            <LocalBusinessInfo
+                                variant="minimal"
+                                className="text-gray-600 dark:text-gray-300"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            {/* Spacer to prevent content from hiding behind fixed header */}
+            <div className="h-16"></div>
+        </>
+    )
+}
+
+export default Navigation
