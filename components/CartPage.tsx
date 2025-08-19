@@ -47,7 +47,7 @@ export default function CartPage() {
                     </p>
                 ) : (
                     <div className="mt-4 grid gap-4">
-                        {cart.items.map((item) => (
+                        {cart.items.map((item: any) => (
                             <div
                                 key={item.variantId}
                                 className="flex items-start justify-between gap-3 border-b border-slate-200 pb-3 dark:border-gray-700"

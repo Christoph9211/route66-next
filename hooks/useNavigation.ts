@@ -127,9 +127,10 @@ export function useKeyboardNavigation() {
      * @param {KeyboardEvent} event - The keyboard event.
      * @return {void} No return value.
      */
-        const handleKeyDown = (event: { target: { tagName: string; }; key: any; }) => {
+        const handleKeyDown = (event: KeyboardEvent) => {
             // Skip if user is typing in an input
-            if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+            const tag = (event.target as HTMLElement).tagName
+            if (tag === 'INPUT' || tag === 'TEXTAREA') {
                 return
             }
 

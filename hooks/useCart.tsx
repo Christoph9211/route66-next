@@ -7,6 +7,12 @@ import React, {
     useCallback,
 } from 'react'
 
+interface CartData {
+    items: any[]
+    subtotal: number
+    total: number
+}
+
 const CartContext = createContext({} as any)
 
 
@@ -15,7 +21,7 @@ const CartContext = createContext({} as any)
  *
  * @return {Object} An object representing the initial cart data with properties 'items' (an array of cart items), 'subtotal' (the total price of all items), and 'total' (the total price of all items). If an error occurs, returns an object with empty 'items', 'subtotal', and 'total' properties.
  */
-function getInitialCart() {
+function getInitialCart(): CartData {
     try {
         const stored = localStorage.getItem('cart')
         return stored
@@ -35,8 +41,8 @@ function getInitialCart() {
  * @param {ReactNode} props.children - The child components.
  * @return {ReactNode} The context provider component.
  */
-export function CartProvider({ children }) {
-    const [cart, setCart] = useState(getInitialCart)
+export function CartProvider({ children }: { children: React.ReactNode }) {
+    const [cart, setCart] = useState<CartData>(getInitialCart)
     const [isOpen, setIsOpen] = useState(false)
     const [isPageOpen, setIsPageOpen] = useState(false)
 
@@ -47,9 +53,9 @@ export function CartProvider({ children }) {
      * @param {Array} items - An array of cart items.
      * @return {Object} An object with properties 'items' (the original array of cart items), 'subtotal' (the total price of all items), and 'total' (the total price of all items).
      */
-    const recalc = (items) => {
+    const recalc = (items: any[]) => {
         const subtotal = items.reduce(
-            (sum, item) => sum + item.unitPrice * item.qty,
+            (sum: number, item: any) => sum + item.unitPrice * item.qty,
             0
         )
         return { items, subtotal, total: subtotal }
@@ -62,7 +68,7 @@ export function CartProvider({ children }) {
      * @param {Object} data - The cart data object.
      * @return {void}
      */
-    const persist = (data) => {
+    const persist = (data: CartData) => {
         setCart(data)
         try {
             localStorage.setItem('cart', JSON.stringify(data))
@@ -71,14 +77,14 @@ export function CartProvider({ children }) {
         }
     }
 
-    const addItem = useCallback((item) => {
-        setCart((prev) => {
+    const addItem = useCallback((item: any) => {
+        setCart((prev: CartData) => {
             const existing = prev.items.find(
-                (i) => i.variantId === item.variantId
+                (i: any) => i.variantId === item.variantId
             )
-            let items
+            let items: any[]
             if (existing) {
-                items = prev.items.map((i) =>
+                items = prev.items.map((i: any) =>
                     i.variantId === item.variantId
                         ? { ...i, qty: i.qty + item.qty }
                         : i
@@ -92,20 +98,20 @@ export function CartProvider({ children }) {
         })
     }, [])
 
-    const updateItem = useCallback((variantId, qty) => {
-        setCart((prev) => {
+    const updateItem = useCallback((variantId: string, qty: number) => {
+        setCart((prev: CartData) => {
             const items = prev.items
-                .map((i) => (i.variantId === variantId ? { ...i, qty } : i))
-                .filter((i) => i.qty > 0)
+                .map((i: any) => (i.variantId === variantId ? { ...i, qty } : i))
+                .filter((i: any) => i.qty > 0)
             const updated = recalc(items)
             persist(updated)
             return updated
         })
     }, [])
 
-    const removeItem = useCallback((variantId) => {
-        setCart((prev) => {
-            const items = prev.items.filter((i) => i.variantId !== variantId)
+    const removeItem = useCallback((variantId: string) => {
+        setCart((prev: CartData) => {
+            const items = prev.items.filter((i: any) => i.variantId !== variantId)
             const updated = recalc(items)
             persist(updated)
             return updated
@@ -124,12 +130,12 @@ export function CartProvider({ children }) {
          * @param {Event} e - The event object.
          * @return {void}
          */
-        const handleAdd = (e) => {
+        const handleAdd = (e: any) => {
             addItem(e.detail)
             setIsOpen(true)
         }
-        const handleUpdate = (e) => updateItem(e.detail.variantId, e.detail.qty)
-        const handleRemove = (e) => removeItem(e.detail.variantId)
+        const handleUpdate = (e: any) => updateItem(e.detail.variantId, e.detail.qty)
+        const handleRemove = (e: any) => removeItem(e.detail.variantId)
         const handleClear = () => clearCart()
 
         window.addEventListener('cart:add', handleAdd)

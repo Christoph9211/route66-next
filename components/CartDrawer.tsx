@@ -9,7 +9,7 @@ import { useCart } from '../hooks/useCart'
  */
 export default function CartDrawer() {
     const { cart, isOpen, closeCart, openCartPage } = useCart() as any
-    const ref = useRef(null)
+    const ref = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
 
@@ -20,7 +20,7 @@ export default function CartDrawer() {
          * @param {KeyboardEvent} e - The keyboard event.
          * @return {void} This function does not return anything.
          */
-        const handleEsc = (e) => {
+        const handleEsc = (e: KeyboardEvent) => {
             if (e.key === 'Escape') closeCart()
         }
         if (isOpen) document.addEventListener('keydown', handleEsc)
@@ -33,7 +33,10 @@ export default function CartDrawer() {
         }
     }, [isOpen])
 
-    const itemCount = cart.items.reduce((sum, i) => sum + i.qty, 0)
+    const itemCount = cart.items.reduce(
+        (sum: number, i: any) => sum + i.qty,
+        0
+    )
 
     return (
         <div
@@ -70,7 +73,7 @@ export default function CartDrawer() {
                                 Your cart is empty.
                             </li>
                         )}
-                        {cart.items.map((item) => (
+                        {cart.items.map((item: any) => (
                             <li
                                 key={item.variantId}
                                 className="mb-4 flex items-center justify-between"

@@ -1,6 +1,18 @@
 'use client';
 import React from 'react'
 
+interface BreadcrumbNavigationProps {
+    currentPage?: string
+    category?: string
+    productName?: string
+}
+
+interface Crumb {
+    label: string
+    href: string | null
+    icon: string
+}
+
 /**
  * Renders a breadcrumb navigation component based on the provided props.
  * 
@@ -10,10 +22,10 @@ import React from 'react'
  *   - productName: The name of the current product.
  * @return {JSX.Element|null} The breadcrumb navigation component or null if there is only one breadcrumb.
  */
-function BreadcrumbNavigation({ currentPage, category, productName }) {
-    const breadcrumbs = [
+function BreadcrumbNavigation({ currentPage, category, productName }: BreadcrumbNavigationProps) {
+    const breadcrumbs: Crumb[] = [
         { label: 'Home', href: '#home', icon: 'fas fa-home' },
-    ];
+    ]
 
     // Add category if provided
     if (category) {

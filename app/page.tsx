@@ -20,7 +20,7 @@ import ContactSection from '@/components/ContactSection'
 import ProductSection from '@/components/ProductSection'
 
 export default function HomePage() {
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
@@ -46,12 +46,15 @@ export default function HomePage() {
         applyAutoContrast()
     }, [products])
 
-    const productsByCategory = products.reduce((acc: any, product: any) => {
-        const cat = product.category || 'Uncategorized'
-        if (!acc[cat]) acc[cat] = []
-        acc[cat].push(product)
-        return acc
-    }, {})
+    const productsByCategory: Record<string, any[]> = products.reduce(
+        (acc: Record<string, any[]>, product: any) => {
+            const cat = product.category || 'Uncategorized'
+            if (!acc[cat]) acc[cat] = []
+            acc[cat].push(product)
+            return acc
+        },
+        {}
+    )
 
     Object.keys(productsByCategory).forEach(cat => {
         productsByCategory[cat].sort((a: any, b: any) => {
