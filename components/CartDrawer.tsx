@@ -46,7 +46,7 @@ export default function CartDrawer() {
             <div
                 ref={ref}
                 tabIndex={-1}
-                className={`absolute right-0 top-0 h-full w-80 bg-white shadow-xl transition-transform dark:bg-gray-800 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                className={`absolute right-0 top-16 h-3/4 w-80 bg-white shadow-xl transition-transform dark:bg-gray-800 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
                 role="dialog"
                 aria-modal="true"
                 aria-label="Shopping cart"
@@ -138,7 +138,7 @@ export default function CartDrawer() {
                             </li>
                         ))}
                     </ul>
-                    <div className="border-t p-4">
+                    <div className="border-t bg-white dark:bg-gray-800 p-4">
                         <button
                             type="button"
                             className="mb-4 w-full rounded bg-emerald-600 px-4 py-2 text-lg font-bold text-white hover:bg-green-700"
