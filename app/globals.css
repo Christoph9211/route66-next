@@ -147,7 +147,7 @@
 }
 
 body {
-  scroll-padding-top: 64px; /* assuming a fixed header height of 64px */
+  scroll-padding-top: 60px; /* assuming a fixed header height of 64px */
   scroll-behavior: smooth;
 }
 
