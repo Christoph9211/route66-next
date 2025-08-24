@@ -20,7 +20,6 @@ function QuickNavigation() {
     const quickLinks = [
         { id: 'products', label: 'Products', icon: 'fas fa-cannabis' },
         { id: 'location', label: 'Visit Us', icon: 'fas fa-map-marker-alt' },
-        { id: 'contact', label: 'Contact', icon: 'fas fa-phone' },
         { id: 'top', label: 'Top', icon: 'fas fa-arrow-up' },
     ]
 
@@ -43,7 +42,7 @@ function QuickNavigation() {
             setIsVisible(window.scrollY > 300)
 
             // Update active section based on scroll position
-            const sections = ['home', 'products', 'about', 'location', 'contact']
+            const sections = ['home', 'products', 'about', 'location']
             const currentSection = sections.find(section => {
                 const element = document.getElementById(section)
                 if (element) {
