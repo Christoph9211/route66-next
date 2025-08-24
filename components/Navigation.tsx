@@ -31,13 +31,6 @@ function Navigation({ products = [] }: { products: Product[] }) {
     const { cart, openCart } = useCart()
     const totalItems = cart.items.reduce((sum, item) => sum + item.qty, 0)
 
-    const updateCartCount = (newCount: number) => {
-        const countEl = document.getElementById('cart-count')
-        if (countEl) {
-            countEl.textContent = String(newCount)
-        }
-    }
-
     // Handle scroll effects
     useEffect(() => {
 
@@ -67,9 +60,6 @@ function Navigation({ products = [] }: { products: Product[] }) {
         }
     }, [dropdownTimeout])
 
-    useEffect(() => {
-        updateCartCount(totalItems)
-    }, [totalItems])
 
     /**
      * Handles mouse enter event for dropdown menus
@@ -352,18 +342,18 @@ function Navigation({ products = [] }: { products: Product[] }) {
                             {/* Cart Button */}
                             <button
                                 onClick={openCart}
-                                aria-labelledby="cart-label cart-count"
+                                aria-label={`Open cart${
+                                    totalItems > 0
+                                        ? ` (${totalItems} item${totalItems === 1 ? '' : 's'})`
+                                        : ''
+                                }`}
                                 className="relative rounded p-2 text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
                             >
-                                <span id="cart-label" className="sr-only">
-                                    Open cart
-                                </span>
                                 <i
                                     className="fas fa-shopping-cart"
                                     aria-hidden="true"
                                 />
                                 <span
-                                    id="cart-count"
                                     aria-live="polite"
                                     className={
                                         totalItems > 0
