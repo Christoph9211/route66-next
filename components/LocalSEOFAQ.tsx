@@ -53,7 +53,7 @@ function LocalSEOFAQ() {
     }
 
     return (
-        <div className="bg-gray-50 py-12 dark:bg-gray-900">
+        <section id="faq" className="bg-gray-50 py-12 dark:bg-gray-900">
             <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                 <div className="mb-10 text-center">
                     <h2 className="text-2xl font-semibold uppercase tracking-wide text-green-600 dark:text-green-400">
@@ -117,7 +117,7 @@ function LocalSEOFAQ() {
                     </a>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 
