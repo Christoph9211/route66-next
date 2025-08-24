@@ -274,7 +274,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
                                                 aria-label={`${item.label} submenu`}
                                             >
                                                 <div
-                                                    className="flex flex-col py-1 font-extrabold"
+                                                    className="flex flex-col py-1 font-semibold"
                                                     role="none"
                                                 >
                                                     {item.submenu.map(
@@ -299,7 +299,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
                                                                             item.id
                                                                         )
                                                                     }
-                                                                    className="block px-4 py-2 text-white hover:bg-green-50 hover:text-green-600 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-400"
+                                                                    className="block px-4 py-2 text-black dark:text-gray-300 hover:bg-green-50 hover:text-green-600 dark:hover:bg-gray-700 dark:hover:text-green-400"
                                                                     role="menuitem"
                                                                 >
                                                                     {

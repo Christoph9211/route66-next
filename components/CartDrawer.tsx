@@ -46,19 +46,19 @@ export default function CartDrawer() {
             <div
                 ref={ref}
                 tabIndex={-1}
-                className={`absolute right-0 top-16 h-3/4 w-80 bg-white shadow-xl transition-transform dark:bg-gray-800 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                className={`absolute right-0 top-16 h-3/4 w-80 bg-white dark:bg-gray-800 shadow-xl transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
                 role="dialog"
                 aria-modal="true"
                 aria-label="Shopping cart"
             >
                 <div className="flex items-center justify-between border-b p-4">
-                    <h2 className=" auto-contrast text-lg font-semibold">
+                    <h2 className="text-lg text-black dark:text-white font-semibold">
                         Cart ({itemCount})
                     </h2>
                     <button
                         onClick={closeCart}
                         aria-label="Close cart"
-                        className="auto-contrast hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                        className="mb-4 w-1/4 rounded bg-emerald-600 px-4 py-2 text-lg font-bold text-white dark:text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
                     >
                         <span aria-hidden="true">✕</span>
                     </button>
@@ -84,7 +84,7 @@ export default function CartDrawer() {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <button
-                                        className="px-2 text-gray-900 dark:text-white"
+                                        className="px-2 font-semibold text-gray-900 dark:text-white"
                                         onClick={() =>
                                             window.dispatchEvent(
                                                 new CustomEvent('cart:update', {
@@ -100,7 +100,7 @@ export default function CartDrawer() {
                                     >
                                         <span aria-hidden="true">-</span>
                                     </button>
-                                    <span className="text-gray-900 dark:text-white">{item.qty}</span>
+                                    <span className="font-semibold text-gray-900 dark:text-white">{item.qty}</span>
                                     <button
                                         className="px-2 text-gray-900 dark:text-white"
                                         onClick={() =>
@@ -141,7 +141,7 @@ export default function CartDrawer() {
                     <div className="border-t bg-white dark:bg-gray-800 p-4">
                         <button
                             type="button"
-                            className="mb-4 w-full rounded bg-emerald-600 px-4 py-2 text-lg font-bold text-white hover:bg-green-700"
+                            className="mb-4 w-full rounded bg-emerald-700 px-4 py-2 text-lg font-bold text-white shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-emerald-600"
                             onClick={openCartPage}
                         >
                             View Cart

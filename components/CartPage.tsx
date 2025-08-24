@@ -35,7 +35,7 @@ export default function CartPage() {
                     </h2>
                     <button
                         onClick={closeCartPage}
-                        className="rounded-xl border border-slate-300 p-2 focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:ring-offset-2 dark:border-gray-600"
+                        className="mb-4 w-1/4 rounded bg-emerald-600 px-4 py-2 text-lg font-bold text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
                         aria-label="Close cart"
                     >
                         <span aria-hidden="true">✕</span>
