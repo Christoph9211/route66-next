@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, use, SetStateAction } from 'react'
+import { useState, useEffect } from 'react'
 
 /**
  * Custom hook that provides navigation functionality for the page.
