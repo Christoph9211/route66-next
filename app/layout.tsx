@@ -1,10 +1,11 @@
 import './globals.css'
 import { Metadata } from 'next'
+import { headers } from 'next/headers'
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Viewport } from 'next'
 
-export const metadata: Metadata = {
+const baseMetadata: Metadata = {
     title: 'Route 66 Hemp - Premium Hemp Products | St Robert, MO',
     description: 'Premium hemp products in St Robert, Missouri. Quality CBD flower, concentrates, and vapes. Serving Pulaski County and Fort Leonard Wood area.',
     keywords: [
@@ -29,7 +30,17 @@ export const metadata: Metadata = {
     },
     authors: [{ name: 'Christopher Gibbons', url: 'mailto:route66hemp@gmail.com' }],
 }
-
+export async function generateMetadata(): Promise<Metadata> {
+    const headersList = await headers()
+    const path = headersList.get('next-url') || '/'
+    const pathname = path.split('?')[0]
+    return {
+        ...baseMetadata,
+        alternates: {
+            canonical: `https://route66hemp.com${pathname}`,
+        },
+    }
+}
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
