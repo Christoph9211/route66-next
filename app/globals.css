@@ -137,6 +137,7 @@ textarea:focus {
 /* Improved hover transitions */
 .product-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.2s ease;
+  padding-top: 2.5rem; /* extra space for the banner */
 }
 
 .product-card:hover {
