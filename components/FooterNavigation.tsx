@@ -47,15 +47,15 @@ function FooterNavigation() {
             links: [
                 {
                     label: 'Privacy Policy',
-                    href: '/privacy-policy/',
+                    href: '/privacy-policy/index.html',
                 },
                 {
                     label: 'Terms of Service',
-                    href: '/terms-of-service/',
+                    href: '/terms-of-service/index.html',
                 },
                 {
                     label: 'Cookie Policy',
-                    href: '/cookie-policy/',
+                    href: '/cookie-policy/index.html',
                 },
             ],
         },
