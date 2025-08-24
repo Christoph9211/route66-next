@@ -9,9 +9,10 @@ Allow: /
 Allow: /products
 Allow: /about
 Allow: /contact
-Allow: /privacy-policy.html
-Allow: /terms-of-service.html
+Allow: /privacy-policy/
+Allow: /terms-of-service/
+Allow: /cookie-policy/
 
 # Block access to development files
 Disallow: /*.json$
-Disallow: /node_modules/
+Disallow: /node_modules
