@@ -43,7 +43,7 @@ function GoogleBusinessIntegration() {
     ]
 
     return (
-        <div className="bg-white py-12 dark:bg-gray-800">
+        <section id="location" className="bg-white py-12 dark:bg-gray-800">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="mb-10 lg:text-center">
                     <h2 className="text-2xl font-semibold uppercase tracking-wide text-green-600 dark:text-green-400">
@@ -148,7 +148,7 @@ function GoogleBusinessIntegration() {
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 
