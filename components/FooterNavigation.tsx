@@ -37,7 +37,7 @@ function FooterNavigation() {
             title: 'Support',
             links: [
                 { label: 'Contact Us', href: '#contact' },
-                { label: 'Store Hours', href: '#hours' },
+                { label: 'Store Hours', href: '#contact' },
                 { label: 'Directions', href: '#location' },
                 { label: 'FAQ', href: '#faq' },
             ],
