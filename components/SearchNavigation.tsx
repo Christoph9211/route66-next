@@ -176,7 +176,7 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
 
             {/* Search Overlay */}
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-start justify-center bg-black bg-opacity-50 pt-20">
+                <div className="fixed inset-0 z-50 flex items-start justify-center pt-20">
                     <div className="mx-4 w-full max-w-2xl rounded-lg bg-white shadow-xl dark:bg-gray-800">
                         {/* Search Input */}
                         <div className="border-b border-gray-200 p-4 dark:border-gray-700">
