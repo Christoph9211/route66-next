@@ -340,14 +340,10 @@ function Navigation({ products = [] }: { products: Product[] }) {
                             {/* Cart Button */}
                             <button
                                 onClick={openCart}
-                                aria-label={`Open cart ${
-                                    cart.items.length > 0
-                                        ? `with ${cart.items.reduce(
+                                aria-label={`Open cart with ${cart.items.length > 0 ? `with ${cart.items.reduce(
                                               (sum, i) => sum + i.qty,
                                               0
-                                          )} items`
-                                        : ''
-                                }`}
+                                          )} items` : ''}`}
                                 className="relative rounded p-2 text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
                             >
                                 <span className="sr-only">Open cart</span>
