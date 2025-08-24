@@ -15,7 +15,7 @@ export default function TermsOfServicePage() {
         gtag('js', new Date());
         gtag('config', 'G-RGSJT8T1EF');
       `}</Script>
-      <main className="mx-auto max-w-4xl p-4">
+      <main className="policy-content mx-auto max-w-4xl p-4">
         <h1 className="auto-contrast mb-4 text-3xl font-bold">
           Route 66 Hemp Terms of Service
         </h1>

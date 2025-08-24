@@ -253,3 +253,13 @@ button {
 .add-to-cart {
   font-weight: bold;
 }
+
+/* Ensure readable text on legal policy pages */
+.policy-content {
+  color: var(--color-text-primary);
+}
+
+.policy-content a {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
