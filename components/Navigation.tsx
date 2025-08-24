@@ -186,6 +186,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
                             <a
                                 href="#home"
                                 className="flex items-center space-x-2"
+                                aria-label="Route 66 Hemp logo - Home"
                                 onClick={(e) =>
                                     handleNavClick(e, '#home', 'home')
                                 }
