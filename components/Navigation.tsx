@@ -29,6 +29,14 @@ function Navigation({ products = [] }: { products: Product[] }) {
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
     const [dropdownTimeout, setDropdownTimeout] = useState<ReturnType<typeof setTimeout> | null>(null)
     const { cart, openCart } = useCart()
+    const totalItems = cart.items.reduce((sum, item) => sum + item.qty, 0)
+
+    const updateCartCount = (newCount: number) => {
+        const countEl = document.getElementById('cart-count')
+        if (countEl) {
+            countEl.textContent = String(newCount)
+        }
+    }
 
     // Handle scroll effects
     useEffect(() => {
@@ -58,6 +66,10 @@ function Navigation({ products = [] }: { products: Product[] }) {
             }
         }
     }, [dropdownTimeout])
+
+    useEffect(() => {
+        updateCartCount(totalItems)
+    }, [totalItems])
 
     /**
      * Handles mouse enter event for dropdown menus
@@ -340,25 +352,27 @@ function Navigation({ products = [] }: { products: Product[] }) {
                             {/* Cart Button */}
                             <button
                                 onClick={openCart}
-                                aria-label={`Open cart with ${cart.items.length > 0 ? `with ${cart.items.reduce(
-                                              (sum, i) => sum + i.qty,
-                                              0
-                                          )} items` : ''}`}
+                                aria-labelledby="cart-label cart-count"
                                 className="relative rounded p-2 text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
                             >
-                                <span className="sr-only">Open cart</span>
+                                <span id="cart-label" className="sr-only">
+                                    Open cart
+                                </span>
                                 <i
                                     className="fas fa-shopping-cart"
                                     aria-hidden="true"
                                 />
-                                {cart.items.length > 0 && (
-                                    <span className="absolute -right-1 -top-1 rounded-full bg-red-600 px-1 text-xs text-white">
-                                        {cart.items.reduce(
-                                            (sum, i) => sum + i.qty,
-                                            0
-                                        )}
-                                    </span>
-                                )}
+                                <span
+                                    id="cart-count"
+                                    aria-live="polite"
+                                    className={
+                                        totalItems > 0
+                                            ? 'absolute -right-1 -top-1 rounded-full bg-red-600 px-1 text-xs text-white'
+                                            : 'sr-only'
+                                    }
+                                >
+                                    {totalItems}
+                                </span>
                             </button>
 
                             {/* Mobile menu button */}
