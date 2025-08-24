@@ -263,3 +263,9 @@ button {
   color: var(--color-secondary);
   text-decoration: underline;
 }
+
+@media (prefers-color-scheme: dark) {
+  .policy-content {
+    color: white;
+  }
+}
