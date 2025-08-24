@@ -3,6 +3,7 @@ import { Metadata } from 'next'
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Viewport } from 'next'
+import CanonicalUrl from '@/components/CanonicalUrl'
 
 export const metadata: Metadata = {
     title: 'Route 66 Hemp - Premium Hemp Products | St Robert, MO',
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     crossOrigin="anonymous"
                     referrerPolicy="no-referrer"
                 />
+                <CanonicalUrl />
             </head>
             <body className="bg-gray-50 font-sans antialiased dark:bg-gray-900 transition-colors duration-300">
                 {children}
