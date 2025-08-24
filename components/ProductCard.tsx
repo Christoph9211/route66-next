@@ -29,10 +29,17 @@ export default function ProductCard({ product }: { product: Product }) {
     return (
         <div className={`product-card relative min-w-[285px] rounded-lg bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 dark:bg-gray-800 ${isOutOfStock ? 'opacity-75' : ''}`}>            
             {product.banner && (
-                <div className={`product-banner auto-contrast ${
-                    product.banner === 'New' ? 'bg-green-600 text-white' :
-                    product.banner === 'Out of Stock' ? 'bg-red-600 text-white' :
-                    'bg-blue-600 text-white'}`}>{product.banner}</div>
+                <div
+                    className={`product-banner ${
+                        product.banner === 'New'
+                            ? 'bg-green-700 text-white'
+                            : product.banner === 'Out of Stock'
+                                ? 'bg-red-700 text-white'
+                                : 'bg-blue-700 text-white'
+                    }`}
+                >
+                    {product.banner}
+                </div>
             )}
             <div className="mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{product.name}</h3>
