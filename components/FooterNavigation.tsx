@@ -53,8 +53,10 @@ function FooterNavigation() {
                     label: 'Terms of Service',
                     href: '/terms-of-service.html',
                 },
-                { label: 'Age Verification', href: '#age-verification' },
-                { label: 'Compliance', href: '#compliance' },
+                {
+                    label: 'Cookie Policy',
+                    href: '/cookie-policy.html',
+                },
             ],
         },
     ]
