@@ -125,7 +125,7 @@ export default function CookiePolicyPage() {
         gtag('config', 'G-RGSJT8T1EF');
       `}</Script>
       <main
-        className="mx-auto max-w-4xl p-4"
+        className="policy-content mx-auto max-w-4xl p-4"
         dangerouslySetInnerHTML={{ __html: content }}
       />
     </>
