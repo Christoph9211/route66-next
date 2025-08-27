@@ -14,10 +14,10 @@ export const metadata: Metadata = {
         'CBD', 'THCA', 'Cannabis', 'Hemp', 'Route 66 Hemp', 'St Robert MO', 'Pulaski County',
         'Fort Leonard Wood', 'Dispensary', 'Cannabis Accessories'
     ],
-    metadataBase: new URL('https://route66hemp.com/'),
+    metadataBase: new URL('https://www.route66hemp.com'),
     openGraph: {
         type: 'website',
-        url: 'https://route66hemp.com/',
+        url: 'https://www.route66hemp.com',
         title: 'Route 66 Hemp - Premium Hemp Products | St Robert, MO',
         description: 'Premium hemp products in St Robert, Missouri. Quality CBD flower, concentrates, and vapes. Serving Pulaski County and Fort Leonard Wood area.',
         siteName: 'Route 66 Hemp',

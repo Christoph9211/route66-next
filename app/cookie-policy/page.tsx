@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 }
 
 const content = `
-<h1><strong>Cookie Policy of [<a href="http://www.route66hemp.com/">www.route66hemp.com</a>]</strong></h1>
+<h1><strong>Cookie Policy of [<a href="https://www.route66hemp.com">www.route66hemp.com</a>]</strong></h1>
 <p>Last updated: August 19, 2025</p>
 <p>We are Route 66 Hemp LLC. This cookie policy outlines how we collect, use, and manage cookies, and we outline your rights and choices regarding cookie usage.</p>
 <p>You can contact us at route66hemp@gmail.com.</p>
