@@ -1,18 +1,3 @@
 User-agent: *
-Allow: /
-
-# Sitemap location
-Sitemap: https://route66hemp.com/sitemap.xml
-
-# Allow access to important pages
-Allow: /
-Allow: /products
-Allow: /about
-Allow: /contact
-Allow: /privacy-policy
-Allow: /terms-of-service
-Allow: /cookie-policy
-
-# Block access to development files
-Disallow: /*.json$
-Disallow: /node_modules
+Disallow:
+Sitemap: https://www.route66hemp.com/sitemap.xml/
