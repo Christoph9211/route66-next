@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Script from 'next/script'
+// import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: 'Cookie Policy - Route 66 Hemp',
@@ -117,13 +117,6 @@ This privacy statement has been prepared based on provisions of multiple legisla
 export default function CookiePolicyPage() {
   return (
     <>
-      <Script async src="https://www.googletagmanager.com/gtag/js?id=G-RGSJT8T1EF" />
-      <Script id="gtag-init">{`
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-RGSJT8T1EF');
-      `}</Script>
       <main
         className="policy-content mx-auto max-w-4xl p-4"
         dangerouslySetInnerHTML={{ __html: content }}
