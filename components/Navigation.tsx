@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 import LocalBusinessInfo from './LocalBusinessInfo'
 import SearchNavigation from './SearchNavigation'
 import { slugify } from '../utils/slugify'
-import { useCart } from '../hooks/useCart'
 
 
 interface Product {
@@ -28,8 +27,6 @@ function Navigation({ products = [] }: { products: Product[] }) {
     const [activeSection, setActiveSection] = useState('home')
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
     const [dropdownTimeout, setDropdownTimeout] = useState<ReturnType<typeof setTimeout> | null>(null)
-    const { cart, openCart } = useCart()
-    const totalItems = cart.items.reduce((sum, item) => sum + item.qty, 0)
 
     // Handle scroll effects
     useEffect(() => {
@@ -338,32 +335,6 @@ function Navigation({ products = [] }: { products: Product[] }) {
                                     (573) 677-6418
                                 </a>
                             </div>
-
-                            {/* Cart Button */}
-                            <button
-                                onClick={openCart}
-                                aria-label={`Open cart${
-                                    totalItems > 0
-                                        ? ` (${totalItems} item${totalItems === 1 ? '' : 's'})`
-                                        : ''
-                                }`}
-                                className="relative rounded p-2 text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
-                            >
-                                <i
-                                    className="fas fa-shopping-cart"
-                                    aria-hidden="true"
-                                />
-                                <span
-                                    aria-live="polite"
-                                    className={
-                                        totalItems > 0
-                                            ? 'absolute -right-1 -top-1 rounded-full bg-red-600 px-1 text-xs text-white'
-                                            : 'sr-only'
-                                    }
-                                >
-                                    {totalItems}
-                                </span>
-                            </button>
 
                             {/* Mobile menu button */}
                             <button
