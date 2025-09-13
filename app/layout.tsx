@@ -6,6 +6,8 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Viewport } from 'next'
 import CanonicalUrl from '@/components/CanonicalUrl'
 import AgeGate from '@/components/AgeGate'
+import CookieBanner from '@/components/CookieBanner'
+import Script from 'next/script'
 
 export const metadata: Metadata = {
     title: 'Route 66 Hemp - Premium Hemp Products | St Robert, MO',
@@ -40,7 +42,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <head>
                 <link
                     rel="stylesheet"
@@ -52,9 +54,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </head>
             <body className="bg-gray-50 font-sans antialiased dark:bg-gray-900 transition-colors duration-300">
                 <AgeGate />
+                <CookieBanner />
                 {children}
                 <Analytics />
                 <SpeedInsights />
+                {/* Load age/consent → analytics wiring */}
+                <Script src="/analytics-consent.js" strategy="afterInteractive" />
             </body>
         </html>
     )
