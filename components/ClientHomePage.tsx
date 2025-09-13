@@ -1,16 +1,13 @@
-'use client';
-import { useEffect, useState } from 'react'
+"use client";
+import { useEffect } from 'react'
 import Navigation from '@/components/Navigation'
 import FooterNavigation from '@/components/FooterNavigation'
 import QuickNavigation from '@/components/QuickNavigation'
 import LocalSEOFAQ from '@/components/LocalSEOFAQ'
 import LocationContent from '@/components/LocationContent'
 import GoogleBusinessIntegration from '@/components/GoogleBusinessIntegration'
-import CartDrawer from '@/components/CartDrawer'
-import CartPage from '@/components/CartPage'
 import { useKeyboardNavigation } from '@/hooks/useNavigation'
 import { applyAutoContrast } from '@/utils/autoContrast'
-import { initCartButtonListener } from '@/utils/cartEvents'
 import { slugify } from '@/utils/slugify'
 import HeroSection from '@/components/HeroSection'
 import AboutSection from '@/components/AboutSection'
@@ -25,29 +22,11 @@ interface Product {
     thca_percentage?: number
     banner?: string
     availability?: Record<string, boolean>
+    image?: string
 }
 
-export default function ClientHomePage() {
-    const [products, setProducts] = useState<Product[]>([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
-
+export default function ClientHomePage({ products }: { products: Product[] }) {
     useKeyboardNavigation()
-
-    useEffect(() => {
-        fetch('/products/products.json')
-            .then(res => res.json())
-            .then((data: Product[]) => setProducts(data))
-            .catch((err: Error) => {
-                setError('Failed to load products')
-                console.error(err)
-            })
-            .finally(() => setLoading(false))
-    }, [])
-
-    useEffect(() => {
-        initCartButtonListener()
-    }, [])
 
     useEffect(() => {
         applyAutoContrast()
@@ -58,7 +37,7 @@ export default function ClientHomePage() {
         if (!acc[cat]) acc[cat] = []
         acc[cat].push(product)
         return acc
-    }, {})
+    }, {} as Record<string, Product[]>)
 
     Object.keys(productsByCategory).forEach(cat => {
         productsByCategory[cat].sort((a: Product, b: Product) => {
@@ -67,32 +46,6 @@ export default function ClientHomePage() {
             return rank(a) - rank(b) || a.name.localeCompare(b.name)
         })
     })
-
-    if (loading) {
-        return (
-            <div className="flex min-h-screen items-center justify-center">
-                <div className="leaf-loader animate-spin"></div>
-                <span className="ml-3 text-lg">Loading products...</span>
-            </div>
-        )
-    }
-
-    if (error) {
-        return (
-            <div className="flex min-h-screen items-center justify-center text-center">
-                <div>
-                    <h1 className="text-2xl font-bold text-red-600">Error</h1>
-                    <p className="mt-2 text-gray-700">{error}</p>
-                    <button
-                        onClick={() => location.reload()}
-                        className="mt-4 rounded bg-green-600 px-4 py-2 text-white"
-                    >
-                        Try Again
-                    </button>
-                </div>
-            </div>
-        )
-    }
 
     return (
         <>
@@ -122,8 +75,6 @@ export default function ClientHomePage() {
             </main>
             <FooterNavigation />
             <QuickNavigation />
-            <CartDrawer />
-            <CartPage />
         </>
     )
 }

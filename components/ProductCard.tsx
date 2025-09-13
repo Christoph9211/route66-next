@@ -1,5 +1,6 @@
-'use client'
+"use client"
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { slugify } from '@/utils/slugify'
 
 interface Product {
@@ -10,6 +11,7 @@ interface Product {
     thca_percentage?: number
     banner?: string
     availability?: Record<string, boolean>
+    image?: string
 }
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -25,9 +27,12 @@ export default function ProductCard({ product }: { product: Product }) {
     const currentPrice = product.prices[selectedSize]
     const isOutOfStock = product.banner === 'Out of Stock' || !isAvailable
     const selectId = `size-${slugify(product.name)}`
+    const imageSrc = product.image
+        ? `/assets/images/${product.image}`
+        : '/assets/images/placeholder.webp'
 
     return (
-        <div className={`product-card relative min-w-[285px] rounded-lg bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 dark:bg-gray-800 ${isOutOfStock ? 'opacity-75' : ''}`}>            
+        <div className={`product-card relative min-w-[285px] rounded-lg bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 dark:bg-gray-800 ${isOutOfStock ? 'opacity-75' : ''}`}>
             {product.banner && (
                 <div
                     className={`product-banner ${
@@ -41,6 +46,13 @@ export default function ProductCard({ product }: { product: Product }) {
                     {product.banner}
                 </div>
             )}
+            <Image
+                src={imageSrc}
+                alt={product.name}
+                width={400}
+                height={300}
+                className="mb-4 h-48 w-full rounded object-cover"
+            />
             <div className="mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{product.name}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">{product.category || 'N/A'}</p>
@@ -70,20 +82,9 @@ export default function ProductCard({ product }: { product: Product }) {
             </div>
             <div className="flex items-center justify-between">
                 <div className="text-xl font-bold text-green-600">${currentPrice?.toFixed(2) || 'N/A'}</div>
-                <button
-                    className={`add-to-cart rounded-md px-4 py-2 ${isOutOfStock ? 'cursor-not-allowed bg-white text-black hover:text-red-600' : 'bg-emerald-700 text-white hover:bg-white hover:text-green-600 focus:outline-green-500 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 active:bg-emerald-600 active:text-white'}`}
-                    disabled={isOutOfStock}
-                    aria-label={isOutOfStock ? `Out of Stock ${product.name}` : `Add to Cart ${product.name}`}
-                    data-product-id={slugify(product.name)}
-                    data-variant-id={`${slugify(product.name)}_${slugify(selectedSize)}`}
-                    data-name={product.name}
-                    data-price={currentPrice?.toFixed(2) || 0}
-                    data-currency="USD"
-                    data-image=""
-                    data-available={!isOutOfStock}
-                >
-                    <span className="text-lg font-bold">{isOutOfStock ? 'Out of Stock' : 'Add to Cart'}</span>
-                </button>
+                {isOutOfStock && (
+                    <span className="text-sm font-bold text-red-600">Out of Stock</span>
+                )}
             </div>
         </div>
     )

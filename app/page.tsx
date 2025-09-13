@@ -1,23 +1,21 @@
-import { Suspense } from 'react'
 import StructuredData from '@/components/StructuredData'
-import { CartProvider } from '@/hooks/useCart'
 import ClientHomePage from '@/components/ClientHomePage'
+import path from 'path'
+import { promises as fs } from 'fs'
 
+async function getProducts() {
+    const filePath = path.join(process.cwd(), 'public', 'products', 'products.json')
+    const data = await fs.readFile(filePath, 'utf8')
+    return JSON.parse(data)
+}
 
-export default function HomePage() {
+export default async function HomePage() {
+    const products = await getProducts()
     return (
-        <CartProvider>
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-                <StructuredData />
-                <Suspense fallback={
-                    <div className="flex min-h-screen items-center justify-center">
-                        <div className="leaf-loader animate-spin"></div>
-                        <span className="ml-3 text-lg">Loading...</span>
-                    </div>
-                }>
-                    <ClientHomePage />
-                </Suspense>
-            </div>
-        </CartProvider>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+            <StructuredData />
+            <ClientHomePage products={products} />
+        </div>
     )
 }
+
