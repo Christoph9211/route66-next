@@ -76,6 +76,33 @@
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6);
 }
 
+/* Modern hero utilities */
+@layer utilities {
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .dark .bg-grid {
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.2) 1px, transparent 1px);
+  }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* Utility classes using CSS variables */
 .bg-theme-primary { background-color: var(--color-bg-primary); }
 .bg-theme-secondary { background-color: var(--color-bg-secondary); }
