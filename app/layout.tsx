@@ -43,12 +43,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" suppressHydrationWarning>
             <head>
-                <link
-                    rel="stylesheet"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-                    crossOrigin="anonymous"
-                    referrerPolicy="no-referrer"
-                />
+                <Script id="load-fa" strategy="afterInteractive">
+                    {`
+                        const fa = document.createElement('link');
+                        fa.rel = 'stylesheet';
+                        fa.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+                        fa.crossOrigin = 'anonymous';
+                        fa.referrerPolicy = 'no-referrer';
+                        document.head.appendChild(fa);
+                    `}
+                </Script>
+                <noscript>
+                    <link
+                        rel="stylesheet"
+                        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+                        crossOrigin="anonymous"
+                        referrerPolicy="no-referrer"
+                    />
+                </noscript>
                 <CanonicalUrl />
             </head>
             <body className="bg-gray-50 font-sans antialiased dark:bg-gray-900 transition-colors duration-300">
