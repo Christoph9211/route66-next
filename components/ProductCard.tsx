@@ -13,7 +13,7 @@ interface Product {
     availability?: Record<string, boolean>
 }
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({ product, priority = false }: { product: Product, priority?: boolean }) {
     const [selectedSize, setSelectedSize] = useState(product.size_options[0])
     const [isAvailable, setIsAvailable] = useState(true)
 
@@ -47,6 +47,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 alt={product.name}
                 width={400}
                 height={300}
+                priority={priority}
                 className="mb-4 h-48 w-full rounded object-cover"
             />
             <div className="mb-4">

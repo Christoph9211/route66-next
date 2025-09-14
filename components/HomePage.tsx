@@ -56,12 +56,13 @@ export default function HomePage({ products }: { products: Product[] }) {
                         <h2 className="mb-12 text-center text-4xl font-bold text-gray-900 dark:text-white">
                             Our Premium Hemp Products
                         </h2>
-                        {Object.entries(productsByCategory).map(([cat, list]) => (
+                        {Object.entries(productsByCategory).map(([cat, list], sectionIndex) => (
                             <ProductSection
                                 key={cat}
                                 title={cat}
                                 products={list as Product[]}
                                 categoryId={slugify(cat)}
+                                isFirstSection={sectionIndex === 0}
                             />
                         ))}
                     </div>
