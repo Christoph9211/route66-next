@@ -40,4 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env
+test-results/.last-run.json
+playwright-report/
 test-results/
+blob-report/
+*.zip
