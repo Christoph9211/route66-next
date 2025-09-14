@@ -182,14 +182,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
                     <div className="flex h-16 items-center justify-between">
                         {/* Logo/Brand */}
                         <div className="flex items-center">
-                            <a
-                                href="#home"
-                                className="flex items-center space-x-2"
-                                aria-label="Route 66 Hemp logo - Home. Route 66 Hemp. St Robert, MO."
-                                onClick={(e) =>
-                                    handleNavClick(e, '#home', 'home')
-                                }
-                            >
+                            <span className="flex items-center space-x-2">
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600">
                                     <i
                                         className="fas fa-cannabis text-white"
@@ -204,7 +197,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
                                         St Robert, MO
                                     </div>
                                 </div>
-                            </a>
+                            </span>
                         </div>
 
                         {/* Desktop Navigation */}
