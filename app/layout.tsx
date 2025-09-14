@@ -1,5 +1,4 @@
-import fs from 'fs'
-import path from 'path'
+import './globals.css'
 import { Metadata } from 'next'
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from '@vercel/speed-insights/next'
@@ -8,11 +7,11 @@ import CanonicalUrl from '@/components/CanonicalUrl'
 import AgeGate from '@/components/AgeGate'
 import CookieBanner from '@/components/CookieBanner'
 import Script from 'next/script'
-
-const globalStyles = fs.readFileSync(
-    path.join(process.cwd(), 'app', 'globals.css'),
-    'utf8'
-)
+import './styles/fa/fontawesome.min.css'
+import './styles/fa/brands.min.css'
+import './styles/fa/regular.min.css'
+import './styles/fa/solid.min.css'
+import './styles/fa/icons.min.css'
 
 export const metadata: Metadata = {
     title: 'Route 66 Hemp - Premium Hemp Products | St Robert, MO',
@@ -49,22 +48,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" suppressHydrationWarning>
             <head>
-                <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
-                <link
-                    rel="preload"
-                    as="style"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-                    crossOrigin="anonymous"
-                    referrerPolicy="no-referrer"
-                />
-                <link
-                    rel="stylesheet"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-                    crossOrigin="anonymous"
-                    referrerPolicy="no-referrer"
-                    media="print"
-                    onLoad="this.media='all'"
-                />
+            <Script id="load-fa" strategy="afterInteractive">
+                    {`
+                        const fa = document.createElement('link');
+                        fa.rel = 'stylesheet';
+                        fa.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+                        fa.crossOrigin = 'anonymous';
+                        fa.referrerPolicy = 'no-referrer';
+                        document.head.appendChild(fa);
+                    `}
+                </Script>
                 <noscript>
                     <link
                         rel="stylesheet"
@@ -73,6 +66,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         referrerPolicy="no-referrer"
                     />
                 </noscript>
+=======
+                {/* Self-hosted Font Awesome for better performance */}
+                <link rel="preload" as="font" href="/webfonts/fa-solid-900.woff2" type="font/woff2" crossOrigin="anonymous" />
+                <link rel="preload" as="font" href="/webfonts/fa-regular-400.woff2" type="font/woff2" crossOrigin="anonymous" />
+                <link rel="preload" as="font" href="/webfonts/fa-brands-400.woff2" type="font/woff2" crossOrigin="anonymous" />
                 <CanonicalUrl />
             </head>
             <body className="bg-gray-50 font-sans antialiased dark:bg-gray-900 transition-colors duration-300">
