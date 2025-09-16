@@ -28,13 +28,7 @@ export default function ProductCard({ product, priority = false }: { product: Pr
     const selectId = `size-${slugify(product.name)}`
 
     return (
-        <div 
-            className={`product-card relative w-full rounded-lg bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800 ${isOutOfStock ? 'opacity-75' : ''}`}
-            tabIndex={0}
-            role="article"
-            aria-labelledby={`product-title-${slugify(product.name)}`}
-            data-keyboard-clickable
-        >
+        <div className={`product-card relative min-w-[285px] rounded-lg bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 dark:bg-gray-800 ${isOutOfStock ? 'opacity-75' : ''}`}>            
             {product.banner && (
                 <div
                     className={`product-banner ${
@@ -57,12 +51,7 @@ export default function ProductCard({ product, priority = false }: { product: Pr
                 className="mb-4 h-48 w-full rounded object-cover"
             />
             <div className="mb-4">
-                <h3 
-                    id={`product-title-${slugify(product.name)}`}
-                    className="text-lg font-semibold text-gray-900 dark:text-white"
-                >
-                    {product.name}
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{product.name}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">{product.category || 'N/A'}</p>
                 {product.thca_percentage ? (
                     <p className="text-sm font-medium text-green-600">THCa: {product.thca_percentage}%</p>
@@ -77,9 +66,8 @@ export default function ProductCard({ product, priority = false }: { product: Pr
                         id={selectId}
                         value={selectedSize}
                         onChange={(e) => setSelectedSize(e.target.value)}
-                        className="focus-enhanced w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                        className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                         disabled={isOutOfStock}
-                        aria-describedby={`price-${slugify(product.name)}`}
                     >
                         {product.size_options.map((size: string) => (
                             <option key={size} value={size}>{size}</option>
@@ -90,13 +78,7 @@ export default function ProductCard({ product, priority = false }: { product: Pr
                 )}
             </div>
             <div className="flex items-center justify-center">
-                <div 
-                    id={`price-${slugify(product.name)}`}
-                    className="text-xl font-bold text-green-600"
-                    aria-label={`Price: $${currentPrice?.toFixed(2) || 'N/A'}`}
-                >
-                    ${currentPrice?.toFixed(2) || 'N/A'}
-                </div>
+                <div className="text-xl font-bold text-green-600">${currentPrice?.toFixed(2) || 'N/A'}</div>
             </div>
         </div>
     )

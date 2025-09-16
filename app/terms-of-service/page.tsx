@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 export default function TermsOfServicePage() {
   return (
     <>
-      <main className="policy-content safe-area-bottom">
-        <h1 className="auto-contrast mb-4 font-bold">
+      <main className="policy-content mx-auto max-w-4xl p-4">
+        <h1 className="auto-contrast mb-4 text-3xl font-bold">
           Route 66 Hemp Terms of Service
         </h1>
         <p className="mb-4">
@@ -17,7 +17,7 @@ export default function TermsOfServicePage() {
           CAREFULLY. BY ACCESSING OR USING OUR WEBSITE, YOU AGREE TO BE
           BOUND BY THESE TERMS.
         </p>
-        <h2 className="mb-2 mt-6 font-semibold">Privacy</h2>
+        <h2 className="mb-2 mt-6 text-2xl font-semibold">Privacy</h2>
         <p className="mb-4">
           Our{' '}
           <a href="/privacy-policy" className="text-blue-600 underline">
@@ -26,7 +26,7 @@ export default function TermsOfServicePage() {
           describes how we collect, use, and share your information. By
           using this site, you consent to our Privacy Policy.
         </p>
-        <h2 className="mb-2 mt-6 font-semibold">Restrictions</h2>
+        <h2 className="mb-2 mt-6 text-2xl font-semibold">Restrictions</h2>
         <p className="mb-4">
           The information on this site is for your personal,
           non-commercial use. You may not reproduce, distribute, or
@@ -34,13 +34,13 @@ export default function TermsOfServicePage() {
           You agree not to use any automated means to access the site or
           interfere with its operation.
         </p>
-        <h2 className="mb-2 mt-6 font-semibold">Eligibility</h2>
+        <h2 className="mb-2 mt-6 text-2xl font-semibold">Eligibility</h2>
         <p className="mb-4">
           This site is intended only for users who are twenty-one (21)
           years of age or older. By using the site, you represent that you
           meet this requirement.
         </p>
-        <h2 className="mb-2 mt-6 font-semibold">
+        <h2 className="mb-2 mt-6 text-2xl font-semibold">
           Disclaimer of Warranty
         </h2>
         <p className="mb-4">
@@ -49,7 +49,7 @@ export default function TermsOfServicePage() {
           WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY AND
           FITNESS FOR A PARTICULAR PURPOSE.
         </p>
-        <h2 className="mb-2 mt-6 font-semibold">
+        <h2 className="mb-2 mt-6 text-2xl font-semibold">
           Limitation of Liability
         </h2>
         <p className="mb-4">
@@ -57,13 +57,13 @@ export default function TermsOfServicePage() {
           LIABLE FOR ANY DAMAGES ARISING OUT OF OR RELATED TO YOUR USE OF
           THIS SITE.
         </p>
-        <h2 className="mb-2 mt-6 font-semibold">Indemnification</h2>
+        <h2 className="mb-2 mt-6 text-2xl font-semibold">Indemnification</h2>
         <p className="mb-4">
           You agree to indemnify and hold Route 66 Hemp harmless from any
           claims arising out of your use of the site or violation of these
           Terms.
         </p>
-        <h2 className="mb-2 mt-6 font-semibold">
+        <h2 className="mb-2 mt-6 text-2xl font-semibold">
           Governing Law; Dispute Resolution
         </h2>
         <p className="mb-4">

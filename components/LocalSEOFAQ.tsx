@@ -54,12 +54,12 @@ function LocalSEOFAQ() {
 
     return (
         <section id="faq" className="bg-gray-50 py-12 dark:bg-gray-900">
-            <div className="wrapper max-w-4xl">
+            <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                 <div className="mb-10 text-center">
-                    <h2 className="font-semibold uppercase tracking-wide text-green-600 dark:text-green-400 fluid-subheading">
+                    <h2 className="text-2xl font-semibold uppercase tracking-wide text-green-600 dark:text-green-400">
                         Frequently Asked Questions
                     </h2>
-                    <p className="fluid-heading mt-2 font-extrabold leading-tight tracking-tight dark:text-white">
+                    <p className="mt-2 text-3xl font-extrabold leading-8 tracking-tight sm:text-4xl dark:text-white">
                         About Route 66 Hemp in St Robert
                     </p>
                 </div>
@@ -95,7 +95,7 @@ function LocalSEOFAQ() {
                                     role="region"
                                     aria-labelledby={`faq-question-${index}`}
                                 >
-                                    <p className="fluid-body text-gray-700 dark:text-gray-100">
+                                    <p className="text-gray-700 dark:text-white">
                                         {faq.answer}
                                     </p>
                                 </div>
@@ -110,7 +110,7 @@ function LocalSEOFAQ() {
                     </p>
                     <a
                         href="tel:+15736776418"
-                        className="inline-flex min-h-[44px] min-w-[44px] items-center rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-opacity-90"
+                        className="inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-opacity-90"
                     >
                         <i className="fas fa-phone mr-2" aria-hidden="true" />
                         Call (573) 677-6418

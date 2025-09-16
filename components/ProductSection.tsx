@@ -14,23 +14,12 @@ export default function ProductSection({ title, products, categoryId, isFirstSec
     if (!products || products.length === 0) return null
 
     return (
-        <section id={categoryId} className="py-12" tabIndex={-1}>
-            <div className="wrapper">
-                <h2 
-                    className="fluid-heading mb-8 text-center font-bold text-gray-900 dark:text-white"
-                    id={`${categoryId}-heading`}
-                >
-                    {title}
-                </h2>
-                <div 
-                    className="responsive-grid gap-6 product-grid"
-                    role="grid"
-                    aria-labelledby={`${categoryId}-heading`}
-                >
+        <section id={categoryId} className="py-12">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 dark:text-white">{title}</h2>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {products.map((product, index) => (
-                        <div key={product.name} role="gridcell">
-                            <ProductCard product={product} priority={isFirstSection && index === 0} />
-                        </div>
+                        <ProductCard key={product.name} product={product} priority={isFirstSection && index === 0} />
                     ))}
                 </div>
             </div>

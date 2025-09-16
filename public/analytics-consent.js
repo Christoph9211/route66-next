@@ -12,6 +12,20 @@
   const CONSENT_COOKIE = 'cookieconsent_status'
   const COOKIE_MAX_AGE = 60 * 60 * 24 * 180 // 180 days
 
+  // Ensure dataLayer and Consent Mode defaults exist ASAP
+  window.dataLayer = window.dataLayer || []
+  window.gtag =
+    window.gtag ||
+    function gtag() {
+      window.dataLayer.push(arguments)
+    }
+  window.gtag('consent', 'default', {
+    ad_storage: 'denied',
+    analytics_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+  })
+
   function readCookie(name) {
     if (typeof document === 'undefined') return undefined
     const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'))
@@ -49,16 +63,6 @@
     }
   }
 
-  function setConsentDefaults() {
-    if (typeof window.gtag !== 'function') return
-    window.gtag('consent', 'default', {
-      ad_storage: 'denied',
-      analytics_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied',
-    })
-  }
-
   function updateConsentMode(status) {
     if (typeof window.gtag !== 'function') return
     const mode = status === 'accepted' ? 'granted' : 'denied'
@@ -75,7 +79,6 @@
     window.__analyticsLoaded = true
 
     ensureDataLayer()
-    setConsentDefaults()
 
     const script = document.createElement('script')
     script.async = true

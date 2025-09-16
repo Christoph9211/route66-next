@@ -83,8 +83,8 @@ function FooterNavigation() {
     ]
 
     return (
-        <footer className="auto-contrast border-t border-gray-800 bg-gray-900 text-white safe-area-bottom">
-            <div className="wrapper safe-area-inline py-12">
+        <footer className="auto-contrast bg-gray-900 text-white border-t border-gray-800">
+            <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 {/* Main Footer Content */}
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-6">
                     {/* Business Info */}
@@ -98,7 +98,7 @@ function FooterNavigation() {
                                     />
                                 </div>
                                 <div>
-                                    <h3 className="fluid-subheading font-bold">
+                                    <h3 className="text-xl font-bold">
                                         Route 66 Hemp
                                     </h3>
                                     <p className="text-sm text-gray-300">
@@ -106,7 +106,7 @@ function FooterNavigation() {
                                     </p>
                                 </div>
                             </div>
-                            <p className="mb-6 fluid-body text-gray-300">
+                            <p className="mb-6 text-gray-300">
                                 Your trusted local hemp store in St Robert,
                                 Missouri. Serving Pulaski County and the Fort
                                 Leonard Wood community with quality hemp
@@ -120,7 +120,7 @@ function FooterNavigation() {
 
                         {/* Social Links */}
                         <div>
-                            <h4 className="mb-3 font-semibold fluid-subheading">
+                            <h4 className="mb-3 text-lg font-semibold">
                                 Follow Us
                             </h4>
                             <div className="flex space-x-4">
@@ -146,7 +146,7 @@ function FooterNavigation() {
                     {/* Footer Links */}
                     {footerSections.map((section) => (
                         <div key={section.title}>
-                            <h4 className="mb-4 font-semibold fluid-subheading">
+                            <h4 className="mb-4 text-lg font-semibold">
                                 {section.title}
                             </h4>
                             <ul className="space-y-2">
