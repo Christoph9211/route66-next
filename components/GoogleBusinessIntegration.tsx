@@ -43,13 +43,13 @@ function GoogleBusinessIntegration() {
     ]
 
     return (
-        <section id="location" className="bg-white py-12 dark:bg-gray-800">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section id="reviews" className="bg-white py-12 dark:bg-gray-800">
+            <div className="wrapper">
                 <div className="mb-10 lg:text-center">
                     <h2 className="text-2xl font-semibold uppercase tracking-wide text-green-600 dark:text-green-400">
                         Customer Reviews
                     </h2>
-                    <p className="mt-2 text-3xl font-extrabold leading-8 tracking-tight sm:text-4xl dark:text-white">
+                    <p className="fluid-heading mt-2 font-extrabold leading-tight tracking-tight dark:text-white">
                         What Our St Robert Customers Say
                     </p>
                 </div>
@@ -111,10 +111,10 @@ function GoogleBusinessIntegration() {
 
                 {/* Google Business Profile CTA */}
                 <div className="rounded-lg bg-gradient-to-br from-blue-800 to-blue-900 p-8 text-center">
-                    <h3 className="mb-4 text-2xl font-bold text-white dark:text-white">
+                    <h3 className="mb-4 font-semibold fluid-heading text-white dark:text-white">
                         Find Us on Google Maps
                     </h3>
-                    <p className="mb-6 text-white dark:text-white">
+                    <p className="fluid-body mb-6 text-white dark:text-white">
                         Get directions, see our hours, read reviews, and stay
                         updated with our latest posts.
                     </p>
@@ -123,7 +123,7 @@ function GoogleBusinessIntegration() {
                             href="https://www.google.com/maps/search/Route+66+Hemp+St+Robert+MO"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center rounded-lg bg-white px-6 py-3 font-medium text-blue-600 transition-colors hover:bg-gray-100"
+                            className="inline-flex min-h-[44px] min-w-[44px] items-center rounded-lg bg-white px-6 py-3 font-medium text-blue-600 transition-colors hover:bg-gray-100"
                             aria-label="View on Google Maps"
                         >
                             <i
@@ -136,7 +136,7 @@ function GoogleBusinessIntegration() {
                             href="https://g.page/r/CVdnXoVBYQSVEAI/review"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center rounded-lg border-2 border-white bg-transparent px-6 py-3 font-medium text-white transition-colors hover:bg-white hover:text-blue-600"
+                            className="inline-flex min-h-[44px] min-w-[44px] items-center rounded-lg border-2 border-white bg-transparent px-6 py-3 font-medium text-white transition-colors hover:bg-white hover:text-blue-600"
                             aria-label="Leave a review for Route 66 Hemp"
                         >
                             <i

@@ -178,7 +178,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
                         : 'bg-transparent'
                 }`}
             >
-                <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <nav className="wrapper safe-area-inline">
                     <div className="flex h-16 items-center justify-between">
                         {/* Logo/Brand */}
                         <div className="flex items-center">
@@ -234,7 +234,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
                                                     ? activeDropdown === item.id ? 'true' : 'false'
                                                     : undefined
                                             }
-                                            className={`flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                                            className={`flex min-h-[44px] min-w-[44px] items-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ${
                                                 activeSection === item.id
                                                     ? 'bg-green-700 text-white'
                                                     : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'
@@ -319,7 +319,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
                             <div className="hidden items-center space-x-4 text-sm lg:flex">
                                 <a
                                     href="tel:+15736776418"
-                                    className="flex items-center text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
+                                    className="flex min-h-[44px] min-w-[44px] items-center text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
                                 >
                                     <i
                                         className="fas fa-phone mr-1"
@@ -334,7 +334,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
                                 onClick={toggleMenu}
                                 aria-expanded={isMenuOpen}
                                 aria-controls="mobile-menu"
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-green-100 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500 md:hidden dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300"
+                                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md p-2 text-gray-700 hover:bg-green-100 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500 md:hidden dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300"
                             >
                                 <span className="sr-only">{isMenuOpen ? 'Close main menu' : 'Open main menu'}</span>
                                 <i
@@ -373,7 +373,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
                                                 ? 'page'
                                                 : undefined
                                         }
-                                        className={`flex items-center rounded-md px-3 py-2 text-base font-medium transition-colors ${
+                                        className={`flex min-h-[44px] min-w-[44px] items-center rounded-md px-3 py-2 text-base font-medium transition-colors ${
                                             activeSection === item.id
                                                 ? 'bg-green-700 text-white'
                                                   : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'

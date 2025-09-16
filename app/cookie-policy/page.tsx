@@ -118,7 +118,7 @@ export default function CookiePolicyPage() {
   return (
     <>
       <main
-        className="policy-content mx-auto max-w-4xl p-4"
+        className="policy-content safe-area-bottom"
         dangerouslySetInnerHTML={{ __html: content }}
       />
     </>

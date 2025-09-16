@@ -80,7 +80,7 @@ function QuickNavigation() {
     }
 
     return (
-        <div className={`fixed bottom-6 right-6 z-40 transition-all duration-300 ${
+        <div className={`quick-nav fixed z-40 transition-all duration-300 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}>
             {/* Quick Action Buttons */}
@@ -99,7 +99,7 @@ function QuickNavigation() {
                     <button
                         key={link.id}
                         onClick={() => handleQuickNavClick(link.id)}
-                        className={`flex h-10 w-10 items-center justify-center rounded-full shadow-lg transition-all duration-200 ${
+                        className={`flex h-11 w-11 items-center justify-center rounded-full shadow-lg transition-all duration-200 ${
                             activeSection === link.id
                                 ? 'bg-blue-600 text-white scale-110'
                                 : 'bg-white text-gray-700 hover:bg-gray-50 hover:scale-105 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'

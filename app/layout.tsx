@@ -39,6 +39,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  viewportFit: 'cover',
   themeColor: 'black', // optional
 };
 
@@ -54,7 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </head>
             <body className="bg-gray-50 font-sans antialiased dark:bg-gray-900 transition-colors duration-300">
                 <AgeGate />
-                <div data-site-content>
+                <div data-site-content className="site-content">
                     {children}
                     <AnalyticsConsentGate />
                 </div>
