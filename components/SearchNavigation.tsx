@@ -167,8 +167,10 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
             {/* Search Toggle Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center px-3 py-2 text-sm text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
+                className="focus-enhanced flex items-center px-3 py-2 text-sm text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
                 aria-label="Search products"
+                aria-expanded={isOpen}
+                aria-controls="search-overlay"
             >
                 <i className="fas fa-search mr-2" aria-hidden="true" />
                 <span className="hidden sm:inline">Search</span>
@@ -176,10 +178,19 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
 
             {/* Search Overlay */}
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-start justify-center pt-20">
+                <div 
+                    className="fixed inset-0 z-50 flex items-start justify-center pt-20"
+                    id="search-overlay"
+                    data-search-overlay
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="search-title"
+                >
+                    <div className="absolute inset-0 bg-black/50" onClick={() => setIsOpen(false)} />
                     <div className="mx-4 w-full max-w-2xl rounded-lg bg-white shadow-xl dark:bg-gray-800">
                         {/* Search Input */}
                         <div className="border-b border-gray-200 p-4 dark:border-gray-700">
+                            <h2 id="search-title" className="sr-only">Product Search</h2>
                             <div className="relative">
                                 <i
                                     className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-400"
@@ -192,11 +203,16 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
                                     onChange={(e) => setQuery(e.target.value)}
                                     className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                                     autoFocus
+                                    aria-describedby="search-instructions"
                                 />
+                                <div id="search-instructions" className="sr-only">
+                                    Type to search products, categories, or sizes. Use arrow keys to navigate results.
+                                </div>
                                 <button
                                     onClick={() => setIsOpen(false)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
+                                    className="focus-enhanced absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
                                     aria-label="Close search"
+                                    data-close-search
                                 >
                                     <i
                                         className="fas fa-times"
@@ -210,6 +226,8 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
                         <div
                             ref={resultsRef}
                             className="max-h-96 overflow-y-auto"
+                            role="listbox"
+                            aria-label="Search results"
                         >
                             {query.length >= 2 && results.length === 0 && (
                                 <div className="p-4 text-center text-gray-500 dark:text-gray-400">
@@ -230,6 +248,9 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
                                             ? 'bg-green-50 dark:bg-green-900'
                                             : ''
                                     }`}
+                                    role="option"
+                                    aria-selected={index === selectedIndex}
+                                    tabIndex={index === selectedIndex ? 0 : -1}
                                 >
                                     <div className="flex items-center justify-between">
                                         <div>
@@ -303,7 +324,8 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
                                         <button
                                             key={term}
                                             onClick={() => setQuery(term)}
-                                            className="rounded bg-gray-100 px-2 py-1 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                                            className="focus-enhanced rounded bg-gray-100 px-2 py-1 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                                            tabIndex={0}
                                         >
                                             {term}
                                         </button>

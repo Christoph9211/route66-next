@@ -4,6 +4,8 @@ import type { Viewport } from 'next'
 import CanonicalUrl from '@/components/CanonicalUrl'
 import AgeGate from '@/components/AgeGate'
 import AnalyticsConsentGate from '@/components/AnalyticsConsentGate'
+import SkipLinks from '@/components/SkipLinks'
+import { ScreenReaderAnnouncer } from '@/components/AccessibilityAnnouncer'
 import Script from 'next/script'
 import './styles/fa/fontawesome.min.css'
 import './styles/fa/brands.min.css'
@@ -55,6 +57,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </head>
             <body className="bg-gray-50 font-sans antialiased dark:bg-gray-900 transition-colors duration-300">
                 <AgeGate />
+                <SkipLinks />
+                <ScreenReaderAnnouncer />
                 <div data-site-content className="site-content">
                     {children}
                     <AnalyticsConsentGate />

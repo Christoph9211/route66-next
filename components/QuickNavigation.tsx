@@ -88,8 +88,9 @@ function QuickNavigation() {
                 {/* Call Button - Always Visible */}
                 <a
                     href="tel:+15736776418"
-                    className=" auto-contrast flex h-12 w-12 items-center justify-center rounded-full bg-green-600 text-white shadow-lg hover:bg-green-700 transition-colors group"
+                    className="focus-enhanced auto-contrast flex h-12 w-12 items-center justify-center rounded-full bg-green-600 text-white shadow-lg hover:bg-green-700 transition-colors group"
                     aria-label="Call Route 66 Hemp"
+                    tabIndex={isVisible ? 0 : -1}
                 >
                     <i className="fas fa-phone group-hover:animate-pulse" aria-hidden="true" />
                 </a>
@@ -99,14 +100,14 @@ function QuickNavigation() {
                     <button
                         key={link.id}
                         onClick={() => handleQuickNavClick(link.id)}
-                        className={`flex h-11 w-11 items-center justify-center rounded-full shadow-lg transition-all duration-200 ${
+                        className={`focus-enhanced flex h-11 w-11 items-center justify-center rounded-full shadow-lg transition-all duration-200 ${
                             activeSection === link.id
                                 ? 'bg-blue-600 text-white scale-110'
                                 : 'bg-white text-gray-700 hover:bg-gray-50 hover:scale-105 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
                         }`}
                         aria-label={`Go to ${link.label}`}
                         title={link.label}
-                        tabIndex={0}
+                        tabIndex={isVisible ? 0 : -1}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                                 e.preventDefault()

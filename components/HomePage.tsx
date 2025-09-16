@@ -49,7 +49,7 @@ export default function HomePage({ products }: { products: Product[] }) {
     return (
         <>
             <Navigation products={products} />
-            <main className="safe-area-bottom">
+            <main id="main-content" className="safe-area-bottom" tabIndex={-1}>
                 <HeroSection />
                 <section id="products" className="py-16">
                     <div className="wrapper">

@@ -1,6 +1,20 @@
 'use client';
 import React, { useEffect, useRef } from 'react'
 
+/**
+ * Screen reader announcer for dynamic content changes
+ */
+export function ScreenReaderAnnouncer() {
+    return (
+        <div
+            id="sr-announcer"
+            aria-live="polite"
+            aria-atomic="true"
+            className="sr-only"
+            role="status"
+        />
+    )
+}
 
 /**
  * AccessibilityAnnouncer is a React component that creates a live region for 
