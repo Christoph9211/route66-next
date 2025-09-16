@@ -1,3 +1,10 @@
+# Robots.txt configuration for Route 66 Hemp website
+
+# Allow all bots to access the website
 User-agent: *
+
+# Disallow none of the pages
 Disallow:
+
+# Provide a link to the sitemap
 Sitemap: https://www.route66hemp.com/sitemap.xml/

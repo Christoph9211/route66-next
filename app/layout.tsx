@@ -1,13 +1,15 @@
 import './globals.css'
 import { Metadata } from 'next'
-
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Viewport } from 'next'
 import CanonicalUrl from '@/components/CanonicalUrl'
 import AgeGate from '@/components/AgeGate'
-import CookieBanner from '@/components/CookieBanner'
+import AnalyticsConsentGate from '@/components/AnalyticsConsentGate'
 import Script from 'next/script'
+import './styles/fa/fontawesome.min.css'
+import './styles/fa/brands.min.css'
+import './styles/fa/regular.min.css'
+import './styles/fa/solid.min.css'
+import './styles/fa/icons.min.css'
 
 export const metadata: Metadata = {
     title: 'Route 66 Hemp - Premium Hemp Products | St Robert, MO',
@@ -44,20 +46,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" suppressHydrationWarning>
             <head>
-                <link
-                    rel="stylesheet"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-                    crossOrigin="anonymous"
-                    referrerPolicy="no-referrer"
-                />
+                {/* Self-hosted Font Awesome for better performance */}
+                <link rel="preload" as="font" href="/webfonts/fa-solid-900.woff2" type="font/woff2" crossOrigin="anonymous" />
+                <link rel="preload" as="font" href="/webfonts/fa-regular-400.woff2" type="font/woff2" crossOrigin="anonymous" />
+                <link rel="preload" as="font" href="/webfonts/fa-brands-400.woff2" type="font/woff2" crossOrigin="anonymous" />
                 <CanonicalUrl />
             </head>
             <body className="bg-gray-50 font-sans antialiased dark:bg-gray-900 transition-colors duration-300">
                 <AgeGate />
-                <CookieBanner />
-                {children}
-                <Analytics />
-                <SpeedInsights />
+                <div data-site-content>
+                    {children}
+                    <AnalyticsConsentGate />
+                </div>
                 {/* Load age/consent → analytics wiring */}
                 <Script src="/analytics-consent.js" strategy="afterInteractive" />
             </body>
