@@ -1,11 +1,9 @@
 import './globals.css'
 import { Metadata } from 'next'
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Viewport } from 'next'
 import CanonicalUrl from '@/components/CanonicalUrl'
 import AgeGate from '@/components/AgeGate'
-import CookieBanner from '@/components/CookieBanner'
+import AnalyticsConsentGate from '@/components/AnalyticsConsentGate'
 import Script from 'next/script'
 import './styles/fa/fontawesome.min.css'
 import './styles/fa/brands.min.css'
@@ -56,10 +54,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </head>
             <body className="bg-gray-50 font-sans antialiased dark:bg-gray-900 transition-colors duration-300">
                 <AgeGate />
-                <CookieBanner />
-                {children}
-                <Analytics />
-                <SpeedInsights />
+                <div data-site-content>
+                    {children}
+                    <AnalyticsConsentGate />
+                </div>
                 {/* Load age/consent → analytics wiring */}
                 <Script src="/analytics-consent.js" strategy="afterInteractive" />
             </body>

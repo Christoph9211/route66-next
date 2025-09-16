@@ -1,9 +1,9 @@
-const nextJest = require('next/jest');
+import nextJest from 'next/jest.js'
 
 // Create a Jest config that leverages Next.js' SWC/babel settings
 const createJestConfig = nextJest({
   dir: './',
-});
+})
 
 /** @type {import('jest').Config} */
 const customJestConfig = {
@@ -17,7 +17,9 @@ const customJestConfig = {
     // Handle module aliases if using `baseUrl` or `paths` in tsconfig
     '^@/(.*)$': '<rootDir>/$1',
   },
-};
+}
 
-module.exports = createJestConfig(customJestConfig);
+const config = createJestConfig(customJestConfig)
+
+export default config
 

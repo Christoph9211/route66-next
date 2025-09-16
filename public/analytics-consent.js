@@ -1,71 +1,140 @@
 /**
  * analytics-consent.js
- * Wires Age→Consent→Analytics.
+ * Couples age verification & consent cookies with Google Consent Mode v2.
  * Exposes:
- *   - window.confirmAge21()
- *   - window.tryInitAnalytics()
- * Depends on:
- *   - localStorage.isAdult = "true"      (set by confirmAge21)
- *   - localStorage.cookieConsent = "accepted" | "declined" (set by banner)
+ *  - window.confirmAge21()
+ *  - window.tryInitAnalytics()
  */
 
 (function () {
-  // --- 1) Load GA ONLY after both flags are satisfied ---
-  function loadAnalytics() {
-    if (window.__analyticsLoaded) return;
-    window.__analyticsLoaded = true;
+  const GA_ID = 'G-RGSJT8T1EF'
+  const AGE_COOKIE = 'route66_age_verified'
+  const CONSENT_COOKIE = 'cookieconsent_status'
+  const COOKIE_MAX_AGE = 60 * 60 * 24 * 180 // 180 days
 
-    // GA4 (using existing site ID)
-    const GA_ID = "G-RGSJT8T1EF"; // update if needed
-
-    const s = document.createElement("script");
-    s.async = true;
-    s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(GA_ID);
-    document.head.appendChild(s);
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    window.gtag = gtag;
-
-    gtag('js', new Date());
-    gtag('config', GA_ID);
+  function readCookie(name) {
+    if (typeof document === 'undefined') return undefined
+    const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'))
+    return match ? decodeURIComponent(match[1]) : undefined
   }
 
-  // --- 2) Public: tryInitAnalytics (check both conditions) ---
-  function tryInitAnalytics() {
-    const isAdult   = localStorage.getItem("isAdult") === "true";
-    const consentOk = localStorage.getItem("cookieConsent") === "accepted";
-    if (isAdult && consentOk) loadAnalytics();
-  }
-
-  // --- 3) Public: confirmAge21 (called by your age gate) ---
-  function confirmAge21() {
-    localStorage.setItem("isAdult", "true");
+  function writeCookie(name, value) {
+    if (typeof document === 'undefined') return
+    let cookie = name + '=' + encodeURIComponent(value) + '; Path=/; SameSite=Lax'
+    cookie += '; Max-Age=' + COOKIE_MAX_AGE
     try {
-      // Notify app components that age was confirmed
-      const evt = new CustomEvent('age:confirmed');
-      window.dispatchEvent(evt);
+      if (window.location.protocol === 'https:') {
+        cookie += '; Secure'
+      }
     } catch {
-      // no-op
+      // ignore situations where window.location is unavailable
     }
-
-    // Show cookie banner if no prior choice
-    const hasChoice = !!localStorage.getItem("cookieConsent");
-    const banner = document.getElementById("cookie-banner");
-    if (!hasChoice && banner) banner.style.display = "flex"; // unhide (override CSS display:none)
-
-    // In case consent was already accepted earlier
-    tryInitAnalytics();
+    document.cookie = cookie
   }
 
-  // Expose globally
-  window.tryInitAnalytics = tryInitAnalytics;
-  window.confirmAge21 = confirmAge21;
+  function hasConfirmedAge() {
+    return readCookie(AGE_COOKIE) === 'true'
+  }
 
-  // If user already confirmed age AND consented before, load immediately on page load
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", tryInitAnalytics);
+  function hasConsent() {
+    return readCookie(CONSENT_COOKIE) === 'accepted'
+  }
+
+  function ensureDataLayer() {
+    window.dataLayer = window.dataLayer || []
+    if (typeof window.gtag !== 'function') {
+      window.gtag = function gtag() {
+        window.dataLayer.push(arguments)
+      }
+    }
+  }
+
+  function setConsentDefaults() {
+    if (typeof window.gtag !== 'function') return
+    window.gtag('consent', 'default', {
+      ad_storage: 'denied',
+      analytics_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    })
+  }
+
+  function updateConsentMode(status) {
+    if (typeof window.gtag !== 'function') return
+    const mode = status === 'accepted' ? 'granted' : 'denied'
+    window.gtag('consent', 'update', {
+      ad_storage: mode,
+      analytics_storage: mode,
+      ad_user_data: mode,
+      ad_personalization: mode,
+    })
+  }
+
+  function loadAnalytics() {
+    if (window.__analyticsLoaded) return
+    window.__analyticsLoaded = true
+
+    ensureDataLayer()
+    setConsentDefaults()
+
+    const script = document.createElement('script')
+    script.async = true
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID)
+    document.head.appendChild(script)
+
+    window.gtag('js', new Date())
+    window.gtag('config', GA_ID, { anonymize_ip: true })
+  }
+
+  function tryInitAnalytics() {
+    if (!hasConfirmedAge() || !hasConsent()) return
+    loadAnalytics()
+    updateConsentMode('accepted')
+  }
+
+  function storeConsent(status) {
+    writeCookie(CONSENT_COOKIE, status)
+    try {
+      localStorage.setItem('cookieConsent', status === 'accepted' ? 'accepted' : 'declined')
+    } catch {
+      // ignore storage failures
+    }
+    if (status === 'accepted') {
+      tryInitAnalytics()
+    } else {
+      updateConsentMode('rejected')
+    }
+  }
+
+  function confirmAge21() {
+    writeCookie(AGE_COOKIE, 'true')
+    try {
+      localStorage.setItem('isAdult', 'true')
+    } catch {
+      // ignore storage failures
+    }
+    try {
+      const evt = new CustomEvent('age:confirmed')
+      window.dispatchEvent(evt)
+    } catch {
+      // ignore event errors
+    }
+    tryInitAnalytics()
+  }
+
+  window.tryInitAnalytics = tryInitAnalytics
+  window.confirmAge21 = confirmAge21
+
+  window.addEventListener('consent:updated', function (event) {
+    const detail = event && event.detail
+    if (detail === 'accepted' || detail === 'rejected') {
+      storeConsent(detail)
+    }
+  })
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tryInitAnalytics)
   } else {
-    tryInitAnalytics();
+    tryInitAnalytics()
   }
-})();
+})()

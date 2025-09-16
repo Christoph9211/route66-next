@@ -1,11 +1,9 @@
-const test = require('node:test');
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
+import test from 'node:test'
+import assert from 'node:assert/strict'
+import fs from 'node:fs'
+import path from 'node:path'
 
-function exists(p) {
-  return fs.existsSync(path.resolve(p));
-}
+const exists = (p) => fs.existsSync(path.resolve(p))
 
 test('essential public assets exist', () => {
   const assets = [
@@ -18,8 +16,7 @@ test('essential public assets exist', () => {
     'public/site.webmanifest',
     'public/robots.txt',
     'public/sitemap.xml',
-  ];
-  const missing = assets.filter((a) => !exists(a));
-  assert.equal(missing.length, 0, `Missing assets: ${missing.join(', ')}`);
-});
-
+  ]
+  const missing = assets.filter((asset) => !exists(asset))
+  assert.equal(missing.length, 0, 'Missing assets: ' + missing.join(', '))
+})
