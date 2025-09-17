@@ -1,4 +1,21 @@
+import { createHash } from 'crypto'
 import type { NextConfig } from 'next'
+
+import { structuredDataDocuments } from './data/structuredData'
+
+const structuredDataScriptHashes = structuredDataDocuments.map((document) =>
+  createHash('sha256').update(JSON.stringify(document), 'utf8').digest('base64')
+)
+
+const scriptSrcDirective = [
+  "'self'",
+  'https://www.googletagmanager.com',
+  'https://www.google-analytics.com',
+  'https://analytics.google.com',
+  'https://va.vercel-scripts.com',
+  'https://vitals.vercel-insights.com',
+  ...structuredDataScriptHashes.map((hash) => `'sha256-${hash}'`),
+].join(' ')
 
 const securityHeaders = [
   {
@@ -6,8 +23,8 @@ const securityHeaders = [
     // CSP directives are concatenated into one string
     value: [
       "default-src 'self'",
-      // Allow only our own scripts and specific analytics providers; keep 'unsafe-inline' until nonces/hashes can be added
-      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://va.vercel-scripts.com https://vitals.vercel-insights.com",
+      // Allow our own scripts, trusted analytics providers, and the specific structured data inline scripts (via hashes)
+      `script-src ${scriptSrcDirective}`,
       // Allow connections to GA, GTM and Vercel for analytics and vitals
       "connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://va.vercel-scripts.com https://vitals.vercel-insights.com",
       // Permit images from the same origin, data URIs and blobs (Next/Image uses blobs)
