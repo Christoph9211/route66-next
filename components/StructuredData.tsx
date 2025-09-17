@@ -4,10 +4,10 @@ import { headers } from 'next/headers'
 /**
  * StructuredData component for Local Business SEO.
  * Renders structured data for business information, breadcrumbs, and organization.
- * @returns {JSX.Element} The StructuredData component.
+ * @returns {Promise<JSX.Element>} The StructuredData component.
  */
-function StructuredData() {
-    const nonce = headers().get('x-csp-nonce') ?? undefined
+async function StructuredData() {
+    const nonce = (await headers()).get('x-csp-nonce') ?? undefined
 
     const businessData = {
         '@context': 'https://schema.org',
