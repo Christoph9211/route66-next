@@ -86,9 +86,9 @@ function FooterNavigation() {
         <footer className="auto-contrast bg-gray-900 text-white border-t border-gray-800">
             <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 {/* Main Footer Content */}
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-6">
+                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
                     {/* Business Info */}
-                    <div className="lg:col-span-2">
+                    <div className="sm:col-span-2 md:col-span-3 lg:col-span-2">
                         <div className="mb-6">
                             <div className="mb-4 flex items-center space-x-3">
                                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-600">
