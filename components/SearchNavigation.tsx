@@ -1,5 +1,6 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
+import AccessibilityAnnouncer from './AccessibilityAnnouncer'
 import { slugify } from '../utils/slugify'
 
 interface Product {
@@ -12,305 +13,445 @@ interface Product {
     availability?: Record<string, boolean>
 }
 
-/**
- * SearchNavigation is a React component that provides a search functionality for products, categories, and sizes.
- * It displays a search bar and allows users to search for products based on their names, categories, or sizes.
- * Results are displayed in a dropdown below the search bar, and users can click on a result to navigate to the product or category section on the page.
- * The component uses React hooks to manage state and handle user interactions.
- *
- * @param {Array} products - An array of product objects to search through.
- * @return {JSX.Element} A React component that displays a search bar and search results dropdown.
- */
 function SearchNavigation({ products = [] }: { products: Product[] }) {
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState('')
     const [results, setResults] = useState<Product[]>([])
     const [selectedIndex, setSelectedIndex] = useState(-1)
-    const searchRef = useRef<HTMLDivElement>(null);
-    const resultsRef = useRef<HTMLDivElement | null>(null);
+    const [announceMessage, setAnnounceMessage] = useState('')
+    const searchInputRef = useRef<HTMLInputElement | null>(null)
+    const dialogRef = useRef<HTMLDivElement | null>(null)
+    const optionRefs = useRef<(HTMLLIElement | null)[]>([])
+    const previousFocusRef = useRef<HTMLElement | null>(null)
+    const listboxId = 'search-navigation-results'
 
-    // Filter products based on search query
-    useEffect(() => {
-        if (query.length < 2) {
-            setResults([])
-            return
-        }
+    const hasOpenedRef = useRef(false)
 
-        const filtered = products
-            .filter(
-                (product) =>
-                    product.name.toLowerCase().includes(query.toLowerCase()) ||
-                    product.category
-                        .toLowerCase()
-                        .includes(query.toLowerCase()) ||
-                    product.size_options.some((size: string) =>
-                        size.toLowerCase().includes(query.toLowerCase())
-                    )
-            )
-            .slice(0, 8) // Limit to 8 results
-
-        setResults(filtered)
-        setSelectedIndex(-1)
-    }, [query, products])
-
-    // Handle keyboard navigation
-    useEffect(() => {
-    /**
-     * Handles keydown events for search navigation.
-     *
-     * @param {KeyboardEvent} e - The keyboard event.
-     * @return {void}
-     */
-        const handleKeyDown = (e: KeyboardEvent): void => {
-            if (!isOpen) return
-
-            switch (e.key) {
-                case 'ArrowDown':
-                    e.preventDefault()
-                    setSelectedIndex((prev) =>
-                        prev < results.length - 1 ? prev + 1 : prev
-                    )
-                    break
-                case 'ArrowUp':
-                    e.preventDefault()
-                    setSelectedIndex((prev) => (prev > 0 ? prev - 1 : -1))
-                    break
-                case 'Enter':
-                    e.preventDefault()
-                    if (selectedIndex >= 0 && results[selectedIndex]) {
-                        handleResultClick(results[selectedIndex])
-                    }
-                    break
-                case 'Escape':
-                    setIsOpen(false)
-                    setQuery('')
-                    break
-                default:
-                    break
-            }
-        }
-
-        window.addEventListener('keydown', handleKeyDown)
-        return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [isOpen, results, selectedIndex])
-
-    // Close search when clicking outside
-    useEffect(() => {
-        /**
-         * Handles the click event outside the search box.
-         * If the click event target is not within the search box,
-         * it closes the search box.
-         *
-         * @param {MouseEvent} event - the click event
-         */
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                searchRef.current &&
-                !searchRef.current.contains(event.target as Node)
-            ) {
-                setIsOpen(false)
-            }
-        }
-
-        document.addEventListener('mousedown', handleClickOutside)
-        return () =>
-            document.removeEventListener('mousedown', handleClickOutside)
+    const openSearch = useCallback(() => {
+        previousFocusRef.current = document.activeElement as HTMLElement
+        setIsOpen(true)
     }, [])
 
-    /**
-     * Handles the click event on a search result.
-     * 
-     * @param {Object} product - The product object representing the search result.
-     * @return {void} This function does not return anything.
-     * 
-     * Navigates to the product or category section on the page 
-     * and closes the search bar.
-     */
-    const handleResultClick = (product: Product) => {
-        // Navigate to product or category
-        const categoryElement = document.getElementById(
-            slugify(product.category)
-        )
+    const closeSearch = useCallback((restoreFocus: boolean = true) => {
+        setIsOpen(false)
+        setQuery('')
+        setResults([])
+        setSelectedIndex(-1)
+        if (restoreFocus && previousFocusRef.current) {
+            previousFocusRef.current.focus()
+        }
+    }, [])
+
+    const handleResultClick = useCallback((product: Product) => {
+        const categoryElement = document.getElementById(slugify(product.category))
         if (categoryElement) {
             categoryElement.scrollIntoView({ behavior: 'smooth' })
         }
-        setIsOpen(false)
-        setQuery('')
-    }
+        closeSearch()
+    }, [closeSearch])
 
-    /**
-     * Highlights the occurrences of a query in a given text.
-     *
-     * @param {string} text - The text to search for occurrences of the query.
-     * @param {string} query - The query to search for in the text.
-     * @return {JSX.Element[]} An array of JSX elements, where the occurrences of the query are wrapped in a mark element.
-     */
-    const highlightMatch = (text: string, query: string): React.ReactNode[] => {
-        if (!query) return [text]
+    const highlightMatch = (text: string, searchTerm: string): React.ReactNode[] => {
+        if (!searchTerm) {
+            return [text]
+        }
 
-        const regex = new RegExp(`(${query})`, 'gi')
-        const parts = text.split(regex)
+        const loweredText = text.toLowerCase()
+        const loweredTerm = searchTerm.toLowerCase()
+        const segments: React.ReactNode[] = []
+        let startIndex = 0
+        let matchIndex = loweredText.indexOf(loweredTerm, startIndex)
 
-        return parts.map((part: string, index: number) =>
-            typeof part === 'string' && regex.test(part) ? (
-                <mark key={index} className="bg-yellow-200 dark:bg-yellow-800">
-                    {part}
+        while (matchIndex !== -1) {
+            if (matchIndex > startIndex) {
+                segments.push(text.slice(startIndex, matchIndex))
+            }
+
+            const matchEnd = matchIndex + loweredTerm.length
+            segments.push(
+                <mark key={segments.length} className="bg-yellow-200 dark:bg-yellow-800">
+                    {text.slice(matchIndex, matchEnd)}
                 </mark>
-            ) : (
-                part
             )
-        )
+            startIndex = matchEnd
+            matchIndex = loweredText.indexOf(loweredTerm, startIndex)
+        }
+
+        if (startIndex < text.length) {
+            segments.push(text.slice(startIndex))
+        }
+
+        return segments
     }
+
+    const focusOption = useCallback((index: number) => {
+        const option = optionRefs.current[index]
+        if (option) {
+            option.focus()
+        }
+    }, [])
+
+    useEffect(() => {
+        if (query.length < 2) {
+            setResults([])
+            setSelectedIndex(-1)
+            return
+        }
+
+        const loweredQuery = query.toLowerCase()
+        const filtered = products
+            .filter((product) => {
+                const matchesName = product.name.toLowerCase().includes(loweredQuery)
+                const matchesCategory = product.category.toLowerCase().includes(loweredQuery)
+                const matchesSize = product.size_options.some((size: string) =>
+                    size.toLowerCase().includes(loweredQuery)
+                )
+                return matchesName || matchesCategory || matchesSize
+            })
+            .slice(0, 8)
+
+        setResults(filtered)
+        setSelectedIndex(filtered.length ? 0 : -1)
+    }, [products, query])
+
+    useEffect(() => {
+        optionRefs.current = optionRefs.current.slice(0, results.length)
+    }, [results.length])
+
+    useEffect(() => {
+        if (!isOpen) {
+            if (hasOpenedRef.current) {
+                setAnnounceMessage('Search closed')
+            }
+            return
+        }
+
+        hasOpenedRef.current = true
+
+        if (!query) {
+            setAnnounceMessage('Search input cleared')
+            return
+        }
+
+        if (results.length === 0 && query.length >= 2) {
+            setAnnounceMessage('No matches for ' + query)
+        } else if (results.length > 0) {
+            const resultText = results.length === 1 ? '1 match' : results.length + ' matches'
+            setAnnounceMessage(resultText + ' for ' + query)
+        }
+    }, [isOpen, query, results])
+
+    useEffect(() => {
+        if (!isOpen) {
+            return
+        }
+
+        const focusTimer = window.setTimeout(() => {
+            searchInputRef.current?.focus()
+        }, 10)
+
+        return () => window.clearTimeout(focusTimer)
+    }, [isOpen])
+
+    useEffect(() => {
+        if (!isOpen) {
+            return
+        }
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (!isOpen) {
+                return
+            }
+
+            if (event.key === 'Escape') {
+                event.preventDefault()
+                closeSearch()
+                return
+            }
+
+            if (event.key === 'Tab') {
+                const dialog = dialogRef.current
+                if (!dialog) {
+                    return
+                }
+
+                const focusableSelectors = [
+                    'a[href]',
+                    'button:not([disabled])',
+                    'textarea:not([disabled])',
+                    'input:not([disabled])',
+                    'select:not([disabled])',
+                    '[tabindex]:not([tabindex="-1"])'
+                ]
+
+                const focusable = Array.from(
+                    dialog.querySelectorAll<HTMLElement>(focusableSelectors.join(','))
+                ).filter((element) => !element.hasAttribute('data-focus-exclude'))
+
+                if (!focusable.length) {
+                    return
+                }
+
+                const first = focusable[0]
+                const last = focusable[focusable.length - 1]
+                const activeElement = document.activeElement as HTMLElement
+
+                if (event.shiftKey) {
+                    if (activeElement === first || !dialog.contains(activeElement)) {
+                        event.preventDefault()
+                        last.focus()
+                    }
+                } else if (activeElement === last) {
+                    event.preventDefault()
+                    first.focus()
+                }
+
+                return
+            }
+
+            const activeElement = document.activeElement as HTMLElement
+            const inputFocused = activeElement === searchInputRef.current
+            const optionIndex = optionRefs.current.findIndex((ref) => ref === activeElement)
+
+            if (event.key === 'ArrowDown') {
+                event.preventDefault()
+                if (!results.length) {
+                    return
+                }
+
+                if (inputFocused) {
+                    setSelectedIndex(0)
+                    focusOption(0)
+                } else {
+                    setSelectedIndex((prev) => {
+                        const nextIndex = prev + 1 > results.length - 1 ? 0 : prev + 1
+                        focusOption(nextIndex)
+                        return nextIndex
+                    })
+                }
+
+                return
+            }
+
+            if (event.key === 'ArrowUp') {
+                event.preventDefault()
+                if (!results.length) {
+                    return
+                }
+
+                if (inputFocused || optionIndex === -1) {
+                    const lastIndex = results.length - 1
+                    setSelectedIndex(lastIndex)
+                    focusOption(lastIndex)
+                } else {
+                    setSelectedIndex((prev) => {
+                        const nextIndex = prev - 1 < 0 ? results.length - 1 : prev - 1
+                        focusOption(nextIndex)
+                        return nextIndex
+                    })
+                }
+
+                return
+            }
+
+            if ((event.key === 'Enter' || event.key === ' ') && optionIndex >= 0) {
+                event.preventDefault()
+                const product = results[optionIndex]
+                if (product) {
+                    handleResultClick(product)
+                }
+            }
+
+            if (event.key === 'Home' && results.length) {
+                event.preventDefault()
+                setSelectedIndex(0)
+                focusOption(0)
+                return
+            }
+
+            if (event.key === 'End' && results.length) {
+                event.preventDefault()
+                const lastIndex = results.length - 1
+                setSelectedIndex(lastIndex)
+                focusOption(lastIndex)
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown)
+        return () => document.removeEventListener('keydown', handleKeyDown)
+    }, [closeSearch, focusOption, handleResultClick, isOpen, results])
+
+    useEffect(() => {
+        if (!isOpen) {
+            return
+        }
+
+        const handlePointerDown = (event: PointerEvent) => {
+            const dialog = dialogRef.current
+            if (dialog && !dialog.contains(event.target as Node)) {
+                closeSearch()
+            }
+        }
+
+        document.addEventListener('pointerdown', handlePointerDown)
+        return () => document.removeEventListener('pointerdown', handlePointerDown)
+    }, [closeSearch, isOpen])
 
     return (
-        <div ref={searchRef} className="relative">
-            {/* Search Toggle Button */}
+        <div className="relative">
+            <AccessibilityAnnouncer message={announceMessage} />
             <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center px-3 py-2 text-sm text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
+                type="button"
+                onClick={() => (isOpen ? closeSearch() : openSearch())}
+                className="focus-enhanced flex items-center px-3 py-2 text-sm text-gray-700 transition-colors hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
                 aria-label="Search products"
+                aria-expanded={isOpen}
+                aria-controls="search-navigation-dialog"
+                aria-haspopup="dialog"
             >
                 <i className="fas fa-search mr-2" aria-hidden="true" />
                 <span className="hidden sm:inline">Search</span>
             </button>
 
-            {/* Search Overlay */}
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-start justify-center pt-20">
-                    <div className="mx-4 w-full max-w-2xl rounded-lg bg-white shadow-xl dark:bg-gray-800">
-                        {/* Search Input */}
+                <div
+                    className="fixed inset-0 z-50 flex items-start justify-center bg-black/30 pt-20 backdrop-blur-sm"
+                    role="presentation"
+                >
+                    <div
+                        ref={dialogRef}
+                        id="search-navigation-dialog"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="search-navigation-title"
+                        aria-describedby="search-navigation-description"
+                        data-modal="search-navigation"
+                        data-modal-open="true"
+                        className="mx-4 w-full max-w-2xl rounded-lg bg-white shadow-xl focus:outline-none dark:bg-gray-800"
+                    >
                         <div className="border-b border-gray-200 p-4 dark:border-gray-700">
-                            <div className="relative">
+                            <div className="flex items-start justify-between">
+                                <div>
+                                    <h2 id="search-navigation-title" className="text-lg font-semibold text-gray-900 dark:text-white">
+                                        Quick product search
+                                    </h2>
+                                    <p id="search-navigation-description" className="text-sm text-gray-600 dark:text-gray-300">
+                                        Enter at least two characters to see matching categories, products, or sizes.
+                                    </p>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => closeSearch()}
+                                    className="focus-enhanced ml-4 text-gray-500 transition-colors hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
+                                    aria-label="Close search dialog"
+                                    data-modal-close="true"
+                                >
+                                    <i className="fas fa-times text-lg" aria-hidden="true" />
+                                </button>
+                            </div>
+                            <div className="relative mt-4">
                                 <i
                                     className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-400"
                                     aria-hidden="true"
                                 />
                                 <input
+                                    ref={searchInputRef}
                                     type="text"
-                                    placeholder="Search products, categories, or sizes..."
                                     value={query}
-                                    onChange={(e) => setQuery(e.target.value)}
+                                    onChange={(event) => setQuery(event.target.value)}
+                                    onKeyDown={(event) => {
+                                        if (event.key === 'ArrowDown' && results.length) {
+                                            event.preventDefault()
+                                            setSelectedIndex(0)
+                                            focusOption(0)
+                                        } else if (event.key === 'Enter' && selectedIndex >= 0 && results[selectedIndex]) {
+                                            event.preventDefault()
+                                            handleResultClick(results[selectedIndex])
+                                        }
+                                    }}
+                                    placeholder="Search products, categories, or sizes..."
                                     className="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                                    autoFocus
+                                    autoComplete="off"
                                 />
-                                <button
-                                    onClick={() => setIsOpen(false)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
-                                    aria-label="Close search"
-                                >
-                                    <i
-                                        className="fas fa-times"
-                                        aria-hidden="true"
-                                    />
-                                </button>
                             </div>
                         </div>
 
-                        {/* Search Results */}
-                        <div
-                            ref={resultsRef}
-                            className="max-h-96 overflow-y-auto"
-                        >
+                        <div className="max-h-96 overflow-y-auto p-2">
+                            {query.length < 2 && (
+                                <p className="px-4 py-6 text-sm text-gray-600 dark:text-gray-300">
+                                    Keep typing to view search suggestions.
+                                </p>
+                            )}
+
                             {query.length >= 2 && results.length === 0 && (
-                                <div className="p-4 text-center text-gray-500 dark:text-gray-400">
-                                    <i
-                                        className="fas fa-search mb-2 text-2xl"
-                                        aria-hidden="true"
-                                    />
-                                    <p>No products found for &quot;{query}&quot;</p>
+                                <div className="px-4 py-6 text-center text-gray-500 dark:text-gray-400">
+                                    <i className="fas fa-search mb-2 text-2xl" aria-hidden="true" />
+                                    <p>No products found for &ldquo;{query}&rdquo;.</p>
                                 </div>
                             )}
 
-                            {results.map((product, index) => (
-                                <button
-                                    key={product.name}
-                                    onClick={() => handleResultClick(product)}
-                                    className={`w-full border-b border-gray-100 p-4 text-left transition-colors hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700 ${
-                                        index === selectedIndex
-                                            ? 'bg-green-50 dark:bg-green-900'
-                                            : ''
-                                    }`}
+                            {results.length > 0 && (
+                                <ul
+                                    id={listboxId}
+                                    role="listbox"
+                                    aria-label="Search results"
+                                    className="space-y-2"
                                 >
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <h4 className="font-medium text-gray-900 dark:text-white">
-                                                {highlightMatch(
-                                                    product.name,
-                                                    query
-                                                )}
-                                            </h4>
-                                            <p className="text-sm text-gray-600 dark:text-gray-300">
-                                                {highlightMatch(
-                                                    product.category,
-                                                    query
-                                                )}
-                                            </p>
-                                            <div className="mt-1 flex items-center text-xs text-gray-500">
-                                                <span>
-                                                    Sizes:{' '}
-                                                    {product.size_options.join(
-                                                        ', '
-                                                    )}
-                                                </span>
-                                                {product.thca_percentage && (
-                                                    <span className="ml-2">
-                                                        THCa:{' '}
-                                                        {
-                                                            product.thca_percentage
-                                                        }
-                                                        %
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="text-right">
-                                            <div className="text-sm font-medium text-green-600">
-                                                From $
-                                                {Math.min(
-                                                    ...Object.values(product.prices as Record<string, number>)
-                                                )}
-                                            </div>
-                                            {product.banner && (
-                                                <span
-                                                    className={`inline-block rounded px-2 py-1 text-xs ${
-                                                        product.banner === 'New'
-                                                            ? 'bg-green-100 text-green-800'
-                                                            : 'bg-red-100 text-red-800'
-                                                    }`}
-                                                >
-                                                    {product.banner}
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
+                                    {results.map((product, index) => {
+                                        const isActive = selectedIndex === index
+                                        const baseClasses = 'w-full cursor-pointer rounded-md border border-transparent p-4 text-left transition-colors'
+                                        const stateClasses = isActive
+                                            ? 'bg-green-50 ring-2 ring-green-500 dark:bg-green-900 dark:ring-green-400'
+                                            : 'bg-white hover:border-green-200 dark:bg-gray-900 dark:hover:border-green-600'
+                                        const itemClasses = baseClasses + ' ' + stateClasses
+                                        const priceValues = Object.values(product.prices || {}) as number[]
+                                        const hasPrices = priceValues.length > 0
+                                        const minPrice = hasPrices ? Math.min(...priceValues) : undefined
+                                        const priceLabel = typeof minPrice === 'number' && Number.isFinite(minPrice)
+                                            ? '$' + minPrice.toFixed(2)
+                                            : 'N/A'
 
-                        {/* Search Tips */}
-                        {query.length < 2 && (
-                            <div className="p-4 text-sm text-gray-500 dark:text-gray-400">
-                                <p className="mb-2">Try searching for:</p>
-                                <div className="flex flex-wrap gap-2">
-                                    {[
-                                        'Flower',
-                                        'Concentrates',
-                                        'Vapes',
-                                        'Edibles',
-                                        '1 gram',
-                                        'Snowcaps',
-                                    ].map((term) => (
-                                        <button
-                                            key={term}
-                                            onClick={() => setQuery(term)}
-                                            className="rounded bg-gray-100 px-2 py-1 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-                                        >
-                                            {term}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+                                        return (
+                                            <li
+                                                key={product.name}
+                                                ref={(element) => { optionRefs.current[index] = element }}
+                                                role="option"
+                                                id={listboxId + '-option-' + index}
+                                                tabIndex={isActive ? 0 : -1}
+                                                aria-selected={isActive}
+                                                className={itemClasses}
+                                                onClick={() => handleResultClick(product)}
+                                                onFocus={() => setSelectedIndex(index)}
+                                                onMouseEnter={() => setSelectedIndex(index)}
+                                            >
+                                                <div className="flex items-center justify-between gap-4">
+                                                    <div>
+                                                        <h4 className="font-medium text-gray-900 dark:text-white">
+                                                            {highlightMatch(product.name, query)}
+                                                        </h4>
+                                                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                                                            {highlightMatch(product.category, query)}
+                                                        </p>
+                                                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                                            Sizes: {product.size_options.join(', ')}
+                                                        </p>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <p className="text-sm font-semibold text-green-600 dark:text-green-300">
+                                                            Starting at {priceLabel}
+                                                        </p>
+                                                        {product.banner && (
+                                                            <span className="mt-1 inline-block rounded bg-green-100 px-2 py-1 text-xs font-medium text-green-800 dark:bg-green-700 dark:text-white">
+                                                                {product.banner}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                            )}
+                        </div>
                     </div>
                 </div>
             )}

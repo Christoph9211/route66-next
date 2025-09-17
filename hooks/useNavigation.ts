@@ -114,55 +114,198 @@ export function useNavigation() {
  */
 export function useKeyboardNavigation() {
     useEffect(() => {
-    /**
-     * Handles keydown events and performs actions based on the key pressed.
-     * Supported keys:
-     * - '1': Scrolls to the 'home' section smoothly.
-     * - '2': Scrolls to the 'products' section smoothly.
-     * - '3': Scrolls to the 'about' section smoothly.
-     * - '4': Scrolls to the 'location' section smoothly.
-     * - '5': Scrolls to the 'contact' section smoothly.
-     * - 'Escape': Closes any open menus.
-     *
-     * @param {KeyboardEvent} event - The keyboard event.
-     * @return {void} No return value.
-     */
-        const handleKeyDown = (event: KeyboardEvent) => {
-            const target = event.target as HTMLElement
-            // Skip if user is typing in an input
-            if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        const SECTION_SELECTOR = '[data-section-nav]'
+        const PRODUCT_CARD_SELECTOR = '[data-product-card]'
+
+        const getSections = () =>
+            Array.from(
+                document.querySelectorAll<HTMLElement>(SECTION_SELECTOR)
+            )
+
+        const focusSection = (index: number) => {
+            const sections = getSections()
+            const target = sections[index]
+            if (!target) {
                 return
             }
 
-            switch (event.key) {
-                case '1':
-                    document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' })
-                    break
-                case '2':
-                    document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })
-                    break
-                case '3':
-                    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
-                    break
-                case '4':
-                    document.getElementById('location')?.scrollIntoView({ behavior: 'smooth' })
-                    break
-                case '5':
-                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
-                    break
-                case 'Escape':
-                    // Close any open menus
-                    const openMenus = document.querySelectorAll('[data-menu-open="true"]')
-                    openMenus.forEach(menu => {
-                        (menu as HTMLElement).click()
-                    })
-                    break
-                default:
-                    break
+            target.focus({ preventScroll: true })
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+
+        const moveFocusWithinGrid = (
+            current: HTMLElement,
+            key: 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight'
+        ) => {
+            const grid = current.closest('[data-product-grid]')
+            if (!grid) {
+                return false
+            }
+
+            const cards = Array.from(
+                grid.querySelectorAll<HTMLElement>(PRODUCT_CARD_SELECTOR)
+            )
+
+            const currentIndex = cards.indexOf(current)
+            if (currentIndex === -1) {
+                return false
+            }
+
+            const currentRect = current.getBoundingClientRect()
+            const currentCenterX = currentRect.left + currentRect.width / 2
+            const currentCenterY = currentRect.top + currentRect.height / 2
+
+            let candidate: HTMLElement | null = null
+            let bestDistance = Number.POSITIVE_INFINITY
+
+            cards.forEach((card) => {
+                if (card === current) {
+                    return
+                }
+
+                const rect = card.getBoundingClientRect()
+                const centerX = rect.left + rect.width / 2
+                const centerY = rect.top + rect.height / 2
+                const deltaX = centerX - currentCenterX
+                const deltaY = centerY - currentCenterY
+
+                const sameRowThreshold = currentRect.height * 0.75
+                const sameColumnThreshold = currentRect.width * 0.75
+
+                const distance = Math.hypot(deltaX, deltaY)
+
+                switch (key) {
+                    case 'ArrowRight':
+                        if (deltaX > 0 && Math.abs(deltaY) <= sameRowThreshold) {
+                            if (distance < bestDistance) {
+                                candidate = card
+                                bestDistance = distance
+                            }
+                        }
+                        break
+                    case 'ArrowLeft':
+                        if (deltaX < 0 && Math.abs(deltaY) <= sameRowThreshold) {
+                            if (distance < bestDistance) {
+                                candidate = card
+                                bestDistance = distance
+                            }
+                        }
+                        break
+                    case 'ArrowDown':
+                        if (deltaY > 0 && Math.abs(deltaX) <= sameColumnThreshold) {
+                            if (distance < bestDistance) {
+                                candidate = card
+                                bestDistance = distance
+                            }
+                        }
+                        break
+                    case 'ArrowUp':
+                        if (deltaY < 0 && Math.abs(deltaX) <= sameColumnThreshold) {
+                            if (distance < bestDistance) {
+                                candidate = card
+                                bestDistance = distance
+                            }
+                        }
+                        break
+                    default:
+                        break
+                }
+            })
+
+            if (!candidate) {
+                switch (key) {
+                    case 'ArrowRight':
+                        candidate = cards[Math.min(cards.length - 1, currentIndex + 1)]
+                        break
+                    case 'ArrowLeft':
+                        candidate = cards[Math.max(0, currentIndex - 1)]
+                        break
+                    case 'ArrowDown':
+                        candidate = cards[Math.min(cards.length - 1, currentIndex + 1)]
+                        break
+                    case 'ArrowUp':
+                        candidate = cards[Math.max(0, currentIndex - 1)]
+                        break
+                    default:
+                        break
+                }
+            }
+
+            if (candidate && candidate !== current) {
+                candidate.focus()
+                candidate.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+                return true
+            }
+
+            return false
+        }
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            const target = event.target as HTMLElement | null
+            if (!target) {
+                return
+            }
+
+            const tagName = target.tagName
+            const isEditable =
+                tagName === 'INPUT' || tagName === 'TEXTAREA' || target.isContentEditable
+
+            if (isEditable) {
+                return
+            }
+
+            if (event.key === 'Home' && !event.ctrlKey && !event.altKey && !event.metaKey) {
+                const sections = getSections()
+                if (sections.length) {
+                    event.preventDefault()
+                    focusSection(0)
+                }
+                return
+            }
+
+            if (event.key === 'End' && !event.ctrlKey && !event.altKey && !event.metaKey) {
+                const sections = getSections()
+                if (sections.length) {
+                    event.preventDefault()
+                    focusSection(sections.length - 1)
+                }
+                return
+            }
+
+            if (
+                (event.key === 'ArrowUp' ||
+                    event.key === 'ArrowDown' ||
+                    event.key === 'ArrowLeft' ||
+                    event.key === 'ArrowRight') &&
+                target.matches(PRODUCT_CARD_SELECTOR)
+            ) {
+                const handled = moveFocusWithinGrid(
+                    target,
+                    event.key as 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight'
+                )
+                if (handled) {
+                    event.preventDefault()
+                }
+                return
+            }
+
+            if (event.key === 'Escape') {
+                const openDialog = document.querySelector<HTMLElement>(
+                    '[data-modal][data-modal-open="true"]'
+                )
+                if (openDialog) {
+                    const closeButton = openDialog.querySelector<HTMLElement>(
+                        '[data-modal-close]'
+                    )
+                    if (closeButton) {
+                        event.preventDefault()
+                        closeButton.click()
+                    }
+                }
             }
         }
 
-        window.addEventListener('keydown', handleKeyDown)
-        return () => window.removeEventListener('keydown', handleKeyDown)
+        document.addEventListener('keydown', handleKeyDown)
+        return () => document.removeEventListener('keydown', handleKeyDown)
     }, [])
 }

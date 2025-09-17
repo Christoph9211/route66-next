@@ -31,12 +31,21 @@ function LocationContent() {
     }
 
     return (
-        <div className="bg-gray-50 py-12 dark:bg-gray-900">
+        <section
+            id="location"
+            role="region"
+            aria-labelledby="location-heading"
+            tabIndex={-1}
+            data-section-nav
+            className="bg-gray-50 py-12 dark:bg-gray-900 focus:outline-none"
+        >
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="mb-10 lg:text-center">
-                    <h2 className="dark:text-secondary text-base font-semibold uppercase tracking-wide text-green-300">
-                        Serving {locationData?.city || 'our area'} & Surrounding
-                        Areas
+                    <h2
+                        id="location-heading"
+                        className="dark:text-secondary text-base font-semibold uppercase tracking-wide text-green-300"
+                    >
+                        Serving {locationData?.city || 'our area'} & Surrounding Areas
                     </h2>
                     <p className="mt-2 text-3xl font-extrabold leading-8 tracking-tight sm:text-4xl dark:text-white">
                         Your Local Hemp Store in{' '}
@@ -178,7 +187,7 @@ function LocationContent() {
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 

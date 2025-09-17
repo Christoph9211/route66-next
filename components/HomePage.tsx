@@ -49,11 +49,18 @@ export default function HomePage({ products }: { products: Product[] }) {
     return (
         <>
             <Navigation products={products} />
-            <main>
+            <main id="main-content" role="main" tabIndex={-1} className="outline-none">
                 <HeroSection />
-                <section id="products" className="py-16">
+                <section
+                    id="products"
+                    role="region"
+                    aria-labelledby="products-heading"
+                    tabIndex={-1}
+                    data-section-nav
+                    className="py-16 focus:outline-none"
+                >
                     <div className="container mx-auto px-4">
-                        <h2 className="mb-12 text-center text-4xl font-bold text-gray-900 dark:text-white">
+                        <h2 id="products-heading" className="mb-12 text-center text-4xl font-bold text-gray-900 dark:text-white">
                             Our Premium Hemp Products
                         </h2>
                         {Object.entries(productsByCategory).map(([cat, list], sectionIndex) => (

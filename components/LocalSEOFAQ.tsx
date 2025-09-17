@@ -53,10 +53,20 @@ function LocalSEOFAQ() {
     }
 
     return (
-        <section id="faq" className="bg-gray-50 py-12 dark:bg-gray-900">
+        <section
+            id="faq"
+            role="region"
+            aria-labelledby="faq-heading"
+            tabIndex={-1}
+            data-section-nav
+            className="bg-gray-50 py-12 dark:bg-gray-900 focus:outline-none"
+        >
             <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                 <div className="mb-10 text-center">
-                    <h2 className="text-2xl font-semibold uppercase tracking-wide text-green-600 dark:text-green-400">
+                    <h2
+                        id="faq-heading"
+                        className="text-2xl font-semibold uppercase tracking-wide text-green-600 dark:text-green-400"
+                    >
                         Frequently Asked Questions
                     </h2>
                     <p className="mt-2 text-3xl font-extrabold leading-8 tracking-tight sm:text-4xl dark:text-white">
@@ -71,7 +81,7 @@ function LocalSEOFAQ() {
                             className="rounded-lg bg-white shadow-md dark:bg-gray-800"
                         >
                             <button
-                                className="flex w-full items-center justify-between rounded-lg px-6 py-4 text-left transition-colors hover:bg-gray-50 dark:hover:bg-gray-700"
+                                className="focus-enhanced flex w-full items-center justify-between rounded-lg px-6 py-4 text-left transition-colors hover:bg-gray-50 dark:hover:bg-gray-700"
                                 onClick={() => toggleFAQ(index)}
                                 aria-expanded={openIndex === index}
                                 aria-controls={`faq-answer-${index}`}
@@ -110,7 +120,7 @@ function LocalSEOFAQ() {
                     </p>
                     <a
                         href="tel:+15736776418"
-                        className="inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-opacity-90"
+                        className="focus-enhanced inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-opacity-90"
                     >
                         <i className="fas fa-phone mr-2" aria-hidden="true" />
                         Call (573) 677-6418
