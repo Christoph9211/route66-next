@@ -1,52 +1,101 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Cookies from 'js-cookie'
+
+const AGE_COOKIE = 'route66_age_verified'
+const CONSENT_COOKIE = 'cookieconsent_status'
+
+function cookieOptions() {
+  const isSecure = typeof window !== 'undefined' && window.location.protocol === 'https:'
+  return {
+    expires: 180,
+    sameSite: 'Lax' as const,
+    secure: isSecure,
+    path: '/',
+  }
+}
+
+function dispatchConsentEvent(status: 'accepted' | 'rejected') {
+  if (typeof window === 'undefined') return
+  try {
+    const event = new CustomEvent('consent:updated', { detail: status })
+    window.dispatchEvent(event)
+  } catch {
+    // ignore event failures
+  }
+}
 
 export default function CookieBanner() {
   const ref = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
     const showIfNeeded = () => {
+      const element = ref.current
+      if (!element) return
+
       try {
-        const isAdult = typeof window !== 'undefined' && localStorage.getItem('isAdult') === 'true'
-        const hasChoice = typeof window !== 'undefined' && !!localStorage.getItem('cookieConsent')
-        if (isAdult && !hasChoice) {
-          el.style.display = 'flex'
-        }
+        const hasAgeCookie = Cookies.get(AGE_COOKIE) === 'true'
+        const isAdultFromStorage =
+          typeof window !== 'undefined' && localStorage.getItem('isAdult') === 'true'
+        const isAdult = hasAgeCookie || isAdultFromStorage
+
+        const consentCookie = Cookies.get(CONSENT_COOKIE)
+        const hasLocalChoice =
+          typeof window !== 'undefined' && !!localStorage.getItem('cookieConsent')
+        const hasChoice = Boolean(consentCookie) || hasLocalChoice
+
+        element.style.display = isAdult && !hasChoice ? 'flex' : 'none'
       } catch {
-        // ignore
+        // On storage access failures, default to hiding the banner to avoid repeated prompts
+        ref.current?.style.setProperty('display', 'none')
       }
     }
 
     // Show on mount if already of age and no consent yet
     showIfNeeded()
 
-    // Also react to custom event from analytics-consent.js after age confirmation
-    const onAgeConfirmed = () => showIfNeeded()
+    // React to custom events fired from analytics-consent.js
+    const onAgeConfirmed: EventListener = () => showIfNeeded()
+    const onConsentUpdated: EventListener = () => showIfNeeded()
+
     window.addEventListener('age:confirmed', onAgeConfirmed)
-    return () => window.removeEventListener('age:confirmed', onAgeConfirmed)
+    window.addEventListener('consent:updated', onConsentUpdated)
+
+    return () => {
+      window.removeEventListener('age:confirmed', onAgeConfirmed)
+      window.removeEventListener('consent:updated', onConsentUpdated)
+    }
   }, [])
 
   const accept = () => {
     try {
+      Cookies.set(CONSENT_COOKIE, 'accepted', cookieOptions())
       localStorage.setItem('cookieConsent', 'accepted')
-      if (ref.current) ref.current.style.display = 'none'
-      if (typeof window !== 'undefined' && window.tryInitAnalytics) window.tryInitAnalytics()
     } catch {
-      // ignore
+      // ignore storage failures
     }
+
+    if (ref.current) ref.current.style.display = 'none'
+
+    if (typeof window !== 'undefined' && window.tryInitAnalytics) {
+      window.tryInitAnalytics()
+    }
+
+    dispatchConsentEvent('accepted')
   }
 
   const decline = () => {
     try {
+      Cookies.set(CONSENT_COOKIE, 'rejected', cookieOptions())
       localStorage.setItem('cookieConsent', 'declined')
-      if (ref.current) ref.current.style.display = 'none'
     } catch {
-      // ignore
+      // ignore storage failures
     }
+
+    if (ref.current) ref.current.style.display = 'none'
+
+    dispatchConsentEvent('rejected')
   }
 
   return (
