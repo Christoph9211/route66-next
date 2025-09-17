@@ -145,7 +145,10 @@ function FooterNavigation() {
 
                     {/* Footer Links */}
                     {footerSections.map((section) => (
-                        <div key={section.title}>
+                        <div
+                            key={section.title}
+                            className="flex flex-col items-center text-center md:items-start md:text-left"
+                        >
                             <h4 className="mb-4 text-lg font-semibold">
                                 {section.title}
                             </h4>
