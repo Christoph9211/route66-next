@@ -8,6 +8,10 @@ export default function HeroSection() {
     return (
         <section
             id="home"
+            role="region"
+            aria-labelledby="home-heading"
+            tabIndex={-1}
+            data-section-nav
             className="relative isolate overflow-hidden py-24 text-center text-white sm:py-32"
         >
             {/* Background gradient */}
@@ -15,7 +19,10 @@ export default function HeroSection() {
             {/* Blurred accent blob */}
             <div className="absolute left-1/2 top-1/2 -z-10 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-400 opacity-30 blur-3xl" />
             <div className="mx-auto max-w-2xl px-6">
-                <h1 className="mb-6 text-5xl font-extrabold tracking-tight sm:text-6xl">
+                <h1
+                    id="home-heading"
+                    className="mb-6 text-5xl font-extrabold tracking-tight sm:text-6xl"
+                >
                     Route 66 Hemp
                 </h1>
                 <p className="mx-auto mb-10 max-w-xl text-lg leading-8 text-green-100">
@@ -24,13 +31,13 @@ export default function HeroSection() {
                 <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                     <a
                         href="#products"
-                        className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-green-800 shadow-lg transition-colors hover:bg-green-50"
+                        className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-green-800 shadow-lg transition-colors hover:bg-green-50 focus-enhanced"
                     >
                         <i className="fas fa-cannabis mr-2" /> Shop Products
                     </a>
                     <a
                         href="tel:+15736776418"
-                        className="rounded-full border border-white/80 px-8 py-3 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/10"
+                        className="rounded-full border border-white/80 px-8 py-3 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/10 focus-enhanced"
                     >
                         <i className="fas fa-phone mr-2" /> Call (573) 677-6418
                     </a>

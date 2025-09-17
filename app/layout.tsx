@@ -5,6 +5,7 @@ import CanonicalUrl from '@/components/CanonicalUrl'
 import AgeGate from '@/components/AgeGate'
 import AnalyticsConsentGate from '@/components/AnalyticsConsentGate'
 import Script from 'next/script'
+import SkipLinks from '@/components/SkipLinks'
 import './styles/fa/fontawesome.min.css'
 import './styles/fa/brands.min.css'
 import './styles/fa/regular.min.css'
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <CanonicalUrl />
             </head>
             <body className="bg-gray-50 font-sans antialiased dark:bg-gray-900 transition-colors duration-300">
+                <SkipLinks />
                 <AgeGate />
                 <div data-site-content>
                     {children}

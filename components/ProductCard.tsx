@@ -13,7 +13,15 @@ interface Product {
     availability?: Record<string, boolean>
 }
 
-export default function ProductCard({ product, priority = false }: { product: Product, priority?: boolean }) {
+interface ProductCardProps {
+    product: Product
+    priority?: boolean
+    gridIndex?: number
+    gridSize?: number
+    parentHeadingId?: string
+}
+
+export default function ProductCard({ product, priority = false, gridIndex, gridSize, parentHeadingId }: ProductCardProps) {
     const [selectedSize, setSelectedSize] = useState(product.size_options[0])
     const [isAvailable, setIsAvailable] = useState(true)
 
@@ -25,10 +33,34 @@ export default function ProductCard({ product, priority = false }: { product: Pr
 
     const currentPrice = product.prices[selectedSize]
     const isOutOfStock = product.banner === 'Out of Stock' || !isAvailable
-    const selectId = `size-${slugify(product.name)}`
+    const selectId = ['size', slugify(product.name)].join('-')
+    const cardId = ['product', slugify(product.name)].join('-')
+    const titleId = [cardId, 'title'].join('-')
+    const categoryId = [cardId, 'category'].join('-')
+    const priceId = [cardId, 'price'].join('-')
+    const availabilityId = [cardId, 'availability'].join('-')
+    const posInSet = typeof gridIndex === 'number' ? gridIndex + 1 : undefined
+    const setSize = typeof gridSize === 'number' ? gridSize : undefined
+    const availabilityLabel = isOutOfStock ? 'Currently unavailable' : 'Available'
+    const priceLabel = typeof currentPrice === 'number' ? '$' + currentPrice.toFixed(2) : 'N/A'
+    const describedByIds = [categoryId, availabilityId, priceId]
+    if (parentHeadingId) {
+        describedByIds.unshift(parentHeadingId)
+    }
+    const describedBy = describedByIds.join(' ')
 
     return (
-        <div className={`product-card relative min-w-[285px] rounded-lg bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 dark:bg-gray-800 ${isOutOfStock ? 'opacity-75' : ''}`}>            
+        <div
+            className={`product-card relative min-w-[285px] rounded-lg bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 dark:bg-gray-800 focus-enhanced ${isOutOfStock ? 'opacity-75' : ''}`}
+            role="article"
+            tabIndex={0}
+            data-product-card="true"
+            data-grid-index={typeof gridIndex === 'number' ? gridIndex : undefined}
+            aria-labelledby={titleId}
+            aria-describedby={describedBy}
+            aria-posinset={posInSet}
+            aria-setsize={setSize}
+        >
             {product.banner && (
                 <div
                     className={`product-banner ${
@@ -51,13 +83,14 @@ export default function ProductCard({ product, priority = false }: { product: Pr
                 className="mb-4 h-48 w-full rounded object-cover"
             />
             <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{product.name}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{product.category || 'N/A'}</p>
+                <h3 id={titleId} className="text-lg font-semibold text-gray-900 dark:text-white">{product.name}</h3>
+                <p id={categoryId} className="text-sm text-gray-600 dark:text-gray-300">{product.category || 'N/A'}</p>
                 {product.thca_percentage ? (
                     <p className="text-sm font-medium text-green-600">THCa: {product.thca_percentage}%</p>
                 ) : (
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-300">N/A</p>
                 )}
+                <p id={availabilityId} className="text-sm text-gray-600 dark:text-gray-300">{availabilityLabel}</p>
             </div>
             <div className="mb-4">
                 <label htmlFor={selectId} className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Size:</label>
@@ -78,7 +111,7 @@ export default function ProductCard({ product, priority = false }: { product: Pr
                 )}
             </div>
             <div className="flex items-center justify-center">
-                <div className="text-xl font-bold text-green-600">${currentPrice?.toFixed(2) || 'N/A'}</div>
+                <div id={priceId} className="text-xl font-bold text-green-600">{priceLabel}</div>
             </div>
         </div>
     )
