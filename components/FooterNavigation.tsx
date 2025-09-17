@@ -144,25 +144,27 @@ function FooterNavigation() {
                     </div>
 
                     {/* Footer Links */}
-                    {footerSections.map((section) => (
-                        <div key={section.title}>
-                            <h4 className="mb-4 text-lg font-semibold">
-                                {section.title}
-                            </h4>
-                            <ul className="space-y-2">
-                                {section.links.map((link) => (
-                                    <li key={link.label}>
-                                        <a
-                                            href={link.href}
-                                            className="text-sm text-gray-300 transition-colors hover:text-green-400"
-                                        >
-                                            {link.label}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
+                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:col-span-4 lg:grid-cols-4">
+                        {footerSections.map((section) => (
+                            <div key={section.title}>
+                                <h4 className="mb-4 text-lg font-semibold">
+                                    {section.title}
+                                </h4>
+                                <ul className="space-y-2">
+                                    {section.links.map((link) => (
+                                        <li key={link.label}>
+                                            <a
+                                                href={link.href}
+                                                className="text-sm text-gray-300 transition-colors hover:text-green-400"
+                                            >
+                                                {link.label}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Bottom Footer */}
