@@ -86,7 +86,10 @@ function LocalSEOFAQ() {
                                 aria-expanded={openIndex === index}
                                 aria-controls={`faq-answer-${index}`}
                             >
-                                <span className="pr-4 font-medium dark:text-white">
+                                <span
+                                    id={`faq-question-${index}`}
+                                    className="pr-4 font-medium dark:text-white"
+                                >
                                     {faq.question}
                                 </span>
                                 <i
