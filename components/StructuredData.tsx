@@ -1,12 +1,14 @@
-'use client'
+import { headers } from 'next/headers'
 // Structured Data Component for Local Business SEO
 
 /**
  * StructuredData component for Local Business SEO.
  * Renders structured data for business information, breadcrumbs, and organization.
- * @returns {JSX.Element} The StructuredData component.
+ * @returns {Promise<JSX.Element>} The StructuredData component.
  */
-function StructuredData() {
+async function StructuredData() {
+    const nonce = (await headers()).get('x-csp-nonce') ?? undefined
+
     const businessData = {
         '@context': 'https://schema.org',
         '@type': 'Store',
@@ -155,18 +157,21 @@ function StructuredData() {
     return (
         <>
             <script
+                nonce={nonce}
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify(businessData),
                 }}
             />
             <script
+                nonce={nonce}
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify(breadcrumbData),
                 }}
             />
             <script
+                nonce={nonce}
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify(organizationData),
