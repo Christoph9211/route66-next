@@ -53,7 +53,7 @@ async function StructuredData() {
         ],
         priceRange: '$',
         currenciesAccepted: 'USD',
-        paymentAccepted: 'Cash, Credit Card',
+        paymentAccepted: 'Cash',
         image: 'https://www.route66hemp.com/og-image.jpg',
         logo: 'https://www.route66hemp.com/favicon-32x32.png',
         sameAs: [
@@ -81,36 +81,6 @@ async function StructuredData() {
                     'Excellent quality hemp products and knowledgeable staff. Great selection and fair prices.',
             },
         ],
-        hasOfferCatalog: {
-            '@type': 'OfferCatalog',
-            name: 'Hemp Products',
-            itemListElement: [
-                {
-                    '@type': 'Offer',
-                    itemOffered: {
-                        '@type': 'Product',
-                        name: 'CBD Flower',
-                        category: 'Hemp Products',
-                    },
-                },
-                {
-                    '@type': 'Offer',
-                    itemOffered: {
-                        '@type': 'Product',
-                        name: 'Hemp Concentrates',
-                        category: 'Hemp Products',
-                    },
-                },
-                {
-                    '@type': 'Offer',
-                    itemOffered: {
-                        '@type': 'Product',
-                        name: 'Vapes & Cartridges',
-                        category: 'Hemp Products',
-                    },
-                },
-            ],
-        },
     }
 
     const breadcrumbData = {
