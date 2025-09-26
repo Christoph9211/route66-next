@@ -1,3 +1,5 @@
+import ScrollLink from './ScrollLink'
+
 export default function AboutSection() {
     return (
         <section
@@ -19,9 +21,9 @@ export default function AboutSection() {
                             We&apos;re committed to providing high-quality, lab-tested hemp products that meet the highest standards of purity and potency.
                         </p>
                         <div className="mt-8">
-                            <a href="#location" className="inline-flex items-center rounded-lg bg-green-700 px-6 py-3 font-medium text-white hover:bg-green-800 focus-enhanced">
+                            <ScrollLink targetId="location" className="inline-flex items-center rounded-lg bg-green-700 px-6 py-3 font-medium text-white hover:bg-green-800 focus-enhanced">
                                 <i className="fas fa-map-marker-alt mr-2" /> Visit Our Store
-                            </a>
+                            </ScrollLink>
                         </div>
                     </div>
                     <div className="mt-8 lg:mt-0">

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import LocalBusinessInfo from './LocalBusinessInfo'
 import SearchNavigation from './SearchNavigation'
 import { slugify } from '../utils/slugify'
+import { scrollToSection } from '../utils/scrollToSection'
 
 
 interface Product {
@@ -85,13 +86,13 @@ function Navigation({ products = [] }: { products: Product[] }) {
         {
             id: 'home',
             label: 'Home',
-            href: '#home',
+            targetId: 'home',
             icon: 'fas fa-home',
         },
         {
             id: 'products',
             label: 'Products',
-            href: '#products',
+            targetId: 'products',
             icon: 'fas fa-cannabis',
             submenu: [
                 { label: 'Flower', category: 'Flower' },
@@ -105,19 +106,19 @@ function Navigation({ products = [] }: { products: Product[] }) {
         {
             id: 'about',
             label: 'About Us',
-            href: '#about',
+            targetId: 'about',
             icon: 'fas fa-info-circle',
         },
         {
             id: 'location',
             label: 'Visit Us',
-            href: '#location',
+            targetId: 'location',
             icon: 'fas fa-map-marker-alt',
         },
         {
             id: 'contact',
             label: 'Contact',
-            href: '#contact',
+            targetId: 'contact',
             icon: 'fas fa-phone',
         },
     ]
@@ -154,18 +155,14 @@ function Navigation({ products = [] }: { products: Product[] }) {
      */
     const handleNavClick = (
         e: React.MouseEvent<HTMLAnchorElement>,
-        href: string,
+        targetId: string,
         id: string
     ) => {
         e.preventDefault()
         setActiveSection(id)
         closeMenu()
 
-        // Smooth scroll to section
-        const element = document.querySelector(href)
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' })
-        }
+        scrollToSection(targetId)
     }
 
     return (
@@ -212,11 +209,11 @@ function Navigation({ products = [] }: { products: Product[] }) {
                                         onMouseLeave={() => item.submenu && handleDropdownLeave()}
                                     >
                                         <a
-                                            href={item.href}
+                                            href={`#${item.targetId}`}
                                             onClick={(e) =>
                                                 handleNavClick(
                                                     e,
-                                                    item.href,
+                                                    item.targetId,
                                                     item.id
                                                 )
                                             }
@@ -362,11 +359,11 @@ function Navigation({ products = [] }: { products: Product[] }) {
                             {navigationItems.map((item) => (
                                 <div key={item.id}>
                                     <a
-                                        href={item.href}
+                                        href={`#${item.targetId}`}
                                         onClick={(e) =>
                                             handleNavClick(
                                                 e,
-                                                item.href,
+                                                item.targetId,
                                                 item.id
                                             )
                                         }
@@ -397,9 +394,10 @@ function Navigation({ products = [] }: { products: Product[] }) {
                                             aria-label={`${item.label} submenu`}
                                         >
                                             {item.submenu.map((subItem) => {
-                                                const subHref = `#${slugify(
+                                                const subTargetId = slugify(
                                                     subItem.category
-                                                )}`
+                                                )
+                                                const subHref = `#${subTargetId}`
                                                 return (
                                                     <a
                                                         key={subItem.label}
@@ -407,7 +405,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
                                                         onClick={(e) =>
                                                             handleNavClick(
                                                                 e,
-                                                                subHref,
+                                                                subTargetId,
                                                                 item.id
                                                             )
                                                         }
@@ -443,3 +441,4 @@ function Navigation({ products = [] }: { products: Product[] }) {
 }
 
 export default Navigation
+
