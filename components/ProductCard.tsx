@@ -51,10 +51,9 @@ export default function ProductCard({ product, priority = false, gridIndex, grid
     const showProductImage = false // Toggle when real product photography is available
 
     return (
-        <div
+        <article
             id={cardId}
             className={`product-card relative min-w-[285px] rounded-lg bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 dark:bg-gray-800 focus-enhanced ${isOutOfStock ? 'opacity-75' : ''}`}
-            role="article"
             tabIndex={0}
             data-product-card="true"
             data-grid-index={typeof gridIndex === 'number' ? gridIndex : undefined}
@@ -123,7 +122,7 @@ export default function ProductCard({ product, priority = false, gridIndex, grid
             <div className="flex items-center justify-center">
                 <div id={priceId} className="text-xl font-bold text-green-600">{priceLabel}</div>
             </div>
-        </div>
+        </article>
     )
 }
 

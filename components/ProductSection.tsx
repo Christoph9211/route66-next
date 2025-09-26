@@ -40,23 +40,24 @@ export default function ProductSection({ title, products, categoryId, isFirstSec
                 >
                     {title}
                 </h2>
-                <div
-                    className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                    role="grid"
+                <ul
+                    className="grid list-none grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                    role="list"
                     aria-labelledby={headingId}
                     data-product-grid
                 >
                     {products.map((product, index) => (
-                        <ProductCard
-                            key={product.name}
-                            product={product}
-                            priority={isFirstSection && index === 0}
-                            gridIndex={index}
-                            gridSize={totalItems}
-                            parentHeadingId={headingId}
-                        />
+                        <li key={product.name} className="list-none">
+                            <ProductCard
+                                product={product}
+                                priority={isFirstSection && index === 0}
+                                gridIndex={index}
+                                gridSize={totalItems}
+                                parentHeadingId={headingId}
+                            />
+                        </li>
                     ))}
-                </div>
+                </ul>
             </div>
         </section>
     )
