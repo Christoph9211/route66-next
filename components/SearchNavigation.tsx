@@ -26,29 +26,71 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
     const listboxId = 'search-navigation-results'
 
     const hasOpenedRef = useRef(false)
+    const closingAnnouncementRef = useRef<string | null>(null)
+    const pendingFocusRef = useRef<HTMLElement | null>(null)
 
     const openSearch = useCallback(() => {
         previousFocusRef.current = document.activeElement as HTMLElement
         setIsOpen(true)
     }, [])
 
-    const closeSearch = useCallback((restoreFocus: boolean = true) => {
-        setIsOpen(false)
-        setQuery('')
-        setResults([])
-        setSelectedIndex(-1)
-        if (restoreFocus && previousFocusRef.current) {
-            previousFocusRef.current.focus()
-        }
-    }, [])
+    const closeSearch = useCallback(
+        (
+            restoreFocus: boolean = true,
+            options?: { focusTarget?: HTMLElement | null; announcement?: string }
+        ) => {
+            const focusTarget = options?.focusTarget ?? null
+
+            if (options?.announcement) {
+                closingAnnouncementRef.current = options.announcement
+            } else {
+                closingAnnouncementRef.current = null
+            }
+
+            pendingFocusRef.current = focusTarget
+
+            setIsOpen(false)
+            setQuery('')
+            setResults([])
+            setSelectedIndex(-1)
+
+            if (restoreFocus && !focusTarget && previousFocusRef.current) {
+                previousFocusRef.current.focus()
+            }
+        },
+        []
+    )
+
 
     const handleResultClick = useCallback((product: Product) => {
-        const categoryElement = document.getElementById(slugify(product.category))
-        if (categoryElement) {
-            categoryElement.scrollIntoView({ behavior: 'smooth' })
+        const categoryId = slugify(product.category)
+        const productId = 'product-' + slugify(product.name)
+        const productElement = document.getElementById(productId) as HTMLElement | null
+        const categoryElement = document.getElementById(categoryId) as HTMLElement | null
+        const focusTarget = productElement ?? categoryElement ?? null
+
+        if (productElement) {
+            productElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        } else if (categoryElement) {
+            categoryElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
-        closeSearch()
+
+        let announcement: string
+        if (productElement) {
+            announcement = `${product.name} product card is now focused within the ${product.category} section.`
+        } else if (categoryElement) {
+            announcement = `${product.category} section is now in view.`
+        } else {
+            announcement = `${product.name} selected from search results.`
+        }
+
+        const shouldRestoreFocus = !focusTarget
+        closeSearch(shouldRestoreFocus, {
+            focusTarget,
+            announcement
+        })
     }, [closeSearch])
+
 
     const highlightMatch = (text: string, searchTerm: string): React.ReactNode[] => {
         if (!searchTerm) {
@@ -120,12 +162,18 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
     useEffect(() => {
         if (!isOpen) {
             if (hasOpenedRef.current) {
-                setAnnounceMessage('Search closed')
+                if (closingAnnouncementRef.current) {
+                    setAnnounceMessage(closingAnnouncementRef.current)
+                    closingAnnouncementRef.current = null
+                } else {
+                    setAnnounceMessage('Search closed')
+                }
             }
             return
         }
 
         hasOpenedRef.current = true
+        closingAnnouncementRef.current = null
 
         if (!query) {
             setAnnounceMessage('Search input cleared')
@@ -139,6 +187,24 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
             setAnnounceMessage(resultText + ' for ' + query)
         }
     }, [isOpen, query, results])
+
+    useEffect(() => {
+        if (!isOpen) {
+            return
+        }
+
+        if (selectedIndex < 0 || !results[selectedIndex]) {
+            return
+        }
+
+        const product = results[selectedIndex]
+        const position = selectedIndex + 1
+        const total = results.length
+        const categoryText = product.category ? ` in the ${product.category} category` : ''
+        const selectionAnnouncement = `${product.name} selected${categoryText}. Result ${position} of ${total}.`
+
+        setAnnounceMessage(selectionAnnouncement)
+    }, [isOpen, results, selectedIndex])
 
     useEffect(() => {
         if (!isOpen) {
@@ -281,6 +347,32 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
     }, [closeSearch, focusOption, handleResultClick, isOpen, results])
 
     useEffect(() => {
+        if (isOpen) {
+            return
+        }
+
+        const focusTarget = pendingFocusRef.current
+        if (!(focusTarget instanceof HTMLElement)) {
+            pendingFocusRef.current = null
+            return
+        }
+
+        pendingFocusRef.current = null
+
+        const focusTimer = window.setTimeout(() => {
+            if (typeof focusTarget.focus === 'function') {
+                try {
+                    focusTarget.focus({ preventScroll: true })
+                } catch {
+                    focusTarget.focus()
+                }
+            }
+        }, 0)
+
+        return () => window.clearTimeout(focusTimer)
+    }, [isOpen])
+
+    useEffect(() => {
         if (!isOpen) {
             return
         }
@@ -357,6 +449,11 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
                                     ref={searchInputRef}
                                     type="text"
                                     value={query}
+                                    role="combobox"
+                                    aria-controls={listboxId}
+                                    aria-expanded={results.length > 0}
+                                    aria-autocomplete="list"
+                                    aria-activedescendant={selectedIndex >= 0 ? listboxId + '-option-' + selectedIndex : undefined}
                                     onChange={(event) => setQuery(event.target.value)}
                                     onKeyDown={(event) => {
                                         if (event.key === 'ArrowDown' && results.length) {
@@ -460,3 +557,4 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
 }
 
 export default SearchNavigation
+

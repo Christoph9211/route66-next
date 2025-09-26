@@ -14,7 +14,7 @@ import './styles/fa/icons.min.css'
 
 export const metadata: Metadata = {
     title: 'Route 66 Hemp - Premium Hemp Products | St Robert, MO',
-    description: 'Premium hemp products in St Robert, Missouri. Quality THCA flower, concentrates, and vapes. Serving Pulaski County and Fort Leonard Wood area.',
+    description: 'Premium hemp products in St Robert, Missouri. Quality THCA flower, Concentrates, and Edibles. Serving Pulaski County and Fort Leonard Wood area.',
     keywords: [
         'CBD', 'THCA', 'Cannabis', 'Hemp', 'Route 66 Hemp', 'St Robert MO', 'Pulaski County',
         'Fort Leonard Wood', 'Dispensary', 'Cannabis Accessories'
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
         type: 'website',
         url: 'https://www.route66hemp.com',
         title: 'Route 66 Hemp - Premium Hemp Products | St Robert, MO',
-        description: 'Premium hemp products in St Robert, Missouri. Quality THCA flower, concentrates, and vapes. Serving Pulaski County and Fort Leonard Wood area.',
+        description: 'Premium hemp products in St Robert, Missouri. Quality THCA flower, Concentrates, and Edibles. Serving Pulaski County and Fort Leonard Wood area.',
         siteName: 'Route 66 Hemp',
         locale: 'en_US',
     },

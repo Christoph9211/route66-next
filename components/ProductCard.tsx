@@ -48,9 +48,11 @@ export default function ProductCard({ product, priority = false, gridIndex, grid
         describedByIds.unshift(parentHeadingId)
     }
     const describedBy = describedByIds.join(' ')
+    const showProductImage = false // Toggle when real product photography is available
 
     return (
         <div
+            id={cardId}
             className={`product-card relative min-w-[285px] rounded-lg bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 dark:bg-gray-800 focus-enhanced ${isOutOfStock ? 'opacity-75' : ''}`}
             role="article"
             tabIndex={0}
@@ -74,14 +76,22 @@ export default function ProductCard({ product, priority = false, gridIndex, grid
                     {product.banner}
                 </div>
             )}
-            <Image
-                src="/assets/images/placeholder.webp"
-                alt={product.name}
-                width={400}
-                height={300}
-                priority={priority}
-                className="mb-4 h-48 w-full rounded object-cover"
-            />
+            <div className="mb-4">
+                {showProductImage ? (
+                    <Image
+                        src="/assets/images/placeholder.webp"
+                        alt={product.name}
+                        width={400}
+                        height={300}
+                        priority={priority}
+                        className="h-48 w-full rounded object-cover"
+                    />
+                ) : (
+                    <div className="flex h-48 w-full items-center justify-center rounded border border-dashed border-gray-200 bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:border-gray-700 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 dark:text-gray-300">
+                        <span>Product imagery coming soon</span>
+                    </div>
+                )}
+            </div>
             <div className="mb-4">
                 <h3 id={titleId} className="text-lg font-semibold text-gray-900 dark:text-white">{product.name}</h3>
                 <p id={categoryId} className="text-sm text-gray-600 dark:text-gray-300">{product.category || 'N/A'}</p>
@@ -116,3 +126,5 @@ export default function ProductCard({ product, priority = false, gridIndex, grid
         </div>
     )
 }
+
+
