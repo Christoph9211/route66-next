@@ -5,7 +5,7 @@ import fs from 'fs/promises'
 import path from 'path'
 
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
     const file = await fs.readFile(
