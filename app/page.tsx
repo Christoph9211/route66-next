@@ -4,6 +4,9 @@ import HomePageContent from '@/components/HomePage'
 import fs from 'fs/promises'
 import path from 'path'
 
+
+export const dynamic = 'force-static'
+
 export default async function HomePage() {
     const file = await fs.readFile(
         path.join(process.cwd(), 'public', 'products', 'products.json'),
