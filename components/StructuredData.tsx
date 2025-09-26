@@ -15,10 +15,11 @@ function extractCspNonce(headerList: HeaderList): string | undefined {
         return undefined
     }
 
-    const directive = cspHeader
-        .split(';')
-        .map((entry) => entry.trim())
-        .find((entry) => entry.startsWith('script-src') || entry.startsWith('default-src'))
+    const directives = cspHeader.split(';').map((entry) => entry.trim())
+
+    const directive =
+        directives.find((entry) => entry.startsWith('script-src')) ??
+        directives.find((entry) => entry.startsWith('default-src'))
 
     if (!directive) {
         return undefined
