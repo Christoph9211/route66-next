@@ -7,7 +7,7 @@ import { headers } from 'next/headers'
  * @returns {Promise<JSX.Element>} The StructuredData component.
  */
 async function StructuredData() {
-    const nonce = (await headers()).get('x-csp-nonce') ?? undefined
+    const nonce = (await headers()).get('x-nonce') ?? undefined
 
     const businessData = {
         '@context': 'https://schema.org',

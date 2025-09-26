@@ -36,7 +36,7 @@ export function middleware(request: NextRequest) {
   ].join('; ')
 
   const requestHeaders = new Headers(request.headers)
-  requestHeaders.set('x-csp-nonce', nonce)
+  requestHeaders.set('x-nonce', nonce)
 
   const response = NextResponse.next({
     request: {
