@@ -43,13 +43,20 @@ const nextConfig: NextConfig = {
         // HTML pages should have shorter cache times and no 'no-store'
         {
           source: '/(.*)',
-          headers: securityHeaders.filter(h => h.key !== 'Cache-Control').concat([
-            { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }, // Allows bfcache
-          ]),
+          headers: securityHeaders
+            .filter(h => h.key !== 'Cache-Control')
+            .concat([
+              { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }, // Allows bfcache
+            ]),
         },
       ]
     } catch (error) {
-      console.error('Error generating headers:', error)
+      if (error instanceof Error) {
+        console.error('Error generating headers:', error.message)
+        console.error('Error generating headers stack:', error.stack)
+      } else {
+        console.error('Error generating headers:', error)
+      }
       return []
     }
   },
@@ -61,7 +68,12 @@ const nextConfig: NextConfig = {
   // Generate static pages where possible
   generateBuildId: async () => {
     // Use a consistent build ID for better caching
-    return process.env.BUILD_ID || 'default-build-id'
+    const buildId = process.env.BUILD_ID || 'default-build-id'
+    if (typeof buildId !== 'string') {
+      console.error('BUILD_ID must be a string')
+      return 'default-build-id'
+    }
+    return buildId
   },
 }
 
