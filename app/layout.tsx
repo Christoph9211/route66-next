@@ -1,3 +1,4 @@
+// app/layout.tsx
 import './globals.css'
 import { Metadata } from 'next'
 import type { Viewport } from 'next'
@@ -37,11 +38,16 @@ export const metadata: Metadata = {
     },
     authors: [{ name: 'Christopher Gibbons', url: 'mailto:route66hemp@gmail.com' }],
 }
+
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: 'black', // optional
+  themeColor: 'black',
 };
+
+// Ensure proper caching headers for bfcache compatibility
+export const dynamic = 'force-static' // Changed from 'force-dynamic'
+export const revalidate = 3600 // Revalidate every hour
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (

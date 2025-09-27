@@ -267,3 +267,31 @@ button {
     color: white;
   }
 }
+
+/* bfcache enhancements */
+/* Handle modal open state without JavaScript manipulation of body styles */
+body[data-modal-open="true"] {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+/* Ensure smooth transitions when returning from bfcache */
+* {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Prevent layout shifts during bfcache restoration */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* Ensure proper rendering after bfcache restoration */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}

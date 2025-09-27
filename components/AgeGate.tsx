@@ -1,3 +1,4 @@
+// components/AgeGate.tsx
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -16,6 +17,7 @@ function cookieOptions() {
     sameSite: 'Lax' as const,
     secure: isSecure,
     path: '/',
+    // Don't set httpOnly from client-side
   }
 }
 
@@ -26,6 +28,9 @@ function AgeGate() {
   const modalRef = useRef<HTMLDivElement | null>(null)
 
   const evaluateState = useCallback(() => {
+    // Only run on client-side
+    if (typeof window === 'undefined') return
+    
     const hasAgeCookie = Cookies.get(AGE_COOKIE) === 'true'
     const consentStatus = Cookies.get(CONSENT_COOKIE)
 
@@ -46,7 +51,37 @@ function AgeGate() {
   }, [])
 
   useEffect(() => {
-    evaluateState()
+    // Delay evaluation slightly to ensure proper hydration
+    const timer = setTimeout(() => {
+      evaluateState()
+    }, 10)
+    
+    return () => clearTimeout(timer)
+  }, [evaluateState])
+
+  // Listen for pageshow event to handle bfcache restoration
+  useEffect(() => {
+    const handlePageShow = (event: PageTransitionEvent) => {
+      // Re-evaluate state when page is shown from bfcache
+      if (event.persisted) {
+        evaluateState()
+      }
+    }
+
+    window.addEventListener('pageshow', handlePageShow)
+    return () => window.removeEventListener('pageshow', handlePageShow)
+  }, [evaluateState])
+
+  // Handle visibility change (for mobile browsers)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        evaluateState()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
   }, [evaluateState])
 
   useEffect(() => {
@@ -54,13 +89,14 @@ function AgeGate() {
     const siteContent = document.querySelector('[data-site-content]') as HTMLElement | null
 
     if (isOpen) {
-      document.body.style.overflow = 'hidden'
+      // Use data attributes instead of inline styles to avoid bfcache issues
+      document.body.dataset.modalOpen = 'true'
       if (siteContent) {
         siteContent.setAttribute('inert', '')
         siteContent.setAttribute('aria-hidden', 'true')
       }
     } else {
-      document.body.style.overflow = ''
+      delete document.body.dataset.modalOpen
       if (siteContent) {
         siteContent.removeAttribute('inert')
         siteContent.removeAttribute('aria-hidden')
@@ -68,7 +104,7 @@ function AgeGate() {
     }
 
     return () => {
-      document.body.style.overflow = ''
+      delete document.body.dataset.modalOpen
       if (siteContent) {
         siteContent.removeAttribute('inert')
         siteContent.removeAttribute('aria-hidden')
@@ -84,12 +120,6 @@ function AgeGate() {
     return () => window.clearTimeout(timer)
   }, [isOpen, step])
 
-  useEffect(() => {
-    const handler = () => evaluateState()
-    window.addEventListener('focus', handler)
-    return () => window.removeEventListener('focus', handler)
-  }, [evaluateState])
-
   const closeModal = useCallback(() => {
     setIsOpen(false)
     setStep(null)
@@ -98,7 +128,10 @@ function AgeGate() {
   const handleAgeConfirm = useCallback(() => {
     try {
       Cookies.set(AGE_COOKIE, 'true', cookieOptions())
-      localStorage.setItem('isAdult', 'true')
+      // Use sessionStorage as fallback (doesn't interfere with bfcache)
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        sessionStorage.setItem('isAdult', 'true')
+      }
     } catch {
       // ignore storage failures
     }
@@ -131,7 +164,10 @@ function AgeGate() {
       Cookies.set(CONSENT_COOKIE, status, cookieOptions())
 
       try {
-        localStorage.setItem('cookieConsent', status === 'accepted' ? 'accepted' : 'declined')
+        // Use sessionStorage instead of localStorage for bfcache compatibility
+        if (typeof window !== 'undefined' && window.sessionStorage) {
+          sessionStorage.setItem('cookieConsent', status === 'accepted' ? 'accepted' : 'declined')
+        }
       } catch {
         // ignore storage failures
       }
@@ -153,6 +189,8 @@ function AgeGate() {
       escapeDeactivates: false,
       clickOutsideDeactivates: false,
       initialFocus: () => primaryActionRef.current ?? modalRef.current ?? undefined,
+      // Allow focus trap to work with bfcache
+      returnFocusOnDeactivate: false,
     }),
     []
   )
