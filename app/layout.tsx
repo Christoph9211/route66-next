@@ -14,6 +14,7 @@ import './styles/fa/regular.min.css'
 import './styles/fa/solid.min.css'
 import './styles/fa/icons.min.css'
 
+export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
     title: 'Route 66 Hemp - Premium Hemp Products | St Robert, MO',
     description: 'Premium hemp products in St Robert, Missouri. Quality THCA flower, Concentrates, and Edibles. Serving Pulaski County and Fort Leonard Wood area.',
@@ -45,10 +46,6 @@ export const viewport: Viewport = {
   initialScale: 1,
   themeColor: 'black',
 };
-
-// Ensure proper caching headers for bfcache compatibility
-export const dynamic = 'force-static' // Changed from 'force-dynamic'
-export const revalidate = 3600 // Revalidate every hour
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
     const requestHeaders = await headers();
