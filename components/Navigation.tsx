@@ -28,6 +28,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
     const [activeSection, setActiveSection] = useState('home')
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
     const [dropdownTimeout, setDropdownTimeout] = useState<ReturnType<typeof setTimeout> | null>(null)
+    const [shouldRenderMobileMenu, setShouldRenderMobileMenu] = useState(false)
 
     // Handle scroll effects
     useEffect(() => {
@@ -57,6 +58,27 @@ function Navigation({ products = [] }: { products: Product[] }) {
             }
         }
     }, [dropdownTimeout])
+
+    // Delay unmount to preserve closing transition without trapping focusable elements
+    useEffect(() => {
+        let timeoutId: ReturnType<typeof setTimeout> | null = null
+
+        if (isMenuOpen) {
+            if (!shouldRenderMobileMenu) {
+                setShouldRenderMobileMenu(true)
+            }
+        } else if (shouldRenderMobileMenu) {
+            timeoutId = setTimeout(() => {
+                setShouldRenderMobileMenu(false)
+            }, 300)
+        }
+
+        return () => {
+            if (timeoutId) {
+                clearTimeout(timeoutId)
+            }
+        }
+    }, [isMenuOpen, shouldRenderMobileMenu])
 
 
     /**
@@ -164,6 +186,9 @@ function Navigation({ products = [] }: { products: Product[] }) {
 
         scrollToSection(targetId)
     }
+
+    const mobileMenuAriaHidden = !isMenuOpen && !shouldRenderMobileMenu ? true : undefined
+    const mobileMenuItemTabIndex = isMenuOpen ? 0 : -1
 
     return (
         <>
@@ -352,85 +377,87 @@ function Navigation({ products = [] }: { products: Product[] }) {
                             : 'max-h-0 overflow-hidden opacity-0'
                     }`}
                     id="mobile-menu"
-                    aria-hidden={!isMenuOpen}
+                    aria-hidden={mobileMenuAriaHidden}
                 >
-                    <div className="border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-                        <div className="space-y-1 px-2 pb-3 pt-2">
-                            {navigationItems.map((item) => (
-                                <div key={item.id}>
-                                    <a
-                                        href={`#${item.targetId}`}
-                                        onClick={(e) =>
-                                            handleNavClick(
-                                                e,
-                                                item.targetId,
-                                                item.id
-                                            )
-                                        }
-                                        aria-current={
-                                            activeSection === item.id
-                                                ? 'page'
-                                                : undefined
-                                        }
-                                        tabIndex={isMenuOpen ? 0 : -1}
-                                        className={`focus-enhanced flex items-center rounded-md px-3 py-2 text-base font-medium transition-colors ${
-                                            activeSection === item.id
-                                                ? 'bg-green-700 text-white'
-                                                  : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'
-                                        }`}
-                                    >
-                                        <i
-                                            className={`${item.icon} mr-3`}
-                                            aria-hidden="true"
-                                        />
-                                        {item.label}
-                                    </a>
-
-                                    {/* Mobile Submenu */}
-                                    {item.submenu && (
-                                        <div
-                                            className=" auto-contrast ml-6 mt-1 space-y-1"
-                                            role="menu"
-                                            aria-label={`${item.label} submenu`}
+                    {shouldRenderMobileMenu && (
+                        <div className="border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                            <div className="space-y-1 px-2 pb-3 pt-2">
+                                {navigationItems.map((item) => (
+                                    <div key={item.id}>
+                                        <a
+                                            href={`#${item.targetId}`}
+                                            onClick={(e) =>
+                                                handleNavClick(
+                                                    e,
+                                                    item.targetId,
+                                                    item.id
+                                                )
+                                            }
+                                            aria-current={
+                                                activeSection === item.id
+                                                    ? 'page'
+                                                    : undefined
+                                            }
+                                            tabIndex={mobileMenuItemTabIndex}
+                                            className={`focus-enhanced flex items-center rounded-md px-3 py-2 text-base font-medium transition-colors ${
+                                                activeSection === item.id
+                                                    ? 'bg-green-700 text-white'
+                                                    : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'
+                                            }`}
                                         >
-                                            {item.submenu.map((subItem) => {
-                                                const subTargetId = slugify(
-                                                    subItem.category
-                                                )
-                                                const subHref = `#${subTargetId}`
-                                                return (
-                                                    <a
-                                                        key={subItem.label}
-                                                        href={subHref}
-                                                        onClick={(e) =>
-                                                            handleNavClick(
-                                                                e,
-                                                                subTargetId,
-                                                                item.id
-                                                            )
-                                                        }
-                                                        className="focus-enhanced block px-3 py-2 text-gray-600 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400"
-                                                        tabIndex={isMenuOpen ? 0 : -1}
-                                                        role="menuitem"
-                                                    >
-                                                        {subItem.label}
-                                                    </a>
-                                                )
-                                            })}
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
+                                            <i
+                                                className={`${item.icon} mr-3`}
+                                                aria-hidden="true"
+                                            />
+                                            {item.label}
+                                        </a>
 
-                        {/* Mobile Contact Info */}
-                        <div className="border-t border-gray-200 px-4 py-3 dark:border-gray-700">
-                            <LocalBusinessInfo
-                                variant="minimal"
-                                className="text-gray-600 dark:text-gray-300"
-                            />
+                                        {/* Mobile Submenu */}
+                                        {item.submenu && (
+                                            <div
+                                                className=" auto-contrast ml-6 mt-1 space-y-1"
+                                                role="menu"
+                                                aria-label={`${item.label} submenu`}
+                                            >
+                                                {item.submenu.map((subItem) => {
+                                                    const subTargetId = slugify(
+                                                        subItem.category
+                                                    )
+                                                    const subHref = `#${subTargetId}`
+                                                    return (
+                                                        <a
+                                                            key={subItem.label}
+                                                            href={subHref}
+                                                            onClick={(e) =>
+                                                                handleNavClick(
+                                                                    e,
+                                                                    subTargetId,
+                                                                    item.id
+                                                                )
+                                                            }
+                                                            className="focus-enhanced block px-3 py-2 text-gray-600 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400"
+                                                            tabIndex={mobileMenuItemTabIndex}
+                                                            role="menuitem"
+                                                        >
+                                                            {subItem.label}
+                                                        </a>
+                                                    )
+                                                })}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Mobile Contact Info */}
+                            <div className="border-t border-gray-200 px-4 py-3 dark:border-gray-700">
+                                <LocalBusinessInfo
+                                    variant="minimal"
+                                    className="text-gray-600 dark:text-gray-300"
+                                />
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </header>
 
