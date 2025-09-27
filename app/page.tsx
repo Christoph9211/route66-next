@@ -2,21 +2,12 @@
 import { Suspense } from 'react'
 import StructuredData from '@/components/StructuredData'
 import HomePageContent from '@/components/HomePage'
-import fs from 'fs/promises'
-import path from 'path'
+import { getProducts } from '@/lib/products.server'
 
-// Remove force-dynamic to allow proper caching
-// export const dynamic = 'force-dynamic' // REMOVE THIS LINE
-
-// Add proper cache configuration
 export const revalidate = 3600 // Revalidate every hour
 
 export default async function HomePage() {
-    const file = await fs.readFile(
-        path.join(process.cwd(), 'public', 'products', 'products.json'),
-        'utf-8'
-    )
-    const products = JSON.parse(file)
+    const products = await getProducts()
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">

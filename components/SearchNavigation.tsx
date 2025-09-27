@@ -1,17 +1,8 @@
-'use client';
+'use client'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import AccessibilityAnnouncer from './AccessibilityAnnouncer'
 import { slugify } from '../utils/slugify'
-
-interface Product {
-    name: string
-    category: string
-    size_options: string[]
-    prices: Record<string, number>
-    thca_percentage?: number
-    banner?: string
-    availability?: Record<string, boolean>
-}
+import type { Product } from '@/types/product'
 
 function SearchNavigation({ products = [] }: { products: Product[] }) {
     const [isOpen, setIsOpen] = useState(false)

@@ -2,16 +2,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { slugify } from '@/utils/slugify'
-
-interface Product {
-    name: string
-    category: string
-    size_options: string[]
-    prices: Record<string, number>
-    thca_percentage?: number
-    banner?: string
-    availability?: Record<string, boolean>
-}
+import type { Product } from '@/types/product'
 
 interface ProductCardProps {
     product: Product

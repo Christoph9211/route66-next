@@ -55,7 +55,7 @@ export default function CookieBanner() {
     // Show on mount if already of age and no consent yet
     showIfNeeded()
 
-    // React to custom events fired from analytics-consent.js
+    // React to custom events fired from the consent flow
     const onAgeConfirmed: EventListener = () => showIfNeeded()
     const onConsentUpdated: EventListener = () => showIfNeeded()
 
@@ -77,10 +77,6 @@ export default function CookieBanner() {
     }
 
     if (ref.current) ref.current.style.display = 'none'
-
-    if (typeof window !== 'undefined' && window.tryInitAnalytics) {
-      window.tryInitAnalytics()
-    }
 
     dispatchConsentEvent('accepted')
   }
