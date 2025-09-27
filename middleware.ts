@@ -47,7 +47,12 @@ export function middleware(request: NextRequest): NextResponse {
 
   const cspDirectives: Record<string, string[]> = {
     "default-src": ["'self'"],
-    "script-src": ["'self'", `'nonce-${nonceString}'`, 'https://vitals.vercel-analytics.com'],
+    "script-src": [
+      "'self'",
+      `'nonce-${nonceString}'`,
+      'https://vitals.vercel-analytics.com',
+      'https://vitals.vercel-insights.com',
+    ],
     "connect-src": ["'self'", ...analyticsHosts],
     "style-src": ["'self'", "'unsafe-inline'"],
     "img-src": ["'self'", 'data:', 'blob:'],
