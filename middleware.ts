@@ -17,9 +17,9 @@ function generateNonceString(): string {
 
 /**
  * Sets a Content Security Policy header to prevent malicious scripts from being executed
- * The nonce is generated randomly and is used to allow the analytics script to be executed
- * The allowed sources for scripts are the analytics script, the vitals script and the vercel scripts
- * The allowed sources for connecting are the analytics script and the vitals script
+ * The nonce is generated randomly and is used to allow structured data scripts to execute
+ * The allowed sources for scripts are first-party and Vercel analytics resources
+ * The allowed sources for connecting are limited to first-party and Vercel analytics endpoints
  * The allowed sources for images are self and data: and blob:
  * The allowed sources for styles are self and 'unsafe-inline'
  * The allowed sources for fonts are self and data:
@@ -41,22 +41,13 @@ export function middleware(request: NextRequest): NextResponse {
   })
 
   const analyticsHosts = [
-    'https://www.googletagmanager.com',
-    'https://www.google-analytics.com',
     'https://vitals.vercel-analytics.com',
     'https://vitals.vercel-insights.com',
-    'https://www.gstatic.com',
   ]
 
   const cspDirectives: Record<string, string[]> = {
     "default-src": ["'self'"],
-    "script-src": [
-      "'self'",
-      `'nonce-${nonceString}'`,
-      "'strict-dynamic'",
-      'https://www.googletagmanager.com',
-      'https://www.gstatic.com',
-    ],
+    "script-src": ["'self'", `'nonce-${nonceString}'`, 'https://vitals.vercel-analytics.com'],
     "connect-src": ["'self'", ...analyticsHosts],
     "style-src": ["'self'", "'unsafe-inline'"],
     "img-src": ["'self'", 'data:', 'blob:'],

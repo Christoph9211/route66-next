@@ -125,6 +125,16 @@ function AgeGate() {
     setStep(null)
   }, [])
 
+  const dispatchAgeConfirmed = useCallback(() => {
+    if (typeof window === 'undefined') return
+    try {
+      const event = new CustomEvent('age:confirmed')
+      window.dispatchEvent(event)
+    } catch {
+      // ignore event failures
+    }
+  }, [])
+
   const handleAgeConfirm = useCallback(() => {
     try {
       Cookies.set(AGE_COOKIE, 'true', cookieOptions())
@@ -136,9 +146,7 @@ function AgeGate() {
       // ignore storage failures
     }
 
-    if (typeof window !== 'undefined') {
-      window.confirmAge21?.()
-    }
+    dispatchAgeConfirmed()
 
     const consentStatus = Cookies.get(CONSENT_COOKIE)
     if (!consentStatus) {
@@ -147,7 +155,7 @@ function AgeGate() {
     } else {
       closeModal()
     }
-  }, [closeModal])
+  }, [closeModal, dispatchAgeConfirmed])
 
   const dispatchConsentEvent = useCallback((status: 'accepted' | 'rejected') => {
     if (typeof window === 'undefined') return
@@ -170,12 +178,6 @@ function AgeGate() {
         }
       } catch {
         // ignore storage failures
-      }
-
-      if (status === 'accepted') {
-        if (typeof window !== 'undefined') {
-          window.tryInitAnalytics?.()
-        }
       }
 
       dispatchConsentEvent(status)

@@ -2,11 +2,9 @@
 import './globals.css'
 import { Metadata } from 'next'
 import type { Viewport } from 'next'
-import { headers } from 'next/headers'
 import CanonicalUrl from '@/components/CanonicalUrl'
 import AgeGate from '@/components/AgeGate'
 import AnalyticsConsentGate from '@/components/AnalyticsConsentGate'
-import Script from 'next/script'
 import SkipLinks from '@/components/SkipLinks'
 import './styles/fa/fontawesome.min.css'
 import './styles/fa/brands.min.css'
@@ -47,10 +45,7 @@ export const viewport: Viewport = {
   themeColor: 'black',
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-    const requestHeaders = await headers();
-    const nonce = requestHeaders.get('x-csp-nonce') ?? undefined;
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" suppressHydrationWarning>
             <head>
@@ -59,19 +54,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <link rel="preload" as="font" href="/webfonts/fa-regular-400.woff2" type="font/woff2" crossOrigin="anonymous" />
                 <link rel="preload" as="font" href="/webfonts/fa-brands-400.woff2" type="font/woff2" crossOrigin="anonymous" />
                 <CanonicalUrl />
-                <script
-                    nonce={nonce}
-                    dangerouslySetInnerHTML={{
-                        __html: `window.__next_script_nonce__ = ${JSON.stringify(nonce)};
-                        if (typeof globalThis === 'undefined') {
-                            try {
-                                Object.defineProperty(window, 'globalThis', { configurable: true, enumerable: false, value: window, writable: true });
-                            } catch {
-                                window.globalThis = window;
-                            }
-                        }`,
-                    }}
-                />
             </head>
             <body className="bg-gray-50 font-sans antialiased dark:bg-gray-900 transition-colors duration-300">
                 <SkipLinks />
@@ -80,8 +62,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     {children}
                     <AnalyticsConsentGate />
                 </div>
-                {/* Load age/consent → analytics wiring */}
-                <Script src="/analytics-consent.js" strategy="afterInteractive" nonce={nonce} />
             </body>
         </html>
     )

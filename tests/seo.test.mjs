@@ -23,10 +23,8 @@ test('layout has html lang attribute and canonical link', () => {
   assert.match(source, /<CanonicalUrl\s*\/?\s*>/, 'CanonicalUrl not included in <head>')
 })
 
-test('consent gating wiring present in layout', () => {
+test('consent gating components present in layout', () => {
   const source = readFile('app/layout.tsx')
   assert.match(source, /<AgeGate\s*\/?\s*>/, 'Missing <AgeGate />')
   assert.match(source, /<AnalyticsConsentGate\s*\/?\s*>/, 'Missing <AnalyticsConsentGate />')
-  assert.ok(fs.existsSync(path.resolve('public/analytics-consent.js')), 'public/analytics-consent.js not found')
-  assert.match(source, /<Script[^>]+src=(["'])\/analytics-consent\.js\1/, 'Consent script not included')
 })
