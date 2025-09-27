@@ -1,12 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const ANALYTICS_SCRIPT_SOURCES = [
-  'https://www.googletagmanager.com',
-  'https://www.google-analytics.com',
-  'https://analytics.google.com',
-  'https://va.vercel-scripts.com',
-  'https://vitals.vercel-insights.com',
-]
 
 /**
  * Generates a random nonce string for use in a Content Security Policy header.
@@ -38,19 +31,6 @@ function generateNonceString(): string {
  */
 export function middleware(request: NextRequest): NextResponse {
   const nonceString = generateNonceString()
-
-  const contentSecurityPolicy = [
-    "default-src 'self'",
-    `script-src 'self' 'nonce-${nonceString}' ${ANALYTICS_SCRIPT_SOURCES.join(' ')}`,
-    `connect-src 'self' 'unsafe-eval' ${ANALYTICS_SCRIPT_SOURCES.join(' ')}`,
-    "img-src 'self' data: blob:",
-    "style-src 'self' 'unsafe-inline'",
-    "font-src 'self' data:",
-    "object-src 'none'",
-    "base-uri 'self'",
-    "frame-ancestors 'none'",
-  ].join('; ')
-
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set('x-csp-nonce', nonceString)
 
@@ -60,7 +40,21 @@ export function middleware(request: NextRequest): NextResponse {
     },
   })
 
-  response.headers.set('Content-Security-Policy', contentSecurityPolicy)
+  response.headers.set(
+    'Content-Security-Policy',
+    Object.entries({
+      "default-src": ["'self'"],
+      "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      "connect-src": ["'self'", "'unsafe-inline'"], 
+      "style-src": ["'self'", "'unsafe-inline'"],
+      "font-src": ["'self'", "data:"],
+      "object-src": ["'none'"],
+      "base-uri": ["'self'"],
+      "frame-ancestors": ["'none'"],
+    })
+      .map(([key, values]) => `${key} ${values.join(' ')}`)
+      .join('; ')
+  )
 
   return response
 }

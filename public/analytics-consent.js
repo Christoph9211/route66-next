@@ -86,7 +86,7 @@
     document.head.appendChild(script)
 
     window.gtag('js', new Date())
-    window.gtag('config', GA_ID, { anonymize_ip: true })
+    window.gtag('config', GA_ID, { anonymize_ip: true, cookie_domain: 'none' })
   }
 
   function tryInitAnalytics() {
@@ -141,3 +141,4 @@
     tryInitAnalytics()
   }
 })()
+
