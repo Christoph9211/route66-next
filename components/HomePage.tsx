@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import Navigation from '@/components/Navigation'
 import FooterNavigation from '@/components/FooterNavigation'
 import QuickNavigation from '@/components/QuickNavigation'
@@ -13,38 +13,17 @@ import HeroSection from '@/components/HeroSection'
 import AboutSection from '@/components/AboutSection'
 import ContactSection from '@/components/ContactSection'
 import ProductSection from '@/components/ProductSection'
-
-interface Product {
-    name: string
-    category: string
-    size_options: string[]
-    prices: Record<string, number>
-    thca_percentage?: number
-    banner?: string
-    availability?: Record<string, boolean>
-}
+import { groupProductsByCategory } from '@/lib/products'
+import type { Product } from '@/types/product'
 
 export default function HomePage({ products }: { products: Product[] }) {
     useKeyboardNavigation()
 
+    const productsByCategory = useMemo(() => groupProductsByCategory(products), [products])
+
     useEffect(() => {
         applyAutoContrast()
-    }, [products])
-
-    const productsByCategory = products.reduce((acc: Record<string, Product[]>, product: Product) => {
-        const cat = product.category || 'Uncategorized'
-        if (!acc[cat]) acc[cat] = []
-        acc[cat].push(product)
-        return acc
-    }, {})
-
-    Object.keys(productsByCategory).forEach(cat => {
-        productsByCategory[cat].sort((a: Product, b: Product) => {
-            const rank = (p: Product) =>
-                p.banner === 'New' ? 0 : p.banner === 'Out of Stock' ? 2 : 1
-            return rank(a) - rank(b) || a.name.localeCompare(b.name)
-        })
-    })
+    }, [productsByCategory])
 
     return (
         <>

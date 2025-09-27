@@ -46,6 +46,16 @@
     document.cookie = cookie
   }
 
+  function setSessionItem(key, value) {
+    try {
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        window.sessionStorage.setItem(key, value)
+      }
+    } catch {
+      // ignore storage failures
+    }
+  }
+
   function hasConfirmedAge() {
     return readCookie(AGE_COOKIE) === 'true'
   }
@@ -83,6 +93,10 @@
     const script = document.createElement('script')
     script.async = true
     script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID)
+    const nonce = typeof window !== 'undefined' ? window.__next_script_nonce__ : undefined
+    if (nonce) {
+      script.setAttribute('nonce', String(nonce))
+    }
     document.head.appendChild(script)
 
     window.gtag('js', new Date())
@@ -97,11 +111,7 @@
 
   function storeConsent(status) {
     writeCookie(CONSENT_COOKIE, status)
-    try {
-      localStorage.setItem('cookieConsent', status === 'accepted' ? 'accepted' : 'declined')
-    } catch {
-      // ignore storage failures
-    }
+    setSessionItem('cookieConsent', status === 'accepted' ? 'accepted' : 'declined')
     if (status === 'accepted') {
       tryInitAnalytics()
     } else {
@@ -111,11 +121,7 @@
 
   function confirmAge21() {
     writeCookie(AGE_COOKIE, 'true')
-    try {
-      localStorage.setItem('isAdult', 'true')
-    } catch {
-      // ignore storage failures
-    }
+    setSessionItem('isAdult', 'true')
     try {
       const evt = new CustomEvent('age:confirmed')
       window.dispatchEvent(evt)

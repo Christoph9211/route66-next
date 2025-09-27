@@ -40,21 +40,37 @@ export function middleware(request: NextRequest): NextResponse {
     },
   })
 
-  response.headers.set(
-    'Content-Security-Policy',
-    Object.entries({
-      "default-src": ["'self'"],
-      "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-      "connect-src": ["'self'", "'unsafe-inline'"], 
-      "style-src": ["'self'", "'unsafe-inline'"],
-      "font-src": ["'self'", "data:"],
-      "object-src": ["'none'"],
-      "base-uri": ["'self'"],
-      "frame-ancestors": ["'none'"],
-    })
-      .map(([key, values]) => `${key} ${values.join(' ')}`)
-      .join('; ')
-  )
+  const analyticsHosts = [
+    'https://www.googletagmanager.com',
+    'https://www.google-analytics.com',
+    'https://vitals.vercel-analytics.com',
+    'https://vitals.vercel-insights.com',
+    'https://www.gstatic.com',
+  ]
+
+  const cspDirectives: Record<string, string[]> = {
+    "default-src": ["'self'"],
+    "script-src": [
+      "'self'",
+      `'nonce-${nonceString}'`,
+      "'strict-dynamic'",
+      'https://www.googletagmanager.com',
+      'https://www.gstatic.com',
+    ],
+    "connect-src": ["'self'", ...analyticsHosts],
+    "style-src": ["'self'", "'unsafe-inline'"],
+    "img-src": ["'self'", 'data:', 'blob:'],
+    "font-src": ["'self'", 'data:'],
+    "object-src": ["'none'"],
+    "base-uri": ["'self'"],
+    "frame-ancestors": ["'none'"],
+  }
+
+  const csp = Object.entries(cspDirectives)
+    .map(([key, values]) => `${key} ${values.join(' ')}`)
+    .join('; ')
+
+  response.headers.set('Content-Security-Policy', csp)
 
   return response
 }
