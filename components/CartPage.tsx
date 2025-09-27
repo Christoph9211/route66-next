@@ -34,6 +34,7 @@ export default function CartPage() {
                         Your Cart
                     </h2>
                     <button
+                        type="button"
                         onClick={closeCartPage}
                         className="mb-4 w-1/4 rounded bg-emerald-600 px-4 py-2 text-lg font-bold text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
                         aria-label="Close cart"
@@ -66,6 +67,7 @@ export default function CartPage() {
                                         {(item.unitPrice * item.qty).toFixed(2)}
                                     </p>
                                     <button
+                                        type="button"
                                         onClick={() =>
                                             removeItem(item.variantId)
                                         }
@@ -85,6 +87,7 @@ export default function CartPage() {
                             </p>
                         </div>
                         <button
+                            type="button"
                             className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-700 px-5 py-3 font-semibold text-white shadow hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:ring-offset-2"
                         >
                             Checkout

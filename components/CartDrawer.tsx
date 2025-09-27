@@ -56,6 +56,7 @@ export default function CartDrawer() {
                         Cart ({itemCount})
                     </h2>
                     <button
+                        type="button"
                         onClick={closeCart}
                         aria-label="Close cart"
                         className="mb-4 w-1/4 rounded bg-emerald-600 px-4 py-2 text-lg font-bold text-white dark:text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
@@ -84,6 +85,7 @@ export default function CartDrawer() {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <button
+                                        type="button"
                                         className="px-2 font-semibold text-gray-900 dark:text-white"
                                         onClick={() =>
                                             window.dispatchEvent(
@@ -102,6 +104,7 @@ export default function CartDrawer() {
                                     </button>
                                     <span className="font-semibold text-gray-900 dark:text-white">{item.qty}</span>
                                     <button
+                                        type="button"
                                         className="px-2 text-gray-900 dark:text-white"
                                         onClick={() =>
                                             window.dispatchEvent(
@@ -119,6 +122,7 @@ export default function CartDrawer() {
                                         <span aria-hidden="true">+</span>
                                     </button>
                                     <button
+                                        type="button"
                                         className="text-red-600"
                                         onClick={() =>
                                             window.dispatchEvent(

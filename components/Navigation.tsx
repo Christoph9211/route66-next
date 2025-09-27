@@ -354,6 +354,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
 
                             {/* Mobile menu button */}
                             <button
+                                type="button"
                                 onClick={toggleMenu}
                                 aria-expanded={isMenuOpen}
                                 aria-controls="mobile-menu"

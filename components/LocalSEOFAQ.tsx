@@ -81,6 +81,7 @@ function LocalSEOFAQ() {
                             className="rounded-lg bg-white shadow-md dark:bg-gray-800"
                         >
                             <button
+                                type ="button"
                                 className="focus-enhanced flex w-full items-center justify-between rounded-lg px-6 py-4 text-left transition-colors hover:bg-gray-50 dark:hover:bg-gray-700"
                                 onClick={() => toggleFAQ(index)}
                                 aria-expanded={openIndex === index}

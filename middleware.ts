@@ -43,11 +43,13 @@ export function middleware(request: NextRequest): NextResponse {
   response.headers.set(
     'Content-Security-Policy',
     Object.entries({
-      "default-src": ["'self'"],
-      "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-      "connect-src": ["'self'", "'unsafe-inline'"], 
-      "style-src": ["'self'", "'unsafe-inline'"],
-      "font-src": ["'self'", "data:"],
+      "default-src": ["'none'"],
+      "script-src": ["'self'"],
+      "connect-src": ["'self'"],
+      "img-src": ["'self'"], 
+      "style-src": ["'self'"],
+      "form-action": ["'self'"],
+      "font-src": ["'self'"],
       "object-src": ["'none'"],
       "base-uri": ["'self'"],
       "frame-ancestors": ["'none'"],

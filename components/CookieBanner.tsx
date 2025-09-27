@@ -114,12 +114,14 @@ export default function CookieBanner() {
       </div>
       <div className="flex shrink-0 items-center gap-2">
         <button
+          type="button"
           onClick={decline}
           className="rounded-md border border-white/30 px-3 py-1.5 text-sm hover:bg-white/10"
         >
           Decline
         </button>
         <button
+          type="button"
           onClick={accept}
           className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-700"
         >

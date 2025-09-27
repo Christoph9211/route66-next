@@ -89,6 +89,7 @@ function QuickNavigation() {
 
                     return (
                         <button
+                            type="button"
                             key={link.id}
                             onClick={() => handleQuickNavClick(link.id)}
                             className={buttonClasses}
