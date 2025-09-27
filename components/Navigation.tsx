@@ -1,20 +1,10 @@
-'use client';
+'use client'
 import React, { useState, useEffect } from 'react'
 import LocalBusinessInfo from './LocalBusinessInfo'
 import SearchNavigation from './SearchNavigation'
 import { slugify } from '../utils/slugify'
 import { scrollToSection } from '../utils/scrollToSection'
-
-
-interface Product {
-    name: string
-    category: string
-    size_options: string[]
-    prices: Record<string, number>
-    thca_percentage?: number
-    banner?: string
-    availability?: Record<string, boolean>
-}
+import type { Product } from '@/types/product'
 
 /**
  * Navigation component for the header of the website.
