@@ -1,4 +1,3 @@
-import { cache } from 'react'
 import path from 'node:path'
 import { readFile } from 'node:fs/promises'
 import { Product } from '@/types/product'
@@ -119,5 +118,7 @@ async function loadProducts(): Promise<Product[]> {
   return data.map((entry, index) => parseProduct(entry, index))
 }
 
-export const getProducts = cache(async (): Promise<Product[]> => loadProducts())
+export async function getProducts(): Promise<Product[]> {
+  return loadProducts()
+}
 
