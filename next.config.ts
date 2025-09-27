@@ -16,38 +16,42 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   async headers() {
-    return [
-      // Different caching strategies for different resource types
-      {
-        source: '/fonts/(.*)',
-        headers: [
-          ...securityHeaders,
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-        ],
-      },
-      {
-        source: '/images/(.*)',
-        headers: [
-          ...securityHeaders,
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-        ],
-      },
-      {
-        source: '/_next/static/(.*)',
-        headers: [
-          ...securityHeaders,
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-        ],
-      },
-      // HTML pages should have shorter cache times and no 'no-store'
-      {
-        source: '/(.*)',
-        headers: [
-          ...securityHeaders.filter(h => h.key !== 'Cache-Control'),
-          { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }, // Allows bfcache
-        ],
-      },
-    ]
+    try {
+      return [
+        // Different caching strategies for different resource types
+        {
+          source: '/fonts/(.*)',
+          headers: [
+            ...securityHeaders,
+            { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          ],
+        },
+        {
+          source: '/images/(.*)',
+          headers: [
+            ...securityHeaders,
+            { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          ],
+        },
+        {
+          source: '/_next/static/(.*)',
+          headers: [
+            ...securityHeaders,
+            { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          ],
+        },
+        // HTML pages should have shorter cache times and no 'no-store'
+        {
+          source: '/(.*)',
+          headers: securityHeaders.filter(h => h.key !== 'Cache-Control').concat([
+            { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }, // Allows bfcache
+          ]),
+        },
+      ]
+    } catch (error) {
+      console.error('Error generating headers:', error)
+      return []
+    }
   },
   
   // Optimize for production
