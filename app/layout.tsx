@@ -62,7 +62,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <script
                     nonce={nonce}
                     dangerouslySetInnerHTML={{
-                        __html: `window.__next_script_nonce__ = ${JSON.stringify(nonce)};`,
+                        __html: `window.__next_script_nonce__ = ${JSON.stringify(nonce)};
+                        if (typeof globalThis === 'undefined') {
+                            try {
+                                Object.defineProperty(window, 'globalThis', { configurable: true, enumerable: false, value: window, writable: true });
+                            } catch {
+                                window.globalThis = window;
+                            }
+                        }`,
                     }}
                 />
             </head>
