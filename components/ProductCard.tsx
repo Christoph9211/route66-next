@@ -44,7 +44,7 @@ export default function ProductCard({ product, priority = false, gridIndex, grid
     return (
         <article
             id={cardId}
-            className={`product-card relative min-w-[285px] w-full rounded-lg bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800 focus-enhanced ${isOutOfStock ? 'opacity-75' : ''}`}
+            className={`product-card relative flex h-full w-full flex-col sm:w-fit sm:min-w-[285px] rounded-lg bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800 focus-enhanced ${isOutOfStock ? 'opacity-75' : ''}`}
             tabIndex={0}
             data-product-card="true"
             data-grid-index={typeof gridIndex === 'number' ? gridIndex : undefined}
@@ -82,7 +82,7 @@ export default function ProductCard({ product, priority = false, gridIndex, grid
                     </div>
                 )}
             </div>
-            <div className="mb-4">
+            <div className="mb-4 flex-1">
                 <h3 id={titleId} className="text-lg font-semibold text-gray-900 dark:text-white">{product.name}</h3>
                 <p id={categoryId} className="text-sm text-gray-600 dark:text-gray-300">{product.category || 'N/A'}</p>
                 {product.thca_percentage ? (
@@ -110,11 +110,9 @@ export default function ProductCard({ product, priority = false, gridIndex, grid
                     <span className="text-sm font-medium text-gray-600 dark:text-gray-300">{selectedSize || 'N/A'}</span>
                 )}
             </div>
-            <div className="flex items-center justify-center">
+            <div className="mt-auto flex items-center justify-center pt-4">
                 <div id={priceId} className="text-xl font-bold text-green-600">{priceLabel}</div>
             </div>
         </article>
     )
 }
-
-

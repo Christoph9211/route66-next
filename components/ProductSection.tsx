@@ -31,13 +31,13 @@ export default function ProductSection({ title, products, categoryId, isFirstSec
                     {title}
                 </h2>
                 <ul
-                    className="grid list-none grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                    className="grid list-none grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:justify-items-start"
                     role="list"
                     aria-labelledby={headingId}
                     data-product-grid
                 >
                     {products.map((product, index) => (
-                        <li key={product.name} className="list-none">
+                        <li key={product.name} className="list-none h-full">
                             <ProductCard
                                 product={product}
                                 priority={isFirstSection && index === 0}
