@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import ScrollLink from './ScrollLink'
 
 export default function AboutSection() {
@@ -13,7 +15,9 @@ export default function AboutSection() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="lg:grid lg:grid-cols-2 lg:items-center lg:gap-8">
                     <div>
-                        <h2 id="about-heading" className="text-3xl font-bold text-gray-900 dark:text-white">About Route 66 Hemp</h2>
+                        <h2 id="about-heading" className="text-3xl font-bold text-gray-900 dark:text-white">
+                            About Route 66 Hemp
+                        </h2>
                         <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
                             Located in the heart of St Robert, Missouri, Route 66 Hemp has been serving the Pulaski County community with premium hemp products since 2025.
                         </p>
@@ -26,9 +30,19 @@ export default function AboutSection() {
                             </ScrollLink>
                         </div>
                     </div>
-                    <div className="mt-8 lg:mt-0">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="rounded-lg bg-green-50 p-6 dark:bg-green-900">
+                    <div className="mt-8 space-y-6 lg:mt-0">
+                        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-green-100 shadow-xl shadow-green-900/10 dark:border-green-800/60 dark:shadow-green-900/40">
+                            <Image
+                                src="/assets/images/route-66-hemp-storefront-st-robert-1280w.webp"
+                                alt="Route 66 Hemp storefront on Route 66 in St. Robert, Missouri"
+                                fill
+                                sizes="(min-width: 1024px) 36rem, (min-width: 640px) 28rem, 100vw"
+                                className="object-cover"
+                                priority
+                            />
+                        </div>
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div className="rounded-lg bg-green-50 p-6 shadow-sm dark:bg-green-900 dark:shadow-none">
                                 <div className="flex items-center">
                                     <i className="fas fa-certificate text-2xl text-green-600" />
                                     <div className="ml-4">
@@ -37,7 +51,7 @@ export default function AboutSection() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="rounded-lg bg-green-50 p-6 dark:bg-green-900">
+                            <div className="rounded-lg bg-green-50 p-6 shadow-sm dark:bg-green-900 dark:shadow-none">
                                 <div className="flex items-center">
                                     <i className="fas fa-users text-2xl text-green-600" />
                                     <div className="ml-4">
