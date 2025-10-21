@@ -4,6 +4,8 @@
  * elements. Uses a subtle blurred blob to create depth and updated
  * call to action styles for a more contemporary feel.
  */
+import Image from 'next/image'
+
 import ScrollLink from './ScrollLink'
 
 export default function HeroSection() {
@@ -16,11 +18,21 @@ export default function HeroSection() {
             data-section-nav
             className="relative isolate overflow-hidden py-24 text-center text-white sm:py-32"
         >
+            <div className="absolute inset-0 -z-30">
+                <Image
+                    src="/assets/images/route-66-hemp-storefront-st-robert-1920w.avif"
+                    alt="Route 66 Hemp storefront in St Robert, Missouri"
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="object-cover"
+                />
+            </div>
             {/* Background gradient */}
-            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-green-900 via-emerald-800 to-green-700" />
+            <div className="absolute inset-0 -z-20 bg-gradient-to-br from-green-900/90 via-emerald-800/85 to-green-700/80" />
             {/* Blurred accent blob */}
-            <div className="absolute left-1/2 top-1/2 -z-10 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-400 opacity-30 blur-3xl" />
-            <div className="mx-auto max-w-2xl px-6">
+            <div className="absolute left-1/2 top-1/2 -z-10 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-400/60 blur-3xl" />
+            <div className="relative mx-auto max-w-2xl px-6">
                 <h1
                     id="home-heading"
                     className="mb-6 text-5xl font-extrabold tracking-tight sm:text-6xl"
