@@ -4,6 +4,8 @@
  * elements. Uses a subtle blurred blob to create depth and updated
  * call to action styles for a more contemporary feel.
  */
+import Image from 'next/image'
+
 import ScrollLink from './ScrollLink'
 
 export default function HeroSection() {
@@ -16,10 +18,20 @@ export default function HeroSection() {
             data-section-nav
             className="relative isolate overflow-hidden py-24 text-center text-white sm:py-32"
         >
-            {/* Background gradient */}
-            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-green-900 via-emerald-800 to-green-700" />
+            <div className="absolute inset-0 -z-20">
+                <Image
+                    src="/assets/images/route-66-hemp-storefront-st-robert-1920w.avif"
+                    alt="Route 66 Hemp storefront"
+                    fill
+                    priority
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
+                    className="object-cover"
+                />
+            </div>
+            {/* Background gradient overlay */}
+            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/80 via-emerald-950/70 to-black/60" />
             {/* Blurred accent blob */}
-            <div className="absolute left-1/2 top-1/2 -z-10 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-400 opacity-30 blur-3xl" />
+            <div className="absolute left-1/2 top-1/2 -z-10 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-400/40 blur-3xl" />
             <div className="mx-auto max-w-2xl px-6">
                 <h1
                     id="home-heading"
