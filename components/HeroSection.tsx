@@ -16,7 +16,7 @@ export default function HeroSection() {
             aria-labelledby="home-heading"
             tabIndex={-1}
             data-section-nav
-            className="relative isolate overflow-hidden py-24 text-center text-white sm:py-32"
+            className="relative isolate flex min-h-[70vh] items-center justify-center overflow-hidden py-24 text-center text-white sm:py-32"
         >
             <div className="absolute inset-0 -z-20">
                 <Image
@@ -25,14 +25,14 @@ export default function HeroSection() {
                     fill
                     priority
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                    className="object-cover"
+                    className="object-cover object-center"
                 />
             </div>
             {/* Background gradient overlay */}
             <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/80 via-emerald-950/70 to-black/60" />
             {/* Blurred accent blob */}
             <div className="absolute left-1/2 top-1/2 -z-10 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-400/40 blur-3xl" />
-            <div className="mx-auto max-w-2xl px-6">
+            <div className="relative z-10 mx-auto max-w-2xl px-6">
                 <h1
                     id="home-heading"
                     className="mb-6 text-5xl font-extrabold tracking-tight sm:text-6xl"
