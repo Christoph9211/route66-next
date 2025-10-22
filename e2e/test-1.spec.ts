@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('test', async ({ page }) => {
-  await page.goto('http://localhost:3001/');
+  await page.goto('http://100.108.12.61:3000');
   await page.getByRole('link', { name: ' Shop Products' }).click();
   await page.getByRole('article', { name: 'Blue Sunset Sherbert' }).getByLabel('Size:').selectOption('1/2');
   await page.getByRole('article', { name: 'Cake Face' }).getByLabel('Size:').selectOption('1/4');
