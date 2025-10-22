@@ -31,14 +31,16 @@ export default function AboutSection() {
                         </div>
                     </div>
                     <div className="mt-8 space-y-6 lg:mt-0">
-                        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-green-100 shadow-xl shadow-green-900/10 dark:border-green-800/60 dark:shadow-green-900/40">
+                        <div className="relative aspect-[1280/598] w-full overflow-hidden rounded-3xl border border-green-100 shadow-xl shadow-green-900/10 dark:border-green-800/60 dark:shadow-green-900/40">
                             <Image
                                 src="/assets/images/route-66-hemp-storefront-st-robert-1280w.webp"
                                 alt="Route 66 Hemp storefront on Route 66 in St. Robert, Missouri"
-                                fill
+                                width={1280}
+                                height={598}
                                 sizes="(min-width: 1024px) 36rem, (min-width: 640px) 28rem, 100vw"
-                                className="object-cover"
-                                priority
+                                className="h-full w-full object-cover"
+                                style={{ width: '100%', height: '100%' }}
+                                loading="lazy"
                             />
                         </div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
