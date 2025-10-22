@@ -24,6 +24,7 @@ export default function HeroSection() {
                     alt="Route 66 Hemp storefront"
                     fill
                     priority
+                    fetchPriority="high"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
                     className="object-cover object-center"
                 />
