@@ -23,6 +23,7 @@ export default function ProductCard({ product, priority = false, gridIndex, grid
     }, [selectedSize, product.availability])
 
     const currentPrice = product.prices[selectedSize]
+    const hasMultipleSizes = product.size_options.length > 1
     const isOutOfStock = product.banner === 'Out of Stock' || !isAvailable
     const selectId = ['size', slugify(product.name)].join('-')
     const cardId = ['product', slugify(product.name)].join('-')
@@ -93,21 +94,28 @@ export default function ProductCard({ product, priority = false, gridIndex, grid
                 <p id={availabilityId} className="text-sm text-gray-600 dark:text-gray-300">{availabilityLabel}</p>
             </div>
             <div className="mb-4">
-                <label htmlFor={selectId} className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Size:</label>
-                {product.size_options.length > 1 ? (
-                    <select
-                        id={selectId}
-                        value={selectedSize}
-                        onChange={(e) => setSelectedSize(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-                        disabled={isOutOfStock}
-                    >
-                        {product.size_options.map((size: string) => (
-                            <option key={size} value={size}>{size}</option>
-                        ))}
-                    </select>
+                {hasMultipleSizes ? (
+                    <>
+                        <label htmlFor={selectId} className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Size:</label>
+                        <select
+                            id={selectId}
+                            value={selectedSize}
+                            onChange={(e) => setSelectedSize(e.target.value)}
+                            className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                            disabled={isOutOfStock}
+                        >
+                            {product.size_options.map((size: string) => (
+                                <option key={size} value={size}>{size}</option>
+                            ))}
+                        </select>
+                    </>
                 ) : (
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">{selectedSize || 'N/A'}</span>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Size:{' '}
+                        <span className="font-normal text-gray-600 dark:text-gray-300">
+                            {selectedSize || 'N/A'}
+                        </span>
+                    </p>
                 )}
             </div>
             <div className="mt-auto flex items-center justify-center pt-4">

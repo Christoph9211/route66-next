@@ -29,7 +29,7 @@ function generateNonceString(): string {
  * @param {NextRequest} request
  * @returns {NextResponse}
  */
-export function middleware(request: NextRequest): NextResponse {
+export function proxy(request: NextRequest): NextResponse {
   const nonceString = generateNonceString()
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set('x-csp-nonce', nonceString)
