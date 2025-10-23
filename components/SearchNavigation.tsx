@@ -1,9 +1,9 @@
 'use client'
 
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
 import AccessibilityAnnouncer from './AccessibilityAnnouncer'
-import { slugify } from '../utils/slugify'
+import { slugify } from '@/utils/slugify'
+import { scrollToSection } from '@/utils/scrollToSection'
 import type { Product } from '@/types/product'
 
 function SearchNavigation() {
@@ -27,8 +27,6 @@ function SearchNavigation() {
     const closingAnnouncementRef = useRef<string | null>(null)
     const pendingFocusRef = useRef<HTMLElement | null>(null)
     const isMountedRef = useRef(true)
-
-    const router = useRouter()
 
     useEffect(() => {
         return () => {
@@ -127,17 +125,34 @@ function SearchNavigation() {
         (product: Product) => {
             const productSlug = slugify(product.name)
             const hashId = 'product-' + productSlug
-            const targetUrl = `/products/${productSlug}#${hashId}`
-            const announcement = `Navigating to the ${product.name} product page.`
+            const announcement = `Moving to the ${product.name} product card.`
+            const focusTarget =
+                typeof document !== 'undefined'
+                    ? (document.getElementById(hashId) as HTMLElement | null)
+                    : null
 
             setAnnounceMessage(announcement)
             closeSearch(false, {
+                focusTarget,
                 announcement
             })
 
-            router.push(targetUrl)
+            if (typeof window === 'undefined') {
+                return
+            }
+
+            window.requestAnimationFrame(() => {
+                const scrolled = scrollToSection(hashId, {
+                    behavior: 'smooth',
+                    block: 'start'
+                })
+
+                if (!scrolled && focusTarget) {
+                    focusTarget.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }
+            })
         },
-        [closeSearch, router]
+        [closeSearch]
     )
 
 
