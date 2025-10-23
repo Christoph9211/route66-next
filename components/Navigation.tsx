@@ -1,24 +1,26 @@
 'use client'
 import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import LocalBusinessInfo from './LocalBusinessInfo'
 import SearchNavigation from './SearchNavigation'
 import { slugify } from '../utils/slugify'
 import { scrollToSection } from '../utils/scrollToSection'
-import type { Product } from '@/types/product'
 
 /**
  * Navigation component for the header of the website.
  *
- * @param {Array} products - Array of products to be used in the search navigation.
  * @return {JSX.Element} The navigation component.
  */
-function Navigation({ products = [] }: { products: Product[] }) {
+function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [activeSection, setActiveSection] = useState('home')
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
     const [dropdownTimeout, setDropdownTimeout] = useState<ReturnType<typeof setTimeout> | null>(null)
     const [shouldRenderMobileMenu, setShouldRenderMobileMenu] = useState(false)
+    const router = useRouter()
+    const pathname = usePathname()
 
     // Handle scroll effects
     useEffect(() => {
@@ -104,7 +106,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
         {
             id: 'products',
             label: 'Products',
-            targetId: 'products',
+            href: '/products',
             icon: 'fas fa-cannabis',
             submenu: [
                 { label: 'Flower', category: 'Flower' },
@@ -170,12 +172,38 @@ function Navigation({ products = [] }: { products: Product[] }) {
         targetId: string,
         id: string
     ) => {
+        const normalisedTarget = targetId.startsWith('#') ? targetId.slice(1) : targetId
+
+        if (pathname !== '/') {
+            e.preventDefault()
+            closeMenu()
+
+            if (normalisedTarget === 'home') {
+                router.push('/')
+                return
+            }
+
+            router.push(`/#${normalisedTarget}`)
+            return
+        }
+
         e.preventDefault()
         setActiveSection(id)
         closeMenu()
 
-        scrollToSection(targetId)
+        scrollToSection(normalisedTarget)
     }
+
+    useEffect(() => {
+        if (pathname === '/') {
+            setActiveSection('home')
+            return
+        }
+
+        if (pathname && pathname.startsWith('/products')) {
+            setActiveSection('products')
+        }
+    }, [pathname])
 
     const mobileMenuAriaHidden = !isMenuOpen && !shouldRenderMobileMenu ? true : undefined
     const mobileMenuItemTabIndex = isMenuOpen ? 0 : -1
@@ -216,57 +244,75 @@ function Navigation({ products = [] }: { products: Product[] }) {
                         {/* Desktop Navigation */}
                         <div className="hidden md:block">
                             <div className="ml-10 flex items-baseline space-x-4">
-                                {navigationItems.map((item) => (
-                                    <div
-                                        key={item.id}
-                                        className="relative"
-                                        onMouseEnter={() => item.submenu && handleDropdownEnter(item.id)}
-                                        onMouseLeave={() => item.submenu && handleDropdownLeave()}
-                                    >
-                                        <a
-                                            href={`#${item.targetId}`}
-                                            onClick={(e) =>
-                                                handleNavClick(
-                                                    e,
-                                                    item.targetId,
-                                                    item.id
-                                                )
-                                            }
-                                            aria-current={
-                                                activeSection === item.id
-                                                    ? 'page'
-                                                    : undefined
-                                            }
-                                            aria-haspopup={
-                                                item.submenu
-                                                    ? 'true'
-                                                    : undefined
-                                            }
-                                            aria-expanded={
-                                                item.submenu
-                                                    ? activeDropdown === item.id ? 'true' : 'false'
-                                                    : undefined
-                                            }
-                                            className={`focus-enhanced flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ${
-                                                activeSection === item.id
-                                                    ? 'bg-green-700 text-white'
-                                                    : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'
-                                            }`}
+                                {navigationItems.map((item) => {
+                                    const isProductsLink = Boolean(item.href)
+                                    const isActive = isProductsLink
+                                        ? pathname?.startsWith('/products')
+                                        : activeSection === item.id
+                                    const baseClasses = 'focus-enhanced flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200'
+                                    const linkClasses = isActive
+                                        ? `${baseClasses} bg-green-700 text-white`
+                                        : `${baseClasses} text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300`
+
+                                    return (
+                                        <div
+                                            key={item.id}
+                                            className="relative"
+                                            onMouseEnter={() => item.submenu && handleDropdownEnter(item.id)}
+                                            onMouseLeave={() => item.submenu && handleDropdownLeave()}
                                         >
-                                            <i
-                                                className={`${item.icon} mr-2 text-sm auto-contrast`}
-                                                aria-hidden="true"
-                                            />
-                                            {item.label}
-                                            {item.submenu && (
+                                        {isProductsLink ? (
+                                            <Link
+                                                href={item.href ?? '/products'}
+                                                onClick={() => {
+                                                    setActiveSection(item.id)
+                                                    closeMenu()
+                                                }}
+                                                aria-current={isActive ? 'page' : undefined}
+                                                aria-haspopup={item.submenu ? 'true' : undefined}
+                                                aria-expanded={
+                                                    item.submenu
+                                                        ? activeDropdown === item.id
+                                                            ? 'true'
+                                                            : 'false'
+                                                        : undefined
+                                                }
+                                                className={linkClasses}
+                                            >
                                                 <i
-                                                    className={`fas fa-chevron-down ml-1 text-xs transition-transform duration-200 ${
-                                                        activeDropdown === item.id ? 'rotate-180' : ''
-                                                    }`}
+                                                    className={`${item.icon} mr-2 text-sm auto-contrast`}
                                                     aria-hidden="true"
                                                 />
-                                            )}
-                                        </a>
+                                                {item.label}
+                                                {item.submenu && (
+                                                    <i
+                                                        className={`fas fa-chevron-down ml-1 text-xs transition-transform duration-200 ${
+                                                            activeDropdown === item.id ? 'rotate-180' : ''
+                                                        }`}
+                                                        aria-hidden="true"
+                                                    />
+                                                )}
+                                            </Link>
+                                        ) : (
+                                            <a
+                                                href={item.targetId ? `#${item.targetId}` : '#'}
+                                                onClick={(e) =>
+                                                    handleNavClick(
+                                                        e,
+                                                        item.targetId ?? '',
+                                                        item.id
+                                                    )
+                                                }
+                                                aria-current={isActive ? 'page' : undefined}
+                                                className={linkClasses}
+                                            >
+                                                <i
+                                                    className={`${item.icon} mr-2 text-sm auto-contrast`}
+                                                    aria-hidden="true"
+                                                />
+                                                {item.label}
+                                            </a>
+                                        )}
 
                                         {/* Desktop Dropdown */}
                                         {item.submenu && (
@@ -283,50 +329,37 @@ function Navigation({ products = [] }: { products: Product[] }) {
                                                     className="flex flex-col py-1 font-semibold"
                                                     role="none"
                                                 >
-                                                    {item.submenu.map(
-                                                        (subItem) => {
-                                                            const subHref = `#${slugify(
-                                                                subItem.category
-                                                            )}`
-                                                            return (
-                                                                <a
-                                                                    key={
-                                                                        subItem.label
-                                                                    }
-                                                                    href={
-                                                                        subHref
-                                                                    }
-                                                                    onClick={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleNavClick(
-                                                                            e,
-                                                                            subHref,
-                                                                            item.id
-                                                                        )
-                                                                    }
-                                                                    className="block px-4 py-2 text-black dark:text-gray-300 hover:bg-green-100 hover:text-green-700 dark:hover:bg-gray-700 dark:hover:text-green-300"
-                                                                    role="menuitem"
-                                                                >
-                                                                    {
-                                                                        subItem.label
-                                                                    }
-                                                                </a>
-                                                            )
-                                                        }
-                                                    )}
+                                                    {item.submenu.map((subItem) => {
+                                                        const subSlug = slugify(subItem.category)
+                                                        const subHref = `/products/${subSlug}`
+                                                        return (
+                                                            <Link
+                                                                key={subItem.label}
+                                                                href={subHref}
+                                                                className="block px-4 py-2 text-black dark:text-gray-300 hover:bg-green-100 hover:text-green-700 dark:hover:bg-gray-700 dark:hover:text-green-300"
+                                                                role="menuitem"
+                                                                onClick={() => {
+                                                                    closeMenu()
+                                                                    setActiveDropdown(null)
+                                                                    setActiveSection(item.id)
+                                                                }}
+                                                            >
+                                                                {subItem.label}
+                                                            </Link>
+                                                        )
+                                                    })}
                                                 </div>
                                             </div>
                                         )}
                                     </div>
-                                ))}
+                                )})
                             </div>
                         </div>
 
                         {/* Contact Info & Mobile Menu Button */}
                         <div className="flex items-center space-x-4">
                             {/* Search Component */}
-                            <SearchNavigation products={products} />
+                            <SearchNavigation />
 
                             {/* Quick Contact (Desktop) */}
                             <div className="hidden items-center space-x-4 text-sm lg:flex">
@@ -373,35 +406,56 @@ function Navigation({ products = [] }: { products: Product[] }) {
                     {shouldRenderMobileMenu && (
                         <div className="border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                             <div className="space-y-1 px-2 pb-3 pt-2">
-                                {navigationItems.map((item) => (
-                                    <div key={item.id}>
-                                        <a
-                                            href={`#${item.targetId}`}
-                                            onClick={(e) =>
-                                                handleNavClick(
-                                                    e,
-                                                    item.targetId,
-                                                    item.id
-                                                )
-                                            }
-                                            aria-current={
-                                                activeSection === item.id
-                                                    ? 'page'
-                                                    : undefined
-                                            }
-                                            tabIndex={mobileMenuItemTabIndex}
-                                            className={`focus-enhanced flex items-center rounded-md px-3 py-2 text-base font-medium transition-colors ${
-                                                activeSection === item.id
-                                                    ? 'bg-green-700 text-white'
-                                                    : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'
-                                            }`}
-                                        >
-                                            <i
-                                                className={`${item.icon} mr-3`}
-                                                aria-hidden="true"
-                                            />
-                                            {item.label}
-                                        </a>
+                                {navigationItems.map((item) => {
+                                    const isProductsLink = Boolean(item.href)
+                                    const isActive = isProductsLink
+                                        ? pathname?.startsWith('/products')
+                                        : activeSection === item.id
+                                    const baseClasses = 'focus-enhanced flex items-center rounded-md px-3 py-2 text-base font-medium transition-colors'
+                                    const itemClasses = isActive
+                                        ? `${baseClasses} bg-green-700 text-white`
+                                        : `${baseClasses} text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300`
+
+                                    return (
+                                        <div key={item.id}>
+                                            {isProductsLink ? (
+                                                <Link
+                                                    href={item.href ?? '/products'}
+                                                    tabIndex={mobileMenuItemTabIndex}
+                                                    className={itemClasses}
+                                                    aria-current={isActive ? 'page' : undefined}
+                                                    onClick={() => {
+                                                        setActiveSection(item.id)
+                                                        closeMenu()
+                                                    }}
+                                                >
+                                                    <i
+                                                        className={`${item.icon} mr-3`}
+                                                        aria-hidden="true"
+                                                    />
+                                                    {item.label}
+                                                </Link>
+                                            ) : (
+                                                <a
+                                                    href={item.targetId ? `#${item.targetId}` : '#'}
+                                                    onClick={(e) =>
+                                                        handleNavClick(
+                                                            e,
+                                                            item.targetId ?? '',
+                                                            item.id
+                                                        )
+                                                    }
+                                                    aria-current={isActive ? 'page' : undefined}
+                                                    tabIndex={mobileMenuItemTabIndex}
+                                                    className={itemClasses}
+                                                >
+                                                    <i
+                                                        className={`${item.icon} mr-3`}
+                                                        aria-hidden="true"
+                                                    />
+                                                    {item.label}
+                                                </a>
+                                            )}
 
                                         {/* Mobile Submenu */}
                                         {item.submenu && (
@@ -411,33 +465,28 @@ function Navigation({ products = [] }: { products: Product[] }) {
                                                 aria-label={`${item.label} submenu`}
                                             >
                                                 {item.submenu.map((subItem) => {
-                                                    const subTargetId = slugify(
-                                                        subItem.category
-                                                    )
-                                                    const subHref = `#${subTargetId}`
+                                                    const subSlug = slugify(subItem.category)
+                                                    const subHref = `/products/${subSlug}`
                                                     return (
-                                                        <a
+                                                        <Link
                                                             key={subItem.label}
                                                             href={subHref}
-                                                            onClick={(e) =>
-                                                                handleNavClick(
-                                                                    e,
-                                                                    subTargetId,
-                                                                    item.id
-                                                                )
-                                                            }
                                                             className="focus-enhanced block px-3 py-2 text-gray-600 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400"
                                                             tabIndex={mobileMenuItemTabIndex}
                                                             role="menuitem"
+                                                            onClick={() => {
+                                                                closeMenu()
+                                                                setActiveSection(item.id)
+                                                            }}
                                                         >
                                                             {subItem.label}
-                                                        </a>
+                                                        </Link>
                                                     )
                                                 })}
                                             </div>
                                         )}
                                     </div>
-                                ))}
+                                )})
                             </div>
 
                             {/* Mobile Contact Info */}

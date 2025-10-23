@@ -1,10 +1,13 @@
 'use client'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import AccessibilityAnnouncer from './AccessibilityAnnouncer'
 import { slugify } from '../utils/slugify'
 import type { Product } from '@/types/product'
 
-function SearchNavigation({ products = [] }: { products: Product[] }) {
+function SearchNavigation() {
+    const router = useRouter()
+    const [products, setProducts] = useState<Product[]>([])
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState('')
     const [results, setResults] = useState<Product[]>([])
@@ -54,33 +57,17 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
 
 
     const handleResultClick = useCallback((product: Product) => {
-        const categoryId = slugify(product.category)
-        const productId = 'product-' + slugify(product.name)
-        const productElement = document.getElementById(productId) as HTMLElement | null
-        const categoryElement = document.getElementById(categoryId) as HTMLElement | null
-        const focusTarget = productElement ?? categoryElement ?? null
+        const categorySlug = slugify(product.category)
+        const productSlug = slugify(product.name)
+        const targetUrl = `/products/${categorySlug}#product-${productSlug}`
 
-        if (productElement) {
-            productElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        } else if (categoryElement) {
-            categoryElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }
-
-        let announcement: string
-        if (productElement) {
-            announcement = `${product.name} product card is now focused within the ${product.category} section.`
-        } else if (categoryElement) {
-            announcement = `${product.category} section is now in view.`
-        } else {
-            announcement = `${product.name} selected from search results.`
-        }
-
-        const shouldRestoreFocus = !focusTarget
-        closeSearch(shouldRestoreFocus, {
-            focusTarget,
-            announcement
+        closeSearch(false, {
+            focusTarget: null,
+            announcement: `${product.name} selected from search results. Navigating to ${product.category}.`
         })
-    }, [closeSearch])
+
+        router.push(targetUrl)
+    }, [closeSearch, router])
 
 
     const highlightMatch = (text: string, searchTerm: string): React.ReactNode[] => {
@@ -145,6 +132,35 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
         setResults(filtered)
         setSelectedIndex(filtered.length ? 0 : -1)
     }, [products, query])
+
+    useEffect(() => {
+        let isMounted = true
+
+        const loadProducts = async () => {
+            try {
+                const response = await fetch('/products/products.json', {
+                    cache: 'force-cache'
+                })
+                if (!response.ok) {
+                    throw new Error('Failed to load products')
+                }
+                const data = await response.json()
+                if (isMounted && Array.isArray(data)) {
+                    setProducts(data as Product[])
+                }
+            } catch (error) {
+                if (isMounted) {
+                    setProducts([])
+                }
+            }
+        }
+
+        loadProducts()
+
+        return () => {
+            isMounted = false
+        }
+    }, [])
 
     useEffect(() => {
         optionRefs.current = optionRefs.current.slice(0, results.length)

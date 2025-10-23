@@ -1,6 +1,7 @@
 import path from 'node:path'
 import { readFile } from 'node:fs/promises'
 import { Product } from '@/types/product'
+import { slugify } from '@/utils/slugify'
 
 const PRODUCTS_PATH = path.join(process.cwd(), 'public', 'products', 'products.json')
 
@@ -120,5 +121,50 @@ async function loadProducts(): Promise<Product[]> {
 
 export async function getProducts(): Promise<Product[]> {
   return loadProducts()
+}
+
+export type ProductCategory = {
+  name: string
+  slug: string
+}
+
+export async function getProductCategories(): Promise<ProductCategory[]> {
+  const products = await getProducts()
+  const seen = new Map<string, string>()
+
+  for (const product of products) {
+    const slug = slugify(product.category)
+    if (!seen.has(slug)) {
+      seen.set(slug, product.category)
+    }
+  }
+
+  return Array.from(seen.entries())
+    .map(([slug, name]) => ({ slug, name }))
+    .sort((a, b) => a.name.localeCompare(b.name))
+}
+
+export async function getProductsByCategory(
+  slug: string
+): Promise<{ categoryName: string; products: Product[] } | null> {
+  const products = await getProducts()
+  let categoryName: string | undefined
+
+  const filtered = products.filter((product) => {
+    const matches = slugify(product.category) === slug
+    if (matches && !categoryName) {
+      categoryName = product.category
+    }
+    return matches
+  })
+
+  if (filtered.length === 0 || !categoryName) {
+    return null
+  }
+
+  return {
+    categoryName,
+    products: filtered,
+  }
 }
 
