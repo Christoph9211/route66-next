@@ -1,15 +1,20 @@
 'use client'
+
 import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import AccessibilityAnnouncer from './AccessibilityAnnouncer'
 import { slugify } from '../utils/slugify'
 import type { Product } from '@/types/product'
 
-function SearchNavigation({ products = [] }: { products: Product[] }) {
+function SearchNavigation() {
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState('')
     const [results, setResults] = useState<Product[]>([])
     const [selectedIndex, setSelectedIndex] = useState(-1)
     const [announceMessage, setAnnounceMessage] = useState('')
+    const [products, setProducts] = useState<Product[]>([])
+    const [isLoadingProducts, setIsLoadingProducts] = useState(false)
+    const [loadError, setLoadError] = useState<string | null>(null)
     const searchInputRef = useRef<HTMLInputElement | null>(null)
     const dialogRef = useRef<HTMLDivElement | null>(null)
     const optionRefs = useRef<(HTMLLIElement | null)[]>([])
@@ -17,8 +22,65 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
     const listboxId = 'search-navigation-results'
 
     const hasOpenedRef = useRef(false)
+    const hasLoadedProductsRef = useRef(false)
+    const isFetchingProductsRef = useRef(false)
     const closingAnnouncementRef = useRef<string | null>(null)
     const pendingFocusRef = useRef<HTMLElement | null>(null)
+    const isMountedRef = useRef(true)
+
+    const router = useRouter()
+
+    useEffect(() => {
+        return () => {
+            isMountedRef.current = false
+        }
+    }, [])
+
+    const loadProducts = useCallback(async () => {
+        if (hasLoadedProductsRef.current || isFetchingProductsRef.current) {
+            return
+        }
+
+        isFetchingProductsRef.current = true
+        setIsLoadingProducts(true)
+        setLoadError(null)
+
+        try {
+            const response = await fetch('/products/products.json', {
+                cache: 'force-cache'
+            })
+
+            if (!response.ok) {
+                throw new Error('Failed to load products')
+            }
+
+            const data = (await response.json()) as Product[]
+
+            if (!Array.isArray(data)) {
+                throw new Error('Unexpected product response shape')
+            }
+
+            hasLoadedProductsRef.current = true
+
+            if (isMountedRef.current) {
+                setProducts(data)
+            }
+        } catch (error) {
+            console.error('SearchNavigation: error loading products', error)
+            if (isMountedRef.current) {
+                setLoadError('Unable to load product search results. Please try again.')
+            }
+        } finally {
+            isFetchingProductsRef.current = false
+            if (isMountedRef.current) {
+                setIsLoadingProducts(false)
+            }
+        }
+    }, [])
+
+    const handleRetryLoad = useCallback(() => {
+        loadProducts()
+    }, [loadProducts])
 
     const openSearch = useCallback(() => {
         previousFocusRef.current = document.activeElement as HTMLElement
@@ -52,35 +114,31 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
         []
     )
 
-
-    const handleResultClick = useCallback((product: Product) => {
-        const categoryId = slugify(product.category)
-        const productId = 'product-' + slugify(product.name)
-        const productElement = document.getElementById(productId) as HTMLElement | null
-        const categoryElement = document.getElementById(categoryId) as HTMLElement | null
-        const focusTarget = productElement ?? categoryElement ?? null
-
-        if (productElement) {
-            productElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        } else if (categoryElement) {
-            categoryElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    useEffect(() => {
+        if (!isOpen) {
+            return
         }
 
-        let announcement: string
-        if (productElement) {
-            announcement = `${product.name} product card is now focused within the ${product.category} section.`
-        } else if (categoryElement) {
-            announcement = `${product.category} section is now in view.`
-        } else {
-            announcement = `${product.name} selected from search results.`
-        }
+        loadProducts()
+    }, [isOpen, loadProducts])
 
-        const shouldRestoreFocus = !focusTarget
-        closeSearch(shouldRestoreFocus, {
-            focusTarget,
-            announcement
-        })
-    }, [closeSearch])
+
+    const handleResultClick = useCallback(
+        (product: Product) => {
+            const productSlug = slugify(product.name)
+            const hashId = 'product-' + productSlug
+            const targetUrl = `/products/${productSlug}#${hashId}`
+            const announcement = `Navigating to the ${product.name} product page.`
+
+            setAnnounceMessage(announcement)
+            closeSearch(false, {
+                announcement
+            })
+
+            router.push(targetUrl)
+        },
+        [closeSearch, router]
+    )
 
 
     const highlightMatch = (text: string, searchTerm: string): React.ReactNode[] => {
@@ -178,6 +236,26 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
             setAnnounceMessage(resultText + ' for ' + query)
         }
     }, [isOpen, query, results])
+
+    useEffect(() => {
+        if (!isOpen) {
+            return
+        }
+
+        if (isLoadingProducts) {
+            setAnnounceMessage('Loading product search results...')
+            return
+        }
+
+        if (loadError) {
+            setAnnounceMessage('Product search is temporarily unavailable. ' + loadError)
+            return
+        }
+
+        if (!query && hasLoadedProductsRef.current && results.length === 0) {
+            setAnnounceMessage('Product search ready. Enter at least two characters to search.')
+        }
+    }, [isLoadingProducts, isOpen, loadError, query, results.length])
 
     useEffect(() => {
         if (!isOpen) {
@@ -464,20 +542,39 @@ function SearchNavigation({ products = [] }: { products: Product[] }) {
                         </div>
 
                         <div className="max-h-96 overflow-y-auto p-2">
-                            {query.length < 2 && (
+                            {isLoadingProducts && (
+                                <p className="px-4 py-6 text-sm text-gray-600 dark:text-gray-300">
+                                    Loading product data for search&hellip;
+                                </p>
+                            )}
+
+                            {!isLoadingProducts && loadError && (
+                                <div className="px-4 py-6 text-sm text-red-700 dark:text-red-400">
+                                    <p>{loadError}</p>
+                                    <button
+                                        type="button"
+                                        onClick={handleRetryLoad}
+                                        className="mt-3 rounded-md border border-red-200 px-3 py-2 text-xs font-semibold text-red-700 transition-colors hover:border-red-300 hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 dark:border-red-700 dark:text-red-300 dark:hover:border-red-500 dark:hover:bg-red-900/40"
+                                    >
+                                        Try again
+                                    </button>
+                                </div>
+                            )}
+
+                            {!isLoadingProducts && !loadError && query.length < 2 && (
                                 <p className="px-4 py-6 text-sm text-gray-600 dark:text-gray-300">
                                     Keep typing to view search suggestions.
                                 </p>
                             )}
 
-                            {query.length >= 2 && results.length === 0 && (
+                            {!isLoadingProducts && !loadError && query.length >= 2 && results.length === 0 && (
                                 <div className="px-4 py-6 text-center text-gray-500 dark:text-gray-400">
                                     <i className="fas fa-search mb-2 text-2xl" aria-hidden="true" />
                                     <p>No products found for &ldquo;{query}&rdquo;.</p>
                                 </div>
                             )}
 
-                            {results.length > 0 && (
+                            {!isLoadingProducts && !loadError && results.length > 0 && (
                                 <ul
                                     id={listboxId}
                                     role="listbox"

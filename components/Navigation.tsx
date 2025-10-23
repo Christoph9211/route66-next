@@ -4,15 +4,13 @@ import LocalBusinessInfo from './LocalBusinessInfo'
 import SearchNavigation from './SearchNavigation'
 import { slugify } from '../utils/slugify'
 import { scrollToSection } from '../utils/scrollToSection'
-import type { Product } from '@/types/product'
 
 /**
  * Navigation component for the header of the website.
  *
- * @param {Array} products - Array of products to be used in the search navigation.
  * @return {JSX.Element} The navigation component.
  */
-function Navigation({ products = [] }: { products: Product[] }) {
+function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [activeSection, setActiveSection] = useState('home')
@@ -326,7 +324,7 @@ function Navigation({ products = [] }: { products: Product[] }) {
                         {/* Contact Info & Mobile Menu Button */}
                         <div className="flex items-center space-x-4">
                             {/* Search Component */}
-                            <SearchNavigation products={products} />
+                            <SearchNavigation />
 
                             {/* Quick Contact (Desktop) */}
                             <div className="hidden items-center space-x-4 text-sm lg:flex">
