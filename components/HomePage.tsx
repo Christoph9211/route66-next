@@ -27,7 +27,7 @@ export default function HomePage({ products }: { products: Product[] }) {
 
     return (
         <>
-            <Navigation products={products} />
+            <Navigation />
             <main id="main-content" role="main" tabIndex={-1} className="outline-none">
                 <HeroSection />
                 <section
