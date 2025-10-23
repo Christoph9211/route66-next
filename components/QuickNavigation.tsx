@@ -1,4 +1,6 @@
+'use client'
 import React, { useState, useEffect } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 
 /**
  * Renders a quick navigation component that provides quick access to
@@ -16,6 +18,8 @@ import React, { useState, useEffect } from 'react'
 function QuickNavigation() {
     const [isVisible, setIsVisible] = useState(false)
     const [activeSection, setActiveSection] = useState('')
+    const router = useRouter()
+    const pathname = usePathname()
     const focusableTabIndex = isVisible ? 0 : -1
 
     const containerClasses = [
@@ -58,11 +62,27 @@ function QuickNavigation() {
             return
         }
 
+        if (id === 'products') {
+            router.push('/products')
+            return
+        }
+
+        if (pathname !== '/') {
+            router.push(`/#${id}`)
+            return
+        }
+
         const element = document.getElementById(id)
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' })
         }
     }
+
+    useEffect(() => {
+        if (pathname && pathname.startsWith('/products')) {
+            setActiveSection('products')
+        }
+    }, [pathname])
 
     return (
         <div

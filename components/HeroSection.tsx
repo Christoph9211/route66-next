@@ -5,8 +5,7 @@
  * call to action styles for a more contemporary feel.
  */
 import Image from 'next/image'
-
-import ScrollLink from './ScrollLink'
+import Link from 'next/link'
 
 export default function HeroSection() {
     return (
@@ -44,12 +43,12 @@ export default function HeroSection() {
                     Premium hemp products for your wellness journey.
                 </p>
                 <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                    <ScrollLink
-                        targetId="products"
+                    <Link
+                        href="/products"
                         className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-green-800 shadow-lg transition-colors hover:bg-green-50 focus-enhanced"
                     >
                         <i className="fas fa-cannabis mr-2" /> Shop Products
-                    </ScrollLink>
+                    </Link>
                     <a
                         href="tel:+15736776418"
                         className="rounded-full border border-white/80 px-8 py-3 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/10 focus-enhanced"

@@ -1,12 +1,15 @@
 'use client'
 
 import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import AccessibilityAnnouncer from './AccessibilityAnnouncer'
 import { slugify } from '@/utils/slugify'
 import { scrollToSection } from '@/utils/scrollToSection'
 import type { Product } from '@/types/product'
 
 function SearchNavigation() {
+    const router = useRouter()
+    const [products, setProducts] = useState<Product[]>([])
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState('')
     const [results, setResults] = useState<Product[]>([])
@@ -117,6 +120,18 @@ function SearchNavigation() {
             return
         }
 
+    const handleResultClick = useCallback((product: Product) => {
+        const categorySlug = slugify(product.category)
+        const productSlug = slugify(product.name)
+        const targetUrl = `/products/${categorySlug}#product-${productSlug}`
+
+        closeSearch(false, {
+            focusTarget: null,
+            announcement: `${product.name} selected from search results. Navigating to ${product.category}.`
+        })
+
+        router.push(targetUrl)
+    }, [closeSearch, router])
         loadProducts()
     }, [isOpen, loadProducts])
 
@@ -218,6 +233,35 @@ function SearchNavigation() {
         setResults(filtered)
         setSelectedIndex(filtered.length ? 0 : -1)
     }, [products, query])
+
+    useEffect(() => {
+        let isMounted = true
+
+        const loadProducts = async () => {
+            try {
+                const response = await fetch('/products/products.json', {
+                    cache: 'force-cache'
+                })
+                if (!response.ok) {
+                    throw new Error('Failed to load products')
+                }
+                const data = await response.json()
+                if (isMounted && Array.isArray(data)) {
+                    setProducts(data as Product[])
+                }
+            } catch (error) {
+                if (isMounted) {
+                    setProducts([])
+                }
+            }
+        }
+
+        loadProducts()
+
+        return () => {
+            isMounted = false
+        }
+    }, [])
 
     useEffect(() => {
         optionRefs.current = optionRefs.current.slice(0, results.length)

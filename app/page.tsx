@@ -2,13 +2,10 @@
 import { Suspense } from 'react'
 import StructuredData from '@/components/StructuredData'
 import HomePageContent from '@/components/HomePage'
-import { getProducts } from '@/lib/products.server'
 
 export const revalidate = 3600 // Revalidate every hour
 
-export default async function HomePage() {
-    const products = await getProducts()
-
+export default function HomePage() {
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
             <StructuredData />
@@ -20,7 +17,7 @@ export default async function HomePage() {
                     </div>
                 }
             >
-                <HomePageContent products={products} />
+                <HomePageContent />
             </Suspense>
         </div>
     )
