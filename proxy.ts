@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 /**
  * Sets a Content Security Policy header to prevent malicious scripts from being executed
@@ -11,10 +11,9 @@ import { NextRequest, NextResponse } from 'next/server'
  * Object-src is set to none to prevent malicious objects from being executed
  * Base-uri is set to self to prevent malicious base URLs from being used
  * Frame-ancestors is set to none to prevent malicious frames from being executed
- * @param {NextRequest} _request
  * @returns {NextResponse}
  */
-export function proxy(_request: NextRequest): NextResponse {
+export function proxy(): NextResponse {
   const response = NextResponse.next()
 
   const analyticsHosts = [
