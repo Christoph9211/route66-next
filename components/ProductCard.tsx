@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import { slugify } from '@/utils/slugify'
 import type { Product } from '@/types/product'
@@ -14,12 +14,14 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, priority = false, gridIndex, gridSize, parentHeadingId }: ProductCardProps) {
     const [selectedSize, setSelectedSize] = useState(product.size_options[0])
-    const [isAvailable, setIsAvailable] = useState(true)
-
-    useEffect(() => {
+    const isAvailable = useMemo(() => {
         if (product.availability && typeof product.availability === 'object') {
-            setIsAvailable(product.availability[selectedSize] !== false)
+            return product.availability[selectedSize] !== false
         }
+        if (typeof product.availability === 'boolean') {
+            return product.availability
+        }
+        return true
     }, [selectedSize, product.availability])
 
     const currentPrice = product.prices[selectedSize]

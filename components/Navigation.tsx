@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import LocalBusinessInfo from './LocalBusinessInfo'
 import SearchNavigation from './SearchNavigation'
 import { slugify } from '../utils/slugify'
@@ -15,8 +15,9 @@ function Navigation() {
     const [isScrolled, setIsScrolled] = useState(false)
     const [activeSection, setActiveSection] = useState('home')
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
-    const [dropdownTimeout, setDropdownTimeout] = useState<ReturnType<typeof setTimeout> | null>(null)
     const [shouldRenderMobileMenu, setShouldRenderMobileMenu] = useState(false)
+    const dropdownTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const closeMenuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
     // Handle scroll effects
     useEffect(() => {
@@ -38,35 +39,16 @@ function Navigation() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-    // Cleanup timeout on unmount
     useEffect(() => {
         return () => {
-            if (dropdownTimeout) {
-                clearTimeout(dropdownTimeout)
+            if (dropdownTimeoutRef.current) {
+                clearTimeout(dropdownTimeoutRef.current)
+            }
+            if (closeMenuTimeoutRef.current) {
+                clearTimeout(closeMenuTimeoutRef.current)
             }
         }
-    }, [dropdownTimeout])
-
-    // Delay unmount to preserve closing transition without trapping focusable elements
-    useEffect(() => {
-        let timeoutId: ReturnType<typeof setTimeout> | null = null
-
-        if (isMenuOpen) {
-            if (!shouldRenderMobileMenu) {
-                setShouldRenderMobileMenu(true)
-            }
-        } else if (shouldRenderMobileMenu) {
-            timeoutId = setTimeout(() => {
-                setShouldRenderMobileMenu(false)
-            }, 300)
-        }
-
-        return () => {
-            if (timeoutId) {
-                clearTimeout(timeoutId)
-            }
-        }
-    }, [isMenuOpen, shouldRenderMobileMenu])
+    }, [])
 
 
     /**
@@ -74,9 +56,9 @@ function Navigation() {
      * @param {string} itemId - The ID of the menu item
      */
     const handleDropdownEnter = (itemId: string) => {
-        if (dropdownTimeout) {
-            clearTimeout(dropdownTimeout)
-            setDropdownTimeout(null)
+        if (dropdownTimeoutRef.current) {
+            clearTimeout(dropdownTimeoutRef.current)
+            dropdownTimeoutRef.current = null
         }
         setActiveDropdown(itemId)
     }
@@ -88,7 +70,7 @@ function Navigation() {
         const timeout = setTimeout(() => {
             setActiveDropdown(null)
         }, 600) // 600ms delay for smooth user experience
-        setDropdownTimeout(timeout)
+        dropdownTimeoutRef.current = timeout
     }
 
     // Navigation items with clear hierarchy
@@ -142,8 +124,23 @@ function Navigation() {
      *
      * @return {void} This function does not return anything.
      */
+    const openMenu = () => {
+        if (closeMenuTimeoutRef.current) {
+            clearTimeout(closeMenuTimeoutRef.current)
+            closeMenuTimeoutRef.current = null
+        }
+        if (!shouldRenderMobileMenu) {
+            setShouldRenderMobileMenu(true)
+        }
+        setIsMenuOpen(true)
+    }
+
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen)
+        if (isMenuOpen) {
+            closeMenu()
+        } else {
+            openMenu()
+        }
     }
 
     /**
@@ -153,6 +150,13 @@ function Navigation() {
      */
     const closeMenu = () => {
         setIsMenuOpen(false)
+        if (closeMenuTimeoutRef.current) {
+            clearTimeout(closeMenuTimeoutRef.current)
+        }
+        closeMenuTimeoutRef.current = setTimeout(() => {
+            setShouldRenderMobileMenu(false)
+            closeMenuTimeoutRef.current = null
+        }, 300)
     }
 
     /**
@@ -360,11 +364,7 @@ function Navigation() {
 
                 {/* Mobile Navigation Menu */}
                 <div
-                    className={`transition-all duration-300 ease-in-out md:hidden ${
-                        isMenuOpen
-                            ? 'max-h-screen opacity-100'
-                            : 'max-h-0 overflow-hidden opacity-0'
-                    }`}
+                    className={"transition-all duration-300 ease-in-out md:hidden " + (isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 overflow-hidden opacity-0')}
                     id="mobile-menu"
                     aria-hidden={mobileMenuAriaHidden}
                 >
@@ -374,7 +374,7 @@ function Navigation() {
                                 {navigationItems.map((item) => (
                                     <div key={item.id}>
                                         <a
-                                            href={`#${item.targetId}`}
+                                            href={'#' + item.targetId}
                                             onClick={(e) =>
                                                 handleNavClick(
                                                     e,
@@ -412,7 +412,7 @@ function Navigation() {
                                                     const subTargetId = slugify(
                                                         subItem.category
                                                     )
-                                                    const subHref = `#${subTargetId}`
+                                                    const subHref = '#' + subTargetId
                                                     return (
                                                         <a
                                                             key={subItem.label}
