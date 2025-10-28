@@ -1,39 +1,6 @@
-import { headers } from 'next/headers'
-
-type HeaderList = Awaited<ReturnType<typeof headers>>
-
-function extractCspNonce(headerList: HeaderList): string | undefined {
-    const directNonce = headerList.get('x-csp-nonce')
-    if (directNonce) {
-        return directNonce
-    }
-
-    const cspHeader =
-        headerList.get('content-security-policy') ??
-        headerList.get('content-security-policy-report-only')
-    if (!cspHeader) {
-        return undefined
-    }
-
-    const directives = cspHeader.split(';').map((entry) => entry.trim())
-
-    const directive =
-        directives.find((entry) => entry.startsWith('script-src')) ??
-        directives.find((entry) => entry.startsWith('default-src'))
-
-    if (!directive) {
-        return undefined
-    }
-
-    const source = directive
-        .split(/\s+/)
-        .slice(1)
-        .find((value) => value.startsWith("'nonce-") && value.endsWith("'"))
-
-    return source ? source.slice(7, -1) : undefined
-}
-
 // Structured Data Component for Local Business SEO
+
+import { headers } from 'next/headers'
 
 /**
  * StructuredData component for Local Business SEO.
@@ -41,9 +8,7 @@ function extractCspNonce(headerList: HeaderList): string | undefined {
  * @returns {Promise<JSX.Element>} The StructuredData component.
  */
 async function StructuredData() {
-    const headerList = await headers()
-    const nonce = extractCspNonce(headerList)
-
+    const nonce = (await headers()).get('x-csp-nonce') ?? undefined
     const businessData = {
         '@context': 'https://schema.org',
         '@type': 'Store',

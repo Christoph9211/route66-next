@@ -1,23 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-
-/**
- * Generates a random nonce string for use in a Content Security Policy header.
- *
- * @returns {string} The generated nonce string.
- */
-function generateNonceString(): string {
-  const randomNumberArray = new Uint8Array(16)
-  crypto.getRandomValues(randomNumberArray)
-  const nonceString = Array.from(randomNumberArray)
-    .map((value) => String.fromCharCode(value))
-    .join('')
-  return btoa(nonceString)
-}
-
 /**
  * Sets a Content Security Policy header to prevent malicious scripts from being executed
- * The nonce is generated randomly and is used to allow structured data scripts to execute
+ * Inline scripts are explicitly allowed so structured data scripts can execute without a nonce
  * The allowed sources for scripts are first-party and Vercel analytics resources
  * The allowed sources for connecting are limited to first-party and Vercel analytics endpoints
  * The allowed sources for images are self and data: and blob:
@@ -26,19 +11,11 @@ function generateNonceString(): string {
  * Object-src is set to none to prevent malicious objects from being executed
  * Base-uri is set to self to prevent malicious base URLs from being used
  * Frame-ancestors is set to none to prevent malicious frames from being executed
- * @param {NextRequest} request
+ * @param {NextRequest} _request
  * @returns {NextResponse}
  */
-export function proxy(request: NextRequest): NextResponse {
-  const nonceString = generateNonceString()
-  const requestHeaders = new Headers(request.headers)
-  requestHeaders.set('x-csp-nonce', nonceString)
-
-  const response = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  })
+export function proxy(_request: NextRequest): NextResponse {
+  const response = NextResponse.next()
 
   const analyticsHosts = [
     'https://vitals.vercel-analytics.com',
@@ -49,7 +26,7 @@ export function proxy(request: NextRequest): NextResponse {
     "default-src": ["'self'"],
     "script-src": [
       "'self'",
-      `'nonce-${nonceString}'`,
+      "'unsafe-inline'",
       'https://vitals.vercel-analytics.com',
       'https://vitals.vercel-insights.com',
     ],
