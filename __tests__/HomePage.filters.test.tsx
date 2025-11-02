@@ -1,3 +1,4 @@
+import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import type { Product } from '@/types/product'
 import HomePage from '@/components/HomePage'
@@ -10,15 +11,24 @@ jest.mock('@/utils/autoContrast', () => ({
     applyAutoContrast: jest.fn(),
 }))
 
-jest.mock('@/components/Navigation', () => () => <nav data-testid="navigation" />)
-jest.mock('@/components/FooterNavigation', () => () => <footer data-testid="footer" />)
-jest.mock('@/components/QuickNavigation', () => () => <div data-testid="quick-nav" />)
-jest.mock('@/components/LocalSEOFAQ', () => () => <section data-testid="faq" />)
-jest.mock('@/components/LocationContent', () => () => <section data-testid="location" />)
-jest.mock('@/components/GoogleBusinessIntegration', () => () => <section data-testid="google" />)
-jest.mock('@/components/HeroSection', () => () => <section data-testid="hero" />)
-jest.mock('@/components/AboutSection', () => () => <section data-testid="about" />)
-jest.mock('@/components/ContactSection', () => () => <section data-testid="contact" />)
+function createMockComponent(testId: string, element: keyof JSX.IntrinsicElements = 'div') {
+    const MockComponent = (props: Record<string, unknown>) =>
+        React.createElement(element, { 'data-testid': testId, ...props })
+
+    MockComponent.displayName = `Mock${testId.charAt(0).toUpperCase()}${testId.slice(1)}`
+
+    return MockComponent
+}
+
+jest.mock('@/components/Navigation', () => createMockComponent('navigation', 'nav'))
+jest.mock('@/components/FooterNavigation', () => createMockComponent('footer', 'footer'))
+jest.mock('@/components/QuickNavigation', () => createMockComponent('quick-nav'))
+jest.mock('@/components/LocalSEOFAQ', () => createMockComponent('faq', 'section'))
+jest.mock('@/components/LocationContent', () => createMockComponent('location', 'section'))
+jest.mock('@/components/GoogleBusinessIntegration', () => createMockComponent('google', 'section'))
+jest.mock('@/components/HeroSection', () => createMockComponent('hero', 'section'))
+jest.mock('@/components/AboutSection', () => createMockComponent('about', 'section'))
+jest.mock('@/components/ContactSection', () => createMockComponent('contact', 'section'))
 
 const mockProducts: Product[] = [
     {
@@ -75,15 +85,15 @@ const renderHomePage = () => {
     render(<HomePage products={mockProducts} />)
 }
 
-const selectCategory = (value: string) => {
-    const selectElement = screen.getByLabelText(/Select a category/i)
-    fireEvent.change(selectElement, { target: { value } })
+const selectCategory = async (label: string) => {
+    const categoryTab = await screen.findByRole('tab', { name: new RegExp(label, 'i') })
+    fireEvent.click(categoryTab)
 }
 
 describe('HomePage filters', () => {
     it('filters products by price range', async () => {
         renderHomePage()
-        selectCategory('flower')
+        await selectCategory('Flower')
 
         expect(await screen.findByText('Budget Flower')).toBeInTheDocument()
         fireEvent.change(screen.getByLabelText(/Minimum price/i), { target: { value: '30' } })
@@ -94,7 +104,7 @@ describe('HomePage filters', () => {
 
     it('filters out unavailable products when the availability toggle is enabled', async () => {
         renderHomePage()
-        selectCategory('flower')
+        await selectCategory('Flower')
 
         expect(await screen.findByText('Unavailable Flower')).toBeInTheDocument()
         fireEvent.click(screen.getByLabelText(/Only show in-stock items/i))
@@ -105,7 +115,7 @@ describe('HomePage filters', () => {
 
     it('filters products by potency when the potency filter is enabled', async () => {
         renderHomePage()
-        selectCategory('flower')
+        await selectCategory('Flower')
 
         expect(await screen.findByText('Budget Flower')).toBeInTheDocument()
         fireEvent.click(screen.getByLabelText(/Enable potency range filter/i))
@@ -118,7 +128,7 @@ describe('HomePage filters', () => {
 
     it('shows a friendly message when no products match the filters', async () => {
         renderHomePage()
-        selectCategory('flower')
+        await selectCategory('Flower')
 
         expect(await screen.findByText('Budget Flower')).toBeInTheDocument()
         fireEvent.change(screen.getByLabelText(/Minimum price/i), { target: { value: '100' } })
