@@ -14,7 +14,8 @@ import HeroSection from '@/components/HeroSection'
 import AboutSection from '@/components/AboutSection'
 import ContactSection from '@/components/ContactSection'
 import ProductSection from '@/components/ProductSection'
-import { groupProductsByCategory } from '@/lib/products'
+import { groupProductsByCategory, sortProductsByOrder } from '@/lib/products'
+import type { ProductSortOrder } from '@/lib/products'
 import type { Product } from '@/types/product'
 
 type FilterState = {
@@ -40,6 +41,7 @@ export default function HomePage({ products }: { products: Product[] }) {
         [productsByCategory]
     )
     const [selectedCategorySlug, setSelectedCategorySlug] = useState<string>('')
+    const [sortOrder, setSortOrder] = useState<ProductSortOrder>('featured')
     const selectedCategory = useMemo(
         () =>
             categoryEntries.find((entry) => entry.slug === selectedCategorySlug) ??
@@ -142,6 +144,11 @@ export default function HomePage({ products }: { products: Product[] }) {
         })
     }, [filters, selectedCategory])
 
+    const sortedProducts = useMemo(
+        () => sortProductsByOrder(filteredProducts, sortOrder),
+        [filteredProducts, sortOrder]
+    )
+
     useEffect(() => {
         if (typeof window === 'undefined') {
             return
@@ -183,7 +190,7 @@ export default function HomePage({ products }: { products: Product[] }) {
         if (selectedCategory) {
             applyAutoContrast()
         }
-    }, [filteredProducts, selectedCategory])
+    }, [selectedCategory, sortedProducts])
 
     const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const slug = event.target.value
@@ -197,6 +204,10 @@ export default function HomePage({ products }: { products: Product[] }) {
                 })
             )
         }
+    }
+
+    const handleSortOrderChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setSortOrder(event.target.value as ProductSortOrder)
     }
 
     const handleMinPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -295,6 +306,25 @@ export default function HomePage({ products }: { products: Product[] }) {
                             </p>
                         </div>
                         <div className="mx-auto mb-12 max-w-4xl">
+                            <div className="mb-8">
+                                <label
+                                    htmlFor="product-sort-select"
+                                    className="mb-2 block text-center text-lg font-semibold text-gray-800 dark:text-gray-200"
+                                >
+                                    Sort products
+                                </label>
+                                <select
+                                    id="product-sort-select"
+                                    value={sortOrder}
+                                    onChange={handleSortOrderChange}
+                                    className="w-full rounded-md border border-gray-300 bg-white px-4 py-3 text-base shadow-sm focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                                    disabled={filtersDisabled}
+                                >
+                                    <option value="featured">Featured</option>
+                                    <option value="price-asc">Price: Low to High</option>
+                                    <option value="price-desc">Price: High to Low</option>
+                                </select>
+                            </div>
                             <fieldset className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
                                 <legend className="px-2 text-base font-semibold text-gray-900 dark:text-gray-100">
                                     Filter products
@@ -438,7 +468,7 @@ export default function HomePage({ products }: { products: Product[] }) {
                             <ProductSection
                                 key={selectedCategory.slug}
                                 title={selectedCategory.name}
-                                products={filteredProducts}
+                                products={sortedProducts}
                                 categoryId={selectedCategory.slug}
                                 isFirstSection
                                 emptyMessage="No products match your current filters. Try widening your search or selecting another category."
