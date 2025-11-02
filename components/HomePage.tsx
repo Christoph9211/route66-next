@@ -133,12 +133,6 @@ export default function HomePage({ products }: { products: Product[] }) {
                                     </option>
                                 ))}
                             </select>
-                            <p
-                                id="product-category-help"
-                                className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400"
-                            >
-                                Product details load once a category is selected to keep the page fast.
-                            </p>
                         </div>
                         {selectedCategory ? (
                             <ProductSection
