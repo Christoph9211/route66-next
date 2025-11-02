@@ -6,13 +6,19 @@ interface ProductSectionProps {
     products: Product[]
     categoryId: string
     isFirstSection?: boolean
+    emptyMessage?: string
 }
 
-export default function ProductSection({ title, products, categoryId, isFirstSection = false }: ProductSectionProps) {
-    if (!products || products.length === 0) return null
-
+export default function ProductSection({
+    title,
+    products,
+    categoryId,
+    isFirstSection = false,
+    emptyMessage = 'No products available in this category at the moment.',
+}: ProductSectionProps) {
+    const hasProducts = Array.isArray(products) && products.length > 0
     const headingId = [categoryId, 'heading'].join('-')
-    const totalItems = products.length
+    const totalItems = hasProducts ? products.length : 0
 
     return (
         <section
@@ -30,24 +36,30 @@ export default function ProductSection({ title, products, categoryId, isFirstSec
                 >
                     {title}
                 </h2>
-                <ul
-                    className="grid list-none grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:justify-items-start"
-                    role="list"
-                    aria-labelledby={headingId}
-                    data-product-grid
-                >
-                    {products.map((product, index) => (
-                        <li key={product.name} className="list-none h-full">
-                            <ProductCard
-                                product={product}
-                                priority={isFirstSection && index === 0}
-                                gridIndex={index}
-                                gridSize={totalItems}
-                                parentHeadingId={headingId}
-                            />
-                        </li>
-                    ))}
-                </ul>
+                {hasProducts ? (
+                    <ul
+                        className="grid list-none grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:justify-items-start"
+                        role="list"
+                        aria-labelledby={headingId}
+                        data-product-grid
+                    >
+                        {products.map((product, index) => (
+                            <li key={product.name} className="list-none h-full">
+                                <ProductCard
+                                    product={product}
+                                    priority={isFirstSection && index === 0}
+                                    gridIndex={index}
+                                    gridSize={totalItems}
+                                    parentHeadingId={headingId}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p className="text-center text-lg text-gray-700 dark:text-gray-300" role="status">
+                        {emptyMessage}
+                    </p>
+                )}
             </div>
         </section>
     )
