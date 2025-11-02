@@ -170,11 +170,27 @@ function Navigation() {
     const handleNavClick = (
         e: React.MouseEvent<HTMLAnchorElement>,
         targetId: string,
-        id: string
+        id: string,
+        options?: { categorySlug?: string; categoryName?: string }
     ) => {
         e.preventDefault()
         setActiveSection(id)
         closeMenu()
+
+        const slugFromOptions =
+            options?.categorySlug ||
+            (options?.categoryName ? slugify(options.categoryName) : undefined)
+
+        if (slugFromOptions && typeof window !== 'undefined') {
+            window.dispatchEvent(
+                new CustomEvent('products:select-category', {
+                    detail: {
+                        categorySlug: slugFromOptions,
+                        categoryName: options?.categoryName,
+                    },
+                })
+            )
+        }
 
         scrollToSection(targetId)
     }
@@ -285,28 +301,28 @@ function Navigation() {
                                                     className="flex flex-col py-1 font-semibold"
                                                     role="none"
                                                 >
-                                                    {item.submenu.map(
-                                                        (subItem) => {
-                                                            const subHref = `#${slugify(
-                                                                subItem.category
-                                                            )}`
-                                                            return (
-                                                                <a
-                                                                    key={
-                                                                        subItem.label
-                                                                    }
-                                                                    href={
-                                                                        subHref
-                                                                    }
-                                                                    onClick={(
-                                                                        e
-                                                                    ) =>
-                                                                        handleNavClick(
-                                                                            e,
-                                                                            subHref,
-                                                                            item.id
-                                                                        )
-                                                                    }
+                                                    {item.submenu.map((subItem) => {
+                                                        const categorySlug = slugify(
+                                                            subItem.category
+                                                        )
+                                                        return (
+                                                            <a
+                                                                key={
+                                                                    subItem.label
+                                                                }
+                                                                href="#products"
+                                                                onClick={(e) =>
+                                                                    handleNavClick(
+                                                                        e,
+                                                                        'products',
+                                                                        item.id,
+                                                                        {
+                                                                            categorySlug,
+                                                                            categoryName:
+                                                                                subItem.category,
+                                                                        }
+                                                                    )
+                                                                }
                                                                     className="block px-4 py-2 text-black dark:text-gray-300 hover:bg-green-100 hover:text-green-700 dark:hover:bg-gray-700 dark:hover:text-green-300"
                                                                     role="menuitem"
                                                                 >
@@ -404,24 +420,28 @@ function Navigation() {
                                         {/* Mobile Submenu */}
                                         {item.submenu && (
                                             <div
-                                                className=" auto-contrast ml-6 mt-1 space-y-1"
+                                                className="auto-contrast ml-6 mt-1 space-y-1"
                                                 role="menu"
                                                 aria-label={`${item.label} submenu`}
                                             >
                                                 {item.submenu.map((subItem) => {
-                                                    const subTargetId = slugify(
+                                                    const categorySlug = slugify(
                                                         subItem.category
                                                     )
-                                                    const subHref = '#' + subTargetId
                                                     return (
                                                         <a
                                                             key={subItem.label}
-                                                            href={subHref}
+                                                            href="#products"
                                                             onClick={(e) =>
                                                                 handleNavClick(
                                                                     e,
-                                                                    subTargetId,
-                                                                    item.id
+                                                                    'products',
+                                                                    item.id,
+                                                                    {
+                                                                        categorySlug,
+                                                                        categoryName:
+                                                                            subItem.category,
+                                                                    }
                                                                 )
                                                             }
                                                             className="focus-enhanced block px-3 py-2 text-gray-600 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400"
