@@ -13,9 +13,16 @@ import AboutSection from '@/components/AboutSection'
 import ContactSection from '@/components/ContactSection'
 import HeroSection from '@/components/HeroSection'
 import ProductSection from '@/components/ProductSection'
+import ProductCarousel from '@/components/ProductCarousel'
+import MarketingHighlights from '@/components/MarketingHighlights'
 import FilterPanel, { type FilterState } from '@/components/FilterPanel'
-import { groupProductsByCategory, sortProductsByOrder } from '@/lib/products'
+import {
+    buildCuratedCollections,
+    groupProductsByCategory,
+    sortProductsByOrder,
+} from '@/lib/products'
 import type { ProductSortOrder } from '@/lib/products'
+import { MARKETING_BLOCKS } from '@/lib/marketing'
 import { applyAutoContrast } from '@/utils/autoContrast'
 import { slugify } from '@/utils/slugify'
 import type { Product } from '@/types/product'
@@ -47,6 +54,9 @@ export default function HomePage({ products, initialCategory }: HomePageProps) {
     const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false)
 
     const productsByCategory = useMemo(() => groupProductsByCategory(products), [products])
+
+    const curatedCollections = useMemo(() => buildCuratedCollections(products, 10), [products])
+    const { featured, newArrivals, bestsellers } = curatedCollections
 
     const categoryEntries = useMemo<CategoryEntry[]>(
         () =>
@@ -333,6 +343,23 @@ export default function HomePage({ products, initialCategory }: HomePageProps) {
             <Navigation />
             <main id="main-content" role="main" tabIndex={-1} className="outline-none">
                 <HeroSection />
+                {featured.length > 0 ? (
+                    <ProductCarousel
+                        title="Featured Favorites"
+                        description="Hand-picked strains and goods our team can't stop talking about."
+                        sectionId="featured-products"
+                        products={featured}
+                        cta={{ label: 'Browse full menu', href: '#products' }}
+                    />
+                ) : null}
+                {newArrivals.length > 0 ? (
+                    <ProductCarousel
+                        title="Fresh on the Shelf"
+                        description="Discover the latest drops before they disappear."
+                        sectionId="new-arrivals"
+                        products={newArrivals}
+                    />
+                ) : null}
                 <section
                     id="products"
                     role="region"
@@ -434,6 +461,16 @@ export default function HomePage({ products, initialCategory }: HomePageProps) {
                         )}
                     </div>
                 </section>
+                <MarketingHighlights blocks={MARKETING_BLOCKS} />
+                {bestsellers.length > 0 ? (
+                    <ProductCarousel
+                        title="Route 66 Bestsellers"
+                        description="Fan-favorite picks with unbeatable value and consistency."
+                        sectionId="bestsellers"
+                        products={bestsellers}
+                        cta={{ label: 'Shop top sellers', href: '#products' }}
+                    />
+                ) : null}
                 <AboutSection />
                 <LocationContent />
                 <ContactSection />
