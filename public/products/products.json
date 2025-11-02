@@ -2,6 +2,7 @@
   {
     "name": "Bat Breath",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -20,6 +21,7 @@
   {
     "name": "Blue Sunset Sherbert",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -38,6 +40,7 @@
   {
     "name": "Cake Face",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -56,6 +59,7 @@
   {
     "name": "Candy Punch",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -74,6 +78,7 @@
   {
     "name": "Cherry Punch Snowcaps",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -92,6 +97,7 @@
   {
     "name": "Citrus Fuel",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -110,6 +116,7 @@
   {
     "name": "Columbian Gold",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -128,6 +135,7 @@
   {
     "name": "Cosmic Runtz",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -146,6 +154,7 @@
   {
     "name": "Cotton Candy Lemonade 25mg",
     "category": "Edibles",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "12 oz can"
     ],
@@ -157,6 +166,7 @@
   {
     "name": "Cotton Candy Lemonade Shots 100mg",
     "category": "Edibles",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "2oz Bottle"
     ],
@@ -168,6 +178,7 @@
   {
     "name": "Forbidden Runtz",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -186,6 +197,7 @@
   {
     "name": "Frosted Frappe",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -204,6 +216,7 @@
   {
     "name": "Green Goddess",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -222,6 +235,7 @@
   {
     "name": "GSC Snowcaps",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -240,6 +254,7 @@
   {
     "name": "Ice Cream Cake",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -258,6 +273,7 @@
   {
     "name": "Italian Ice",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -276,6 +292,7 @@
   {
     "name": "Jolly Green Giant",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -294,6 +311,7 @@
   {
     "name": "L.A. Kush",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -312,6 +330,7 @@
   {
     "name": "Lava Freeze",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -330,6 +349,7 @@
   {
     "name": "Lemon Skunk",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -348,6 +368,7 @@
   {
     "name": "Mac 1",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -366,6 +387,7 @@
   {
     "name": "Mimosa",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -384,6 +406,7 @@
   {
     "name": "Moon Water Soda - Fizzy Punch 30mg",
     "category": "Edibles",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "12 oz can"
     ],
@@ -395,6 +418,7 @@
   {
     "name": "OG Chem",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -413,6 +437,7 @@
   {
     "name": "Papaya Punch",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -431,6 +456,7 @@
   {
     "name": "Pineapple Express Crumble",
     "category": "Concentrates",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1 gram",
       "3 grams"
@@ -444,6 +470,7 @@
   {
     "name": "Purple Punch",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -462,6 +489,7 @@
   {
     "name": "Salted Caramel Cold Brew 25 mg",
     "category": "Edibles",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "12 oz can"
     ],
@@ -473,6 +501,7 @@
   {
     "name": "San Fernando OG",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -491,6 +520,7 @@
   {
     "name": "Sour Tangie",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -508,6 +538,7 @@
   {
     "name": "Super Lavender Butter",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -526,6 +557,7 @@
   {
     "name": "Tropical Cherry",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -544,6 +576,7 @@
   {
     "name": "Tropical Punch Shots 100mg",
     "category": "Edibles",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "2oz Bottle"
     ],
@@ -555,6 +588,7 @@
   {
     "name": "UK Cheese",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -573,6 +607,7 @@
   {
     "name": "Watermelon Skittlez",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -591,6 +626,7 @@
   {
     "name": "Blueberry Muffin Diamonds",
     "category": "Diamonds & Sauce",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1 gram",
       "3 grams"
@@ -603,6 +639,7 @@
   {
     "name": "Blueberry Muffin Flower",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -619,6 +656,7 @@
   {
     "name": "Cherry Pie Crumble",
     "category": "Concentrates",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1 gram",
       "3 grams"
@@ -632,6 +670,7 @@
   {
     "name": "Euphoria - Gummies Grape 250mg",
     "category": "Edibles",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "10ct"
     ],
@@ -642,6 +681,7 @@
   {
     "name": "Flower Preroll",
     "category": "Pre-Rolls",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "Tropicana Cherry",
       "Chem De La Chem",
@@ -658,6 +698,7 @@
   {
     "name": "Granddaddy Purple Crumble",
     "category": "Concentrates",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1 gram",
       "3 grams"
@@ -671,6 +712,7 @@
   {
     "name": "Ice Cream Cake Diamonds",
     "category": "Diamonds & Sauce",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1 gram",
       "3 grams"
@@ -683,6 +725,7 @@
   {
     "name": "Infused Prerolls",
     "category": "Pre-Rolls",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "Benson Arbor Blueberry Muffin Hash Infused",
       "Benson Arbor Tropic Lemon Hash Infused",
@@ -699,6 +742,7 @@
   {
     "name": "Mango Mentality",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -715,6 +759,7 @@
   {
     "name": "MEGA DOSE Gummies Blue Razz 25mg",
     "category": "Edibles",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "4ct",
       "2ct"
@@ -727,6 +772,7 @@
   {
     "name": "One Gram Carts",
     "category": "Vapes & Carts",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "Blue Walker (Sativa)",
       "Bomb Pop (Indica)",
@@ -762,6 +808,7 @@
   {
     "name": "One Gram Disposable",
     "category": "Vapes & Carts",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "Blueberry Muffin Live Resin (Indica)",
       "Chocolate Diesel Live Resin (Sativa)",
@@ -783,6 +830,7 @@
   {
     "name": "Saucy Diamonds",
     "category": "Diamonds & Sauce",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1 gram",
       "3 grams"
@@ -795,6 +843,7 @@
   {
     "name": "Tropical Cherry Snowcaps",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -812,6 +861,7 @@
   {
     "name": "Two Gram Vapes",
     "category": "Vapes & Carts",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "Bacio-Gelato",
       "Chem Dawg",
@@ -833,6 +883,7 @@
   {
     "name": "Wedding Cake Crumble",
     "category": "Concentrates",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1 gram",
       "3 grams"
@@ -845,6 +896,7 @@
   {
     "name": "Alcapulco Gold",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -862,6 +914,7 @@
   {
     "name": "Amnesia Haze Diamonds",
     "category": "Diamonds & Sauce",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1 gram",
       "3 grams"
@@ -875,6 +928,7 @@
   {
     "name": "Blue Dream Living Soil",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -892,6 +946,7 @@
   {
     "name": "Blueberry Diesel",
     "category": "Concentrates",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1 gram",
       "3 grams"
@@ -906,6 +961,7 @@
   {
     "name": "Candy Cane",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -923,6 +979,7 @@
   {
     "name": "Death Star",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -940,6 +997,7 @@
   {
     "name": "Diamond Badder",
     "category": "Diamonds & Sauce",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1 gram",
       "3 grams"
@@ -953,6 +1011,7 @@
   {
     "name": "Dosido",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -970,6 +1029,7 @@
   {
     "name": "Gelonade",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -987,6 +1047,7 @@
   {
     "name": "Green Crack",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -1004,6 +1065,7 @@
   {
     "name": "Green Crack Snowcaps",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -1021,6 +1083,7 @@
   {
     "name": "Magic Night",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -1038,6 +1101,7 @@
   {
     "name": "Orange Creamsicle",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -1055,6 +1119,7 @@
   {
     "name": "Point Break",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -1072,6 +1137,7 @@
   {
     "name": "Skywalker",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -1089,6 +1155,7 @@
   {
     "name": "Slurricane",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -1106,6 +1173,7 @@
   {
     "name": "Sour Mac",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -1123,6 +1191,7 @@
   {
     "name": "Star Child",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -1140,6 +1209,7 @@
   {
     "name": "Super Sour Diesel",
     "category": "Concentrates",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1 gram",
       "3 grams"
@@ -1154,6 +1224,7 @@
   {
     "name": "White Widow Snowcaps",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",
@@ -1172,6 +1243,7 @@
   {
     "name": "Zkittles",
     "category": "Flower",
+    "image": "/assets/images/placeholder.webp",
     "size_options": [
       "1/8",
       "1/4",

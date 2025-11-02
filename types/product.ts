@@ -1,6 +1,7 @@
 export interface Product {
   name: string
   category: string
+  image: string
   size_options: string[]
   prices: Record<string, number>
   thca_percentage?: number
