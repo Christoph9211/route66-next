@@ -126,14 +126,9 @@ function SearchNavigation() {
             const productSlug = slugify(product.name)
             const hashId = 'product-' + productSlug
             const announcement = `Moving to the ${product.name} product card.`
-            const focusTarget =
-                typeof document !== 'undefined'
-                    ? (document.getElementById(hashId) as HTMLElement | null)
-                    : null
 
             setAnnounceMessage(announcement)
             closeSearch(false, {
-                focusTarget,
                 announcement
             })
 
@@ -141,16 +136,49 @@ function SearchNavigation() {
                 return
             }
 
-            window.requestAnimationFrame(() => {
-                const scrolled = scrollToSection(hashId, {
-                    behavior: 'smooth',
-                    block: 'start'
-                })
+            const categorySlug = slugify(product.category)
 
-                if (!scrolled && focusTarget) {
-                    focusTarget.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            window.dispatchEvent(
+                new CustomEvent('products:select-category', {
+                    detail: {
+                        categorySlug,
+                        categoryName: product.category
+                    }
+                })
+            )
+
+            const attemptFocusAndScroll = (attemptsLeft: number) => {
+                if (attemptsLeft <= 0) {
+                    return
                 }
-            })
+
+                const focusTarget = document.getElementById(hashId) as HTMLElement | null
+
+                if (focusTarget) {
+                    window.requestAnimationFrame(() => {
+                        const scrolled = scrollToSection(hashId, {
+                            behavior: 'smooth',
+                            block: 'start'
+                        })
+
+                        if (!scrolled) {
+                            focusTarget.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                        }
+
+                        try {
+                            focusTarget.focus({ preventScroll: true })
+                        } catch {
+                            focusTarget.focus()
+                        }
+                    })
+
+                    return
+                }
+
+                window.setTimeout(() => attemptFocusAndScroll(attemptsLeft - 1), 50)
+            }
+
+            window.setTimeout(() => attemptFocusAndScroll(30), 50)
         },
         [closeSearch]
     )
