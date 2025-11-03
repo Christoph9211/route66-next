@@ -6,6 +6,8 @@ import { getProducts } from '@/lib/products.server'
 
 export const revalidate = 3600 // Revalidate every hour
 
+export const dynamic = 'force-static'
+
 export default async function HomePage() {
     const products = await getProducts()
 
