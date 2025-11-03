@@ -1,4 +1,5 @@
 'use client'
+import 'react/jsx-runtime';
 import { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import { slugify } from '@/utils/slugify'
@@ -125,8 +126,8 @@ export default function ProductCard({
                         className={`relative ${isCompact ? 'h-40' : 'h-48'} w-full overflow-hidden rounded-lg`}
                     >
                         <Image
-                            src={product.image}
-                            alt={product.name}
+                            src={product.image && product.image.length > 0 ? product.image : '/assets/images/placeholder.webp'}
+                            alt={product.name || 'Product image'}
                             width={480}
                             height={360}
                             priority={priority}

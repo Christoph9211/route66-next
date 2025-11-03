@@ -115,7 +115,7 @@ export default function ProductQuickView({ product, onClose, initialSize, modalI
                 <div className="grid gap-6 px-6 py-6 md:grid-cols-2">
                     <div className="relative overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
                         <Image
-                            src={product.image}
+                            src={product.image && product.image.length > 0 ? product.image : '/assets/images/placeholder.webp'}
                             alt={product.name}
                             width={640}
                             height={640}

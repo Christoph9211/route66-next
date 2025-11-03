@@ -87,7 +87,7 @@ function parseProduct(value: unknown, index: number): Product {
 
   const name = normaliseString(value.name, 'name', ctx)
   const category = normaliseString(value.category, 'category', ctx)
-  const image = normaliseString(value.image, 'image', ctx)
+  const image = value.image === undefined ? undefined : normaliseString(value.image, 'image', ctx)
   const sizeOptions = normaliseStringArray(value.size_options, 'size_options', ctx)
   const prices = normalisePrices(value.prices, ctx)
   const thca = normaliseOptionalNumber(value.thca_percentage, 'thca_percentage', ctx)
