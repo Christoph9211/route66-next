@@ -1,4 +1,8 @@
-import { getMinimumProductPrice, sortProductsByOrder } from '@/lib/products'
+import {
+    getMinimumProductPrice,
+    sortProductsByOrder,
+    isProductAvailable,
+} from '@/lib/products'
 import type { Product } from '@/types/product'
 
 describe('product sorting helpers', () => {
@@ -105,5 +109,51 @@ describe('product sorting helpers', () => {
             'Standard',
             'Budget',
         ])
+    })
+})
+
+describe('product availability helper', () => {
+    const baseProduct: Product = {
+        name: 'Availability Check',
+        category: 'Category',
+        size_options: ['1g'],
+        prices: { standard: 10 },
+    }
+
+    it('returns false when the product banner marks it as out of stock', () => {
+        expect(
+            isProductAvailable({
+                ...baseProduct,
+                banner: 'Out of Stock',
+            })
+        ).toBe(false)
+    })
+
+    it('returns false when all availability entries are false', () => {
+        expect(
+            isProductAvailable({
+                ...baseProduct,
+                availability: {
+                    small: false,
+                    large: false,
+                },
+            })
+        ).toBe(false)
+    })
+
+    it('returns true when at least one availability entry is true', () => {
+        expect(
+            isProductAvailable({
+                ...baseProduct,
+                availability: {
+                    small: false,
+                    large: true,
+                },
+            })
+        ).toBe(true)
+    })
+
+    it('returns true when availability is not provided', () => {
+        expect(isProductAvailable(baseProduct)).toBe(true)
     })
 })

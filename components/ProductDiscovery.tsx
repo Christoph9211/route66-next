@@ -4,7 +4,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { ChangeEvent } from 'react'
 import HeroSection from '@/components/HeroSection'
 import ProductSection from '@/components/ProductSection'
-import { groupProductsByCategory, sortProductsByOrder } from '@/lib/products'
+import {
+    groupProductsByCategory,
+    sortProductsByOrder,
+    isProductAvailable,
+} from '@/lib/products'
 import type { ProductSortOrder } from '@/lib/products'
 import { applyAutoContrast } from '@/utils/autoContrast'
 import { slugify } from '@/utils/slugify'
@@ -137,19 +141,8 @@ export default function ProductDiscovery({ products, initialCategory }: ProductD
                 return false
             }
 
-            if (onlyInStock) {
-                if (typeof product.availability === 'boolean') {
-                    if (!product.availability) {
-                        return false
-                    }
-                } else if (product.availability && typeof product.availability === 'object') {
-                    const availabilityValues = Object.values(product.availability)
-                    const isAvailable =
-                        availabilityValues.length === 0 || availabilityValues.some(Boolean)
-                    if (!isAvailable) {
-                        return false
-                    }
-                }
+            if (onlyInStock && !isProductAvailable(product)) {
+                return false
             }
 
             if (minPotencyValue !== null || maxPotencyValue !== null) {

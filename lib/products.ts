@@ -195,8 +195,25 @@ function sortByMinimumPriceAsc(products: Product[]): Product[] {
   })
 }
 
+export function isProductAvailable(product: Product): boolean {
+  const banner = product.banner?.trim().toLowerCase()
+  if (banner === 'out of stock') {
+    return false
+  }
+
+  const availability = product.availability
+  if (availability) {
+    const availabilityValues = Object.values(availability)
+    if (availabilityValues.length > 0 && !availabilityValues.some(Boolean)) {
+      return false
+    }
+  }
+
+  return true
+}
+
 function filterAvailableProducts(products: Product[]): Product[] {
-  return products.filter((product) => product.banner !== 'Out of Stock')
+  return products.filter(isProductAvailable)
 }
 
 export function getFeaturedProducts(
