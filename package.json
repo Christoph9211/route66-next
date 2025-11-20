@@ -34,6 +34,7 @@
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^24",
     "@types/react-dom": "19.2.2",
+    "baseline-browser-mapping": "^2.8.29",
     "eslint": "^9",
     "eslint-config-next": "16.0.0",
     "jest": "^30.2.0",
