@@ -295,22 +295,36 @@ button {
 
 /* Ensure readable text on legal policy pages */
 .policy-content {
+  background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
+  line-height: 1.7;
 }
 
 .policy-content a {
-  color: var(--color-secondary);
+  color: #0f766e;
+  font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 2px;
+  transition: color 0.2s ease-in-out;
 }
 
 .policy-content a:hover {
-  color: var(--color-secondary-hover);
+  color: #0b5c52;
 }
 
+.dark .policy-content,
 @media (prefers-color-scheme: dark) {
   .policy-content {
     color: var(--color-text-primary);
+    background-color: var(--color-bg-primary);
+  }
+
+  .policy-content a {
+    color: #7dd3fc;
+  }
+
+  .policy-content a:hover {
+    color: #38bdf8;
   }
 }
 

@@ -20,7 +20,7 @@ export default function TermsOfServicePage() {
         <h2 className="mb-2 mt-6 text-2xl font-semibold">Privacy</h2>
         <p className="mb-4">
           Our{' '}
-          <a href="/privacy-policy" className="text-blue-600 underline dark:text-blue-400">
+          <a href="/privacy-policy">
             Privacy Policy
           </a>{' '}
           describes how we collect, use, and share your information. By
@@ -73,10 +73,7 @@ export default function TermsOfServicePage() {
         </p>
         <p className="mt-8">
           If you have questions about these Terms, please contact us at{' '}
-          <a
-            href="mailto:route66hemp@gmail.com"
-            className="text-blue-600 underline dark:text-blue-400"
-          >
+          <a href="mailto:route66hemp@gmail.com">
             route66hemp@gmail.com
           </a>
           .
