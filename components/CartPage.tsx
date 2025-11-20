@@ -77,7 +77,7 @@ export default function CartPage() {
     const [step, setStep] = useState<Step>(1)
     const [shipping, setShipping] = useState<ShippingDetails>(initialShipping)
     const [shippingErrors, setShippingErrors] = useState<
-        Partial<Record<keyof ShippingDetails, string>
+        Partial<Record<keyof ShippingDetails, string>>
     >({})
     const [paymentToken, setPaymentToken] = useState<string | null>(null)
     const [statusMessage, setStatusMessage] = useState('')
