@@ -39,10 +39,7 @@ export default function PrivacyPolicyPage() {
         </p>
         <p className="mt-8">
           For questions about this policy, email us at{' '}
-          <a
-            href="mailto:route66hemp@gmail.com"
-            className="text-blue-600 underline dark:text-blue-400"
-          >
+          <a href="mailto:route66hemp@gmail.com">
             route66hemp@gmail.com
           </a>
           .
