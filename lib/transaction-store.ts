@@ -11,7 +11,11 @@ interface TransactionRecord {
     updatedAt?: string
 }
 
-const storePath = path.join(process.cwd(), 'data', 'transactions.json')
+const storePath =
+    process.env.TRANSACTION_STORE_PATH ||
+    (process.env.VERCEL
+        ? path.join('/tmp', 'transactions.json')
+        : path.join(process.cwd(), 'data', 'transactions.json'))
 
 async function readTransactions(): Promise<TransactionRecord[]> {
     try {
@@ -27,8 +31,12 @@ async function readTransactions(): Promise<TransactionRecord[]> {
 }
 
 async function writeTransactions(records: TransactionRecord[]) {
-    await fs.mkdir(path.dirname(storePath), { recursive: true })
-    await fs.writeFile(storePath, JSON.stringify(records, null, 2), 'utf8')
+    try {
+        await fs.mkdir(path.dirname(storePath), { recursive: true })
+        await fs.writeFile(storePath, JSON.stringify(records, null, 2), 'utf8')
+    } catch (error) {
+        console.error('Failed to write transactions', error)
+    }
 }
 
 export async function findTransactionByHash(
