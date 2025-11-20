@@ -7,21 +7,13 @@ import React, {
     useCallback,
 } from 'react'
 
-interface CartItem {
-    productId: string
-    variantId: string
-    name: string
-    image: string
-    unitPrice: number
-    currency: string
-    qty: number
-}
-
-interface Cart {
-    items: CartItem[]
-    subtotal: number
-    total: number
-}
+import {
+    type Cart,
+    type CartItem,
+    type CheckoutCustomer,
+    type CheckoutResponse,
+    type ShippingAddress,
+} from '../types/cart'
 
 interface CartContextType {
     cart: Cart
@@ -29,6 +21,12 @@ interface CartContextType {
     updateItem: (variantId: string, qty: number) => void
     removeItem: (variantId: string) => void
     clearCart: () => void
+    submitCheckout: (
+        details: {
+            customer: CheckoutCustomer
+            shipping: ShippingAddress
+        }
+    ) => Promise<CheckoutResponse>
     isOpen: boolean
     openCart: () => void
     closeCart: () => void
@@ -48,11 +46,17 @@ const CartContext = createContext<CartContextType>({} as CartContextType)
 function getInitialCart(): Cart {
     try {
         const stored = localStorage.getItem('cart')
-        return stored
+        const parsed = stored
             ? JSON.parse(stored)
-            : { items: [], subtotal: 0, total: 0 }
+            : { items: [], subtotal: 0, total: 0, currency: 'USD' }
+        return {
+            currency: parsed.currency || 'USD',
+            items: Array.isArray(parsed.items) ? parsed.items : [],
+            subtotal: typeof parsed.subtotal === 'number' ? parsed.subtotal : 0,
+            total: typeof parsed.total === 'number' ? parsed.total : 0,
+        }
     } catch {
-        return { items: [], subtotal: 0, total: 0 }
+        return { items: [], subtotal: 0, total: 0, currency: 'USD' }
     }
 }
 
@@ -82,7 +86,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             (sum, item) => sum + item.unitPrice * item.qty,
             0
         )
-        return { items, subtotal, total: subtotal }
+        const currency = items[0]?.currency || 'USD'
+        return { items, subtotal, total: subtotal, currency }
     }
 
 
@@ -147,6 +152,46 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         persist(empty)
     }, [])
 
+    const submitCheckout = useCallback(
+        async ({
+            customer,
+            shipping,
+        }: {
+            customer: CheckoutCustomer
+            shipping: ShippingAddress
+        }): Promise<CheckoutResponse> => {
+            if (cart.items.length === 0) {
+                throw new Error('Cannot checkout with an empty cart')
+            }
+
+            const payload = {
+                items: cart.items,
+                currency: cart.currency,
+                total: cart.total,
+                customer,
+                shipping,
+            }
+
+            const response = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            })
+
+            if (!response.ok) {
+                const errorText = await response.text()
+                throw new Error(
+                    errorText || 'Unable to submit checkout at this time.'
+                )
+            }
+
+            return (await response.json()) as CheckoutResponse
+        },
+        [cart]
+    )
+
     useEffect(() => {
         /**
          * Adds an item to the cart and opens the cart drawer.
@@ -203,6 +248,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 updateItem,
                 removeItem,
                 clearCart,
+                submitCheckout,
                 isOpen,
                 openCart,
                 closeCart,

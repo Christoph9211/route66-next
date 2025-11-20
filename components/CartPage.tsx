@@ -1,10 +1,5 @@
-'use client'
-import React, {
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+'use client';
+import React, { useMemo, useState } from 'react'
 import { useCart } from '../hooks/useCart'
 
 interface ShippingDetails {
@@ -67,6 +62,7 @@ function validateShipping(details: ShippingDetails) {
  * @return {JSX.Element|null} The cart page component or null if the page is not open.
  */
 export default function CartPage() {
+<<<<<<< HEAD
     const {
         cart,
         isPageOpen,
@@ -89,147 +85,27 @@ export default function CartPage() {
     const isCloverReady = true
     const walletsAvailable = true
     const stepHeadingRef = useRef<HTMLHeadingElement>(null)
+=======
+    const { cart, isPageOpen, closeCartPage, removeItem, submitCheckout } =
+        useCart()
+    const [customerName, setCustomerName] = useState('')
+    const [customerEmail, setCustomerEmail] = useState('')
+    const [shippingAddress, setShippingAddress] = useState({
+        line1: '',
+        line2: '',
+        city: '',
+        state: '',
+        postalCode: '',
+        country: 'US',
+    })
+    const [checkoutStatus, setCheckoutStatus] = useState<string | null>(null)
+    const [checkoutError, setCheckoutError] = useState<string | null>(null)
+>>>>>>> 58e23882e3120501d3f52387b41236ba7357e315
 
-    useEffect(() => {
-        if (stepHeadingRef.current) {
-            stepHeadingRef.current.focus()
-        }
-    }, [step])
-
-    useEffect(() => {
-        const errors = validateShipping(shipping)
-        setShippingErrors(errors)
-    }, [shipping, setShippingErrors])
-
-    useEffect(() => {
-        const zip = shipping.postalCode.slice(0, 5)
-        if (ZIP_LOOKUP[zip]) {
-            setShipping((prev) => ({
-                ...prev,
-                city: prev.city || ZIP_LOOKUP[zip].city,
-                state: prev.state || ZIP_LOOKUP[zip].state,
-            }))
-        }
-    }, [shipping.postalCode])
-
-    const shippingCost = useMemo(
-        () => (cart.subtotal >= 75 || cart.subtotal === 0 ? 0 : 8.5),
-        [cart.subtotal]
+    const formattedTotal = useMemo(
+        () => `${cart.currency || 'USD'} ${cart.total.toFixed(2)}`,
+        [cart.currency, cart.total]
     )
-    const tax = useMemo(() =>
-        shipping.state ? Number((cart.subtotal * 0.0725).toFixed(2)) : 0,
-    [cart.subtotal, shipping.state])
-    const total = useMemo(
-        () => Number((cart.subtotal + shippingCost + tax).toFixed(2)),
-        [cart.subtotal, shippingCost, tax]
-    )
-
-    const handleClose = () => {
-        setStep(1)
-        setShipping(initialShipping)
-        setShippingErrors({})
-        setPaymentToken(null)
-        setStatusMessage('')
-        setConfirmation(null)
-        setIsAutofilled(false)
-        closeCartPage()
-    }
-
-    const proceedToStep = (target: Step) => {
-        if (target === 2) {
-            const errors = validateShipping(shipping)
-            if (Object.keys(errors).length && step >= 2) {
-                setShippingErrors(errors)
-                return
-            }
-        }
-        if (target === 3) {
-            const errors = validateShipping(shipping)
-            if (Object.keys(errors).length) {
-                setShippingErrors(errors)
-                setStep(2)
-                return
-            }
-        }
-        setStep(target)
-    }
-
-    const autofill = () => {
-        setShipping({
-            firstName: 'Alex',
-            lastName: 'Rivera',
-            email: 'alex.rivera@example.com',
-            phone: '+13105551234',
-            address1: '1234 Sunset Blvd',
-            address2: 'Unit 8',
-            city: 'Los Angeles',
-            state: 'CA',
-            postalCode: '90001',
-            country: 'US',
-            saveInfo: true,
-        })
-        setIsAutofilled(true)
-    }
-
-    const tokenizePayment = () => {
-        setStatusMessage('Generating secure Clover token...')
-        setTimeout(() => {
-            setPaymentToken(`clover_tok_${Date.now()}`)
-            setStatusMessage('Card tokenized. You can place the order now.')
-        }, 600)
-    }
-
-    const handlePlaceOrder = async () => {
-        const errors = validateShipping(shipping)
-        if (Object.keys(errors).length) {
-            setShippingErrors(errors)
-            setStep(2)
-            return
-        }
-        if (!paymentToken) {
-            setStatusMessage('Please tokenize your payment details before submitting.')
-            return
-        }
-
-        setIsSubmitting(true)
-        setStatusMessage('Placing your order...')
-        try {
-            const response = await fetch('/api/checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    cart,
-                    shipping,
-                    totals: {
-                        subtotal: cart.subtotal,
-                        shipping: shippingCost,
-                        tax,
-                        total,
-                    },
-                    paymentToken,
-                }),
-            })
-
-            if (!response.ok) {
-                throw new Error('Checkout failed')
-            }
-            const result = await response.json()
-            setConfirmation({
-                orderNumber:
-                    result.orderNumber || `R66-${Date.now().toString().slice(-6)}`,
-                estimatedShipDate: result.estimatedShipDate,
-            })
-            clearCart()
-            setStep(3)
-            setStatusMessage('')
-        } catch {
-            setStatusMessage(
-                'Unable to complete checkout right now. Please try again or contact support.'
-            )
-        } finally {
-            setIsSubmitting(false)
-        }
-    }
 
     if (!isPageOpen) return null
 
@@ -752,22 +628,185 @@ export default function CartPage() {
                 onClick={handleClose}
                 aria-hidden
             />
-            <div className="relative grid w-full max-w-6xl grid-cols-1 gap-6 overflow-y-auto rounded-3xl border border-slate-200 bg-white p-4 shadow-xl dark:border-gray-700 dark:bg-gray-800 md:grid-cols-3 lg:p-6">
-                <div className="md:col-span-2">
-                    <div className="flex items-center justify-between">
-                        <h2
-                            id="cart-title"
-                            className="text-xl font-bold dark:text-white"
-                            ref={stepHeadingRef}
-                            tabIndex={-1}
-                        >
-                            Checkout
-                        </h2>
+            <div className="relative overflow-y-auto max-h-3/4 w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-4 shadow-xl dark:border-gray-700 dark:bg-gray-800">
+                <div className="flex items-center justify-between">
+                    <h2
+                        id="cart-title"
+                        className="text-xl font-bold dark:text-white"
+                    >
+                        Your Cart
+                    </h2>
+                    <button
+                        type="button"
+                        onClick={closeCartPage}
+                        className="mb-4 w-1/4 rounded bg-emerald-600 px-4 py-2 text-lg font-bold text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
+                        aria-label="Close cart"
+                    >
+                        <span aria-hidden="true">✕</span>
+                    </button>
+                </div>
+                {cart.items.length === 0 ? (
+                    <p className="mt-4 text-slate-700 dark:text-gray-300">
+                        Your cart is empty.
+                    </p>
+                ) : (
+                    <div className="mt-4 grid gap-4">
+                        {cart.items.map((item) => (
+                            <div
+                                key={item.variantId}
+                                className="flex items-start justify-between gap-3 border-b border-slate-200 pb-3 dark:border-gray-700"
+                            >
+                                <div>
+                                    <p className="font-semibold dark:text-white">
+                                        {item.name}
+                                    </p>
+                                    <p className="text-sm text-slate-600 dark:text-gray-400">
+                                        Qty: {item.qty}
+                                    </p>
+                                </div>
+                                <div className="text-right">
+                                    <p className="font-semibold dark:text-white">
+                                        $
+                                        {(item.unitPrice * item.qty).toFixed(2)}
+                                    </p>
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            removeItem(item.variantId)
+                                        }
+                                        className="mt-2 text-sm underline underline-offset-4 dark:text-red-400"
+                                    >
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                        <div className="flex items-center justify-between">
+                            <p className="font-semibold dark:text-white">
+                                Subtotal
+                            </p>
+                            <p className="font-bold dark:text-white">
+                                {formattedTotal}
+                            </p>
+                        </div>
+                        <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm dark:border-gray-700 dark:bg-gray-900">
+                            <div>
+                                <label className="block font-semibold text-slate-800 dark:text-white" htmlFor="checkout-name">
+                                    Customer name
+                                </label>
+                                <input
+                                    id="checkout-name"
+                                    value={customerName}
+                                    onChange={(e) => setCustomerName(e.target.value)}
+                                    className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                                    placeholder="Full name"
+                                />
+                            </div>
+                            <div>
+                                <label className="block font-semibold text-slate-800 dark:text-white" htmlFor="checkout-email">
+                                    Email
+                                </label>
+                                <input
+                                    id="checkout-email"
+                                    type="email"
+                                    value={customerEmail}
+                                    onChange={(e) => setCustomerEmail(e.target.value)}
+                                    className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                                    placeholder="you@example.com"
+                                />
+                            </div>
+                            <div>
+                                <label className="block font-semibold text-slate-800 dark:text-white" htmlFor="checkout-address">
+                                    Shipping address
+                                </label>
+                                <input
+                                    id="checkout-address"
+                                    value={shippingAddress.line1}
+                                    onChange={(e) =>
+                                        setShippingAddress((prev) => ({
+                                            ...prev,
+                                            line1: e.target.value,
+                                        }))
+                                    }
+                                    className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                                    placeholder="Street address"
+                                />
+                            </div>
+                            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                                <input
+                                    value={shippingAddress.city}
+                                    onChange={(e) =>
+                                        setShippingAddress((prev) => ({
+                                            ...prev,
+                                            city: e.target.value,
+                                        }))
+                                    }
+                                    className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                                    placeholder="City"
+                                />
+                                <input
+                                    value={shippingAddress.state}
+                                    onChange={(e) =>
+                                        setShippingAddress((prev) => ({
+                                            ...prev,
+                                            state: e.target.value,
+                                        }))
+                                    }
+                                    className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                                    placeholder="State"
+                                />
+                                <input
+                                    value={shippingAddress.postalCode}
+                                    onChange={(e) =>
+                                        setShippingAddress((prev) => ({
+                                            ...prev,
+                                            postalCode: e.target.value,
+                                        }))
+                                    }
+                                    className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                                    placeholder="ZIP"
+                                />
+                            </div>
+                        </div>
+                        {checkoutError && (
+                            <p className="text-sm text-red-600" role="alert">
+                                {checkoutError}
+                            </p>
+                        )}
+                        {checkoutStatus && (
+                            <p className="text-sm text-emerald-700 dark:text-emerald-300">
+                                {checkoutStatus}
+                            </p>
+                        )}
                         <button
                             type="button"
-                            onClick={handleClose}
-                            className="mb-2 w-1/4 rounded bg-emerald-600 px-4 py-2 text-lg font-bold text-white hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 dark:bg-green-600 dark:hover:bg-green-700"
-                            aria-label="Close checkout"
+                            onClick={async () => {
+                                setCheckoutError(null)
+                                setCheckoutStatus('Validating cart...')
+                                try {
+                                    const response = await submitCheckout({
+                                        customer: {
+                                            name: customerName || 'Guest',
+                                            email: customerEmail,
+                                        },
+                                        shipping: shippingAddress,
+                                    })
+
+                                    setCheckoutStatus('Redirecting to payment...')
+
+                                    if (response.checkoutUrl) {
+                                        window.location.href = response.checkoutUrl
+                                    }
+                                } catch (error) {
+                                    const message =
+                                        error instanceof Error
+                                            ? error.message
+                                            : 'Checkout failed.'
+                                    setCheckoutError(message)
+                                    setCheckoutStatus(null)
+                                }
+                            }}
+                            className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-700 px-5 py-3 font-semibold text-white shadow hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:ring-offset-2"
                         >
                             <span aria-hidden="true">✕</span>
                         </button>
