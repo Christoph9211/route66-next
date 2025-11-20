@@ -22,16 +22,16 @@ function Navigation() {
     // Handle scroll effects
     useEffect(() => {
 
-    /**
-     * Handles the scroll event and updates the state of whether the user has
-     * scrolled more than 20 pixels from the top of the page.
-     *
-     * This function is called whenever the window is scrolled. It checks if the
-     * scroll position is greater than 20 pixels from the top of the page and
-     * updates the `isScrolled` state accordingly.
-     *
-     * @return {void} No return value.
-     */
+        /**
+         * Handles the scroll event and updates the state of whether the user has
+         * scrolled more than 20 pixels from the top of the page.
+         *
+         * This function is called whenever the window is scrolled. It checks if the
+         * scroll position is greater than 20 pixels from the top of the page and
+         * updates the `isScrolled` state accordingly.
+         *
+         * @return {void} No return value.
+         */
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20)
         }
@@ -203,11 +203,10 @@ function Navigation() {
             {/* Main Navigation Header */}
             <header
                 id="navigation"
-                className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
-                    isScrolled
-                        ? 'bg-white/95 shadow-lg backdrop-blur-md dark:bg-gray-900/95'
-                        : 'bg-transparent'
-                }`}
+                className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${isScrolled
+                        ? 'glass dark:glass-dark shadow-theme-md py-2'
+                        : 'bg-transparent py-4'
+                    }`}
             >
                 <nav role="navigation" aria-label="Primary" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 items-center justify-between">
@@ -265,11 +264,10 @@ function Navigation() {
                                                     ? activeDropdown === item.id ? 'true' : 'false'
                                                     : undefined
                                             }
-                                            className={`focus-enhanced flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ${
-                                                activeSection === item.id
+                                            className={`focus-enhanced flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ${activeSection === item.id
                                                     ? 'bg-green-700 text-white'
                                                     : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'
-                                            }`}
+                                                }`}
                                         >
                                             <i
                                                 className={`${item.icon} mr-2 text-sm auto-contrast`}
@@ -278,9 +276,8 @@ function Navigation() {
                                             {item.label}
                                             {item.submenu && (
                                                 <i
-                                                    className={`fas fa-chevron-down ml-1 text-xs transition-transform duration-200 ${
-                                                        activeDropdown === item.id ? 'rotate-180' : ''
-                                                    }`}
+                                                    className={`fas fa-chevron-down ml-1 text-xs transition-transform duration-200 ${activeDropdown === item.id ? 'rotate-180' : ''
+                                                        }`}
                                                     aria-hidden="true"
                                                 />
                                             )}
@@ -289,11 +286,10 @@ function Navigation() {
                                         {/* Desktop Dropdown */}
                                         {item.submenu && (
                                             <div
-                                                className={`absolute left-0 mt-2 w-48 font-bold text-white rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-200 dark:bg-gray-800 ${
-                                                    activeDropdown === item.id
+                                                className={`absolute left-0 mt-2 w-48 font-bold rounded-xl glass dark:glass-dark shadow-theme-xl ring-1 ring-black/5 transition-all duration-300 ${activeDropdown === item.id
                                                         ? 'visible opacity-100 translate-y-0'
                                                         : 'invisible opacity-0 -translate-y-2 pointer-events-none'
-                                                }`}
+                                                    }`}
                                                 role="menu"
                                                 aria-label={`${item.label} submenu`}
                                             >
@@ -323,15 +319,15 @@ function Navigation() {
                                                                         }
                                                                     )
                                                                 }
-                                                                    className="block px-4 py-2 text-black dark:text-gray-300 hover:bg-green-100 hover:text-green-700 dark:hover:bg-gray-700 dark:hover:text-green-300"
-                                                                    role="menuitem"
-                                                                >
-                                                                    {
-                                                                        subItem.label
-                                                                    }
-                                                                </a>
-                                                            )
-                                                        }
+                                                                className="block px-4 py-2 text-black dark:text-gray-300 hover:bg-green-100 hover:text-green-700 dark:hover:bg-gray-700 dark:hover:text-green-300"
+                                                                role="menuitem"
+                                                            >
+                                                                {
+                                                                    subItem.label
+                                                                }
+                                                            </a>
+                                                        )
+                                                    }
                                                     )}
                                                 </div>
                                             </div>
@@ -404,11 +400,10 @@ function Navigation() {
                                                     : undefined
                                             }
                                             tabIndex={mobileMenuItemTabIndex}
-                                            className={`focus-enhanced flex items-center rounded-md px-3 py-2 text-base font-medium transition-colors ${
-                                                activeSection === item.id
+                                            className={`focus-enhanced flex items-center rounded-md px-3 py-2 text-base font-medium transition-colors ${activeSection === item.id
                                                     ? 'bg-green-700 text-white'
                                                     : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'
-                                            }`}
+                                                }`}
                                         >
                                             <i
                                                 className={`${item.icon} mr-3`}

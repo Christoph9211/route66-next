@@ -83,7 +83,7 @@ function FooterNavigation() {
     ]
 
     return (
-        <footer className="auto-contrast bg-gray-900 text-white border-t border-gray-800">
+        <footer className="auto-contrast bg-slate-900 text-white border-t border-slate-800">
             <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 {/* Main Footer Content */}
                 <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
@@ -91,7 +91,7 @@ function FooterNavigation() {
                     <div className="sm:col-span-2 md:col-span-3 lg:col-span-2">
                         <div className="mb-6">
                             <div className="mb-4 flex items-center space-x-3">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-600">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600">
                                     <i
                                         className="fas fa-cannabis text-xl text-white"
                                         aria-hidden="true"
@@ -101,12 +101,12 @@ function FooterNavigation() {
                                     <h3 className="text-xl font-bold">
                                         Route 66 Hemp
                                     </h3>
-                                    <p className="text-sm text-gray-300">
+                                    <p className="text-sm text-slate-300">
                                         Premium Hemp Products
                                     </p>
                                 </div>
                             </div>
-                            <p className="mb-6 text-gray-300">
+                            <p className="mb-6 text-slate-300">
                                 Your trusted local hemp store in St Robert,
                                 Missouri. Serving Pulaski County and the Fort
                                 Leonard Wood community with quality hemp
@@ -114,7 +114,7 @@ function FooterNavigation() {
                             </p>
                             <LocalBusinessInfo
                                 variant="minimal"
-                                className="text-gray-300"
+                                className="text-slate-300"
                             />
                         </div>
 
@@ -130,7 +130,7 @@ function FooterNavigation() {
                                         href={social.href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className={`flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-300 transition-colors ${social.color} hover:bg-gray-700`}
+                                        className={`flex h-10 w-10 items-center justify-center rounded-full bg-slate-800 text-slate-300 transition-colors ${social.color} hover:bg-slate-700`}
                                         aria-label={`Follow us on ${social.platform}`}
                                     >
                                         <i
@@ -157,7 +157,7 @@ function FooterNavigation() {
                                     <li key={link.label}>
                                         <a
                                             href={link.href}
-                                            className="text-sm text-gray-300 transition-colors hover:text-green-400"
+                                            className="text-sm text-slate-300 transition-colors hover:text-emerald-400"
                                         >
                                             {link.label}
                                         </a>
@@ -169,7 +169,7 @@ function FooterNavigation() {
                 </div>
 
                 {/* Bottom Footer */}
-                <div className="mt-12 border-t border-gray-800 pt-8">
+                <div className="mt-12 border-t border-slate-800 pt-8">
                     <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
                         <div className="text-center text-sm text-white md:text-left">
                             <p>

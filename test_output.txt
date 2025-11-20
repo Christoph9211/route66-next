@@ -1,0 +1,687 @@
+
+> route66-next@0.1.0 test_jest
+> jest
+
+PASS __tests__/products.sorting.test.ts
+PASS __tests__/a11y/google-business-integration.a11y.test.tsx
+FAIL __tests__/HomePage.filters.test.tsx
+  ΓùÅ HomePage filters ΓÇ║ filters products by price range
+
+    Found multiple elements with the text: Budget Flower
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    <h3
+      class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+      id="product-budget-flower-title"
+    >
+      Budget Flower
+    </h3>
+
+    Ignored nodes: comments, script, style
+    <h3
+      class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+      id="product-budget-flower-title"
+    >
+      Budget Flower
+    </h3>
+
+    Ignored nodes: comments, script, style
+    <h3
+      class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+      id="product-budget-flower-title"
+    >
+      Budget Flower
+    </h3>
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    <body>
+      <div>
+        <nav
+          data-testid="navigation"
+        />
+        <main
+          class="outline-none"
+          id="main-content"
+          role="main"
+          tabindex="-1"
+        >
+          <section
+            data-testid="hero"
+          />
+          <section
+            aria-describedby="featured-products-description"
+            aria-labelledby="featured-products-heading"
+            class="py-12"
+            data-section-nav="true"
+            id="featured-products"
+          >
+            <div
+              class="container mx-auto px-4"
+            >
+              <div
+                class="mb-6 flex flex-wrap items-end justify-between gap-4"
+              >
+                <div
+                  class="max-w-2xl space-y-2"
+                >
+                  <h2
+                    class="text-2xl font-bold text-gray-900 dark:text-white"
+                    id="featured-products-heading"
+                  >
+                    Featured Favorites
+                  </h2>
+                  <p
+                    class="text-base text-gray-600 dark:text-gray-300"
+                    id="featured-products-description"
+                  >
+                    Hand-picked strains and goods our team can't stop talking about.
+                  </p>
+                </div>
+                <div
+                  class="flex items-center gap-3"
+                >
+                  <button
+                    aria-controls="featured-products-list"
+                    aria-label="Scroll Featured Favorites carousel backward"
+                    class="focus-enhanced inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition hover:border-green-500 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-200 dark:hover:border-green-400 dark:hover:text-green-300 dark:focus:ring-offset-gray-900"
+                    type="button"
+                  >
+                    <span
+                      aria-hidden="true"
+                    >
+                      ΓåÉ
+                    </span>
+                  </button>
+                  <button
+                    aria-controls="featured-products-list"
+                    aria-label="Scroll Featured Favorites carousel forward"
+                    class="focus-enhanced inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition hover:border-green-500 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-200 dark:hover:border-green-400 dark:hover:text-green-300 dark:focus:ring-offset-gray-900"
+                    type="button"
+                  >
+                    <span
+                      aria-hidden="true"
+                    >
+                      ΓåÆ
+                    </span>
+                  </button>
+                  <a
+                    class="focus-enhanced inline-flex items-center justify-center rounded-full border border-green-600 px-4 py-2 text-sm font-semibold text-green-700 transition hover:bg-green-600 hover:text-white dark:text-green-300"
+                    href="#products"
+                  >
+                    Browse full menu
+                  </a>
+                </div>
+              </div>
+              <div
+                class="relative"
+              >
+                <div
+                  aria-label="Featured Favorites"
+                  class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4"
+                  id="featured-products-list"
+                  role="list"
+                >
+                  <div
+                    class="snap-start"
+                    role="listitem"
+                  >
+                    <article
+                      aria-describedby="product-premium-flower-category product-premium-flower-availability product-premium-flower-price"
+                      aria-labelledby="product-premium-flower-title"
+                      aria-posinset="1"
+                      aria-setsize="3"
+                      class="product-card group relative flex h-full w-full flex-col rounded-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 focus-enhanced overflow-hidden min-w-[220px] p-4 sm:min-w-[240px]"
+                      data-grid-index="0"
+                      data-product-card="true"
+                      id="product-premium-flower"
+                      tabindex="0"
+                    >
+                      <div
+                        class="relative mb-3"
+                      >
+                        <div
+                          class="relative h-40 w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-900"
+                        >
+                          <img
+                            alt="Premium Flower"
+                            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            data-nimg="1"
+                            decoding="async"
+                            height="360"
+                            loading="lazy"
+                            src="/_next/image?url=%2Fassets%2Fimages%2Fplaceholder.webp&w=1080&q=75"
+                            srcset="/_next/image?url=%2Fassets%2Fimages%2Fplaceholder.webp&w=640&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Fplaceholder.webp&w=1080&q=75 2x"
+                            style="color: transparent;"
+                            width="480"
+                          />
+                          <div
+                            class="absolute inset-...
+
+       96 |         await selectCategory('Flower')
+       97 |
+    >  98 |         expect(await screen.findByText('Budget Flower')).toBeInTheDocument()
+          |                             ^
+       99 |         fireEvent.change(screen.getByLabelText(/Minimum price/i), { target: { value: '30' } })
+      100 |
+      101 |         expect(screen.queryByText('Budget Flower')).not.toBeInTheDocument()
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+      at Object.findByText (__tests__/HomePage.filters.test.tsx:98:29)
+
+  ΓùÅ HomePage filters ΓÇ║ filters out unavailable products when the availability toggle is enabled
+
+    TestingLibraryElementError: Found multiple elements with the text: Premium Flower
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    <h3
+      class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+      id="product-premium-flower-title"
+    >
+      Premium Flower
+    </h3>
+
+    Ignored nodes: comments, script, style
+    <h3
+      class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+      id="product-premium-flower-title"
+    >
+      Premium Flower
+    </h3>
+
+    Ignored nodes: comments, script, style
+    <h3
+      class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+      id="product-premium-flower-title"
+    >
+      Premium Flower
+    </h3>
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    <body>
+      <div>
+        <nav
+          data-testid="navigation"
+        />
+        <main
+          class="outline-none"
+          id="main-content"
+          role="main"
+          tabindex="-1"
+        >
+          <section
+            data-testid="hero"
+          />
+          <section
+            aria-describedby="featured-products-description"
+            aria-labelledby="featured-products-heading"
+            class="py-12"
+            data-section-nav="true"
+            id="featured-products"
+          >
+            <div
+              class="container mx-auto px-4"
+            >
+              <div
+                class="mb-6 flex flex-wrap items-end justify-between gap-4"
+              >
+                <div
+                  class="max-w-2xl space-y-2"
+                >
+                  <h2
+                    class="text-2xl font-bold text-gray-900 dark:text-white"
+                    id="featured-products-heading"
+                  >
+                    Featured Favorites
+                  </h2>
+                  <p
+                    class="text-base text-gray-600 dark:text-gray-300"
+                    id="featured-products-description"
+                  >
+                    Hand-picked strains and goods our team can't stop talking about.
+                  </p>
+                </div>
+                <div
+                  class="flex items-center gap-3"
+                >
+                  <button
+                    aria-controls="featured-products-list"
+                    aria-label="Scroll Featured Favorites carousel backward"
+                    class="focus-enhanced inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition hover:border-green-500 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-200 dark:hover:border-green-400 dark:hover:text-green-300 dark:focus:ring-offset-gray-900"
+                    type="button"
+                  >
+                    <span
+                      aria-hidden="true"
+                    >
+                      ΓåÉ
+                    </span>
+                  </button>
+                  <button
+                    aria-controls="featured-products-list"
+                    aria-label="Scroll Featured Favorites carousel forward"
+                    class="focus-enhanced inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition hover:border-green-500 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-200 dark:hover:border-green-400 dark:hover:text-green-300 dark:focus:ring-offset-gray-900"
+                    type="button"
+                  >
+                    <span
+                      aria-hidden="true"
+                    >
+                      ΓåÆ
+                    </span>
+                  </button>
+                  <a
+                    class="focus-enhanced inline-flex items-center justify-center rounded-full border border-green-600 px-4 py-2 text-sm font-semibold text-green-700 transition hover:bg-green-600 hover:text-white dark:text-green-300"
+                    href="#products"
+                  >
+                    Browse full menu
+                  </a>
+                </div>
+              </div>
+              <div
+                class="relative"
+              >
+                <div
+                  aria-label="Featured Favorites"
+                  class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4"
+                  id="featured-products-list"
+                  role="list"
+                >
+                  <div
+                    class="snap-start"
+                    role="listitem"
+                  >
+                    <article
+                      aria-describedby="product-premium-flower-category product-premium-flower-availability product-premium-flower-price"
+                      aria-labelledby="product-premium-flower-title"
+                      aria-posinset="1"
+                      aria-setsize="3"
+                      class="product-card group relative flex h-full w-full flex-col rounded-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 focus-enhanced overflow-hidden min-w-[220px] p-4 sm:min-w-[240px]"
+                      data-grid-index="0"
+                      data-product-card="true"
+                      id="product-premium-flower"
+                      tabindex="0"
+                    >
+                      <div
+                        class="relative mb-3"
+                      >
+                        <div
+                          class="relative h-40 w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-900"
+                        >
+                          <img
+                            alt="Premium Flower"
+                            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            data-nimg="1"
+                            decoding="async"
+                            height="360"
+                            loading="lazy"
+                            src="/_next/image?url=%2Fassets%2Fimages%2Fplaceholder.webp&w=1080&q=75"
+                            srcset="/_next/image?url=%2Fassets%2Fimages%2Fplaceholder.webp&w=640&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Fplaceholder.webp&w=1080&q=75 2x"
+                            style="color: transparent;"
+                            width="480"
+                          />
+                          <div
+                            class="absolute inset-...
+
+      111 |
+      112 |         expect(screen.queryByText('Unavailable Flower')).not.toBeInTheDocument()
+    > 113 |         expect(screen.getByText('Premium Flower')).toBeInTheDocument()
+          |                       ^
+      114 |     })
+      115 |
+      116 |     it('filters products by potency when the potency filter is enabled', async () => {
+
+      at Object.getElementError (node_modules/@testing-library/dom/dist/config.js:37:19)
+      at getElementError (node_modules/@testing-library/dom/dist/query-helpers.js:20:35)
+      at getMultipleElementsFoundError (node_modules/@testing-library/dom/dist/query-helpers.js:23:10)
+      at node_modules/@testing-library/dom/dist/query-helpers.js:55:13
+      at node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+      at Object.getByText (__tests__/HomePage.filters.test.tsx:113:23)
+
+  ΓùÅ HomePage filters ΓÇ║ filters products by potency when the potency filter is enabled
+
+    Found multiple elements with the text: Budget Flower
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    <h3
+      class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+      id="product-budget-flower-title"
+    >
+      Budget Flower
+    </h3>
+
+    Ignored nodes: comments, script, style
+    <h3
+      class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+      id="product-budget-flower-title"
+    >
+      Budget Flower
+    </h3>
+
+    Ignored nodes: comments, script, style
+    <h3
+      class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+      id="product-budget-flower-title"
+    >
+      Budget Flower
+    </h3>
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    <body>
+      <div>
+        <nav
+          data-testid="navigation"
+        />
+        <main
+          class="outline-none"
+          id="main-content"
+          role="main"
+          tabindex="-1"
+        >
+          <section
+            data-testid="hero"
+          />
+          <section
+            aria-describedby="featured-products-description"
+            aria-labelledby="featured-products-heading"
+            class="py-12"
+            data-section-nav="true"
+            id="featured-products"
+          >
+            <div
+              class="container mx-auto px-4"
+            >
+              <div
+                class="mb-6 flex flex-wrap items-end justify-between gap-4"
+              >
+                <div
+                  class="max-w-2xl space-y-2"
+                >
+                  <h2
+                    class="text-2xl font-bold text-gray-900 dark:text-white"
+                    id="featured-products-heading"
+                  >
+                    Featured Favorites
+                  </h2>
+                  <p
+                    class="text-base text-gray-600 dark:text-gray-300"
+                    id="featured-products-description"
+                  >
+                    Hand-picked strains and goods our team can't stop talking about.
+                  </p>
+                </div>
+                <div
+                  class="flex items-center gap-3"
+                >
+                  <button
+                    aria-controls="featured-products-list"
+                    aria-label="Scroll Featured Favorites carousel backward"
+                    class="focus-enhanced inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition hover:border-green-500 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-200 dark:hover:border-green-400 dark:hover:text-green-300 dark:focus:ring-offset-gray-900"
+                    type="button"
+                  >
+                    <span
+                      aria-hidden="true"
+                    >
+                      ΓåÉ
+                    </span>
+                  </button>
+                  <button
+                    aria-controls="featured-products-list"
+                    aria-label="Scroll Featured Favorites carousel forward"
+                    class="focus-enhanced inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition hover:border-green-500 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-200 dark:hover:border-green-400 dark:hover:text-green-300 dark:focus:ring-offset-gray-900"
+                    type="button"
+                  >
+                    <span
+                      aria-hidden="true"
+                    >
+                      ΓåÆ
+                    </span>
+                  </button>
+                  <a
+                    class="focus-enhanced inline-flex items-center justify-center rounded-full border border-green-600 px-4 py-2 text-sm font-semibold text-green-700 transition hover:bg-green-600 hover:text-white dark:text-green-300"
+                    href="#products"
+                  >
+                    Browse full menu
+                  </a>
+                </div>
+              </div>
+              <div
+                class="relative"
+              >
+                <div
+                  aria-label="Featured Favorites"
+                  class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4"
+                  id="featured-products-list"
+                  role="list"
+                >
+                  <div
+                    class="snap-start"
+                    role="listitem"
+                  >
+                    <article
+                      aria-describedby="product-premium-flower-category product-premium-flower-availability product-premium-flower-price"
+                      aria-labelledby="product-premium-flower-title"
+                      aria-posinset="1"
+                      aria-setsize="3"
+                      class="product-card group relative flex h-full w-full flex-col rounded-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 focus-enhanced overflow-hidden min-w-[220px] p-4 sm:min-w-[240px]"
+                      data-grid-index="0"
+                      data-product-card="true"
+                      id="product-premium-flower"
+                      tabindex="0"
+                    >
+                      <div
+                        class="relative mb-3"
+                      >
+                        <div
+                          class="relative h-40 w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-900"
+                        >
+                          <img
+                            alt="Premium Flower"
+                            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            data-nimg="1"
+                            decoding="async"
+                            height="360"
+                            loading="lazy"
+                            src="/_next/image?url=%2Fassets%2Fimages%2Fplaceholder.webp&w=1080&q=75"
+                            srcset="/_next/image?url=%2Fassets%2Fimages%2Fplaceholder.webp&w=640&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Fplaceholder.webp&w=1080&q=75 2x"
+                            style="color: transparent;"
+                            width="480"
+                          />
+                          <div
+                            class="absolute inset-...
+
+      118 |         await selectCategory('Flower')
+      119 |
+    > 120 |         expect(await screen.findByText('Budget Flower')).toBeInTheDocument()
+          |                             ^
+      121 |         fireEvent.click(screen.getByLabelText(/Enable potency range filter/i))
+      122 |         fireEvent.change(screen.getByLabelText(/Minimum potency/i), { target: { value: '26' } })
+      123 |         fireEvent.change(screen.getByLabelText(/Maximum potency/i), { target: { value: '30' } })
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+      at Object.findByText (__tests__/HomePage.filters.test.tsx:120:29)
+
+  ΓùÅ HomePage filters ΓÇ║ shows a friendly message when no products match the filters
+
+    Found multiple elements with the text: Budget Flower
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    <h3
+      class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+      id="product-budget-flower-title"
+    >
+      Budget Flower
+    </h3>
+
+    Ignored nodes: comments, script, style
+    <h3
+      class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+      id="product-budget-flower-title"
+    >
+      Budget Flower
+    </h3>
+
+    Ignored nodes: comments, script, style
+    <h3
+      class="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+      id="product-budget-flower-title"
+    >
+      Budget Flower
+    </h3>
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    <body>
+      <div>
+        <nav
+          data-testid="navigation"
+        />
+        <main
+          class="outline-none"
+          id="main-content"
+          role="main"
+          tabindex="-1"
+        >
+          <section
+            data-testid="hero"
+          />
+          <section
+            aria-describedby="featured-products-description"
+            aria-labelledby="featured-products-heading"
+            class="py-12"
+            data-section-nav="true"
+            id="featured-products"
+          >
+            <div
+              class="container mx-auto px-4"
+            >
+              <div
+                class="mb-6 flex flex-wrap items-end justify-between gap-4"
+              >
+                <div
+                  class="max-w-2xl space-y-2"
+                >
+                  <h2
+                    class="text-2xl font-bold text-gray-900 dark:text-white"
+                    id="featured-products-heading"
+                  >
+                    Featured Favorites
+                  </h2>
+                  <p
+                    class="text-base text-gray-600 dark:text-gray-300"
+                    id="featured-products-description"
+                  >
+                    Hand-picked strains and goods our team can't stop talking about.
+                  </p>
+                </div>
+                <div
+                  class="flex items-center gap-3"
+                >
+                  <button
+                    aria-controls="featured-products-list"
+                    aria-label="Scroll Featured Favorites carousel backward"
+                    class="focus-enhanced inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition hover:border-green-500 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-200 dark:hover:border-green-400 dark:hover:text-green-300 dark:focus:ring-offset-gray-900"
+                    type="button"
+                  >
+                    <span
+                      aria-hidden="true"
+                    >
+                      ΓåÉ
+                    </span>
+                  </button>
+                  <button
+                    aria-controls="featured-products-list"
+                    aria-label="Scroll Featured Favorites carousel forward"
+                    class="focus-enhanced inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition hover:border-green-500 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-200 dark:hover:border-green-400 dark:hover:text-green-300 dark:focus:ring-offset-gray-900"
+                    type="button"
+                  >
+                    <span
+                      aria-hidden="true"
+                    >
+                      ΓåÆ
+                    </span>
+                  </button>
+                  <a
+                    class="focus-enhanced inline-flex items-center justify-center rounded-full border border-green-600 px-4 py-2 text-sm font-semibold text-green-700 transition hover:bg-green-600 hover:text-white dark:text-green-300"
+                    href="#products"
+                  >
+                    Browse full menu
+                  </a>
+                </div>
+              </div>
+              <div
+                class="relative"
+              >
+                <div
+                  aria-label="Featured Favorites"
+                  class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4"
+                  id="featured-products-list"
+                  role="list"
+                >
+                  <div
+                    class="snap-start"
+                    role="listitem"
+                  >
+                    <article
+                      aria-describedby="product-premium-flower-category product-premium-flower-availability product-premium-flower-price"
+                      aria-labelledby="product-premium-flower-title"
+                      aria-posinset="1"
+                      aria-setsize="3"
+                      class="product-card group relative flex h-full w-full flex-col rounded-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 focus-enhanced overflow-hidden min-w-[220px] p-4 sm:min-w-[240px]"
+                      data-grid-index="0"
+                      data-product-card="true"
+                      id="product-premium-flower"
+                      tabindex="0"
+                    >
+                      <div
+                        class="relative mb-3"
+                      >
+                        <div
+                          class="relative h-40 w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-900"
+                        >
+                          <img
+                            alt="Premium Flower"
+                            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            data-nimg="1"
+                            decoding="async"
+                            height="360"
+                            loading="lazy"
+                            src="/_next/image?url=%2Fassets%2Fimages%2Fplaceholder.webp&w=1080&q=75"
+                            srcset="/_next/image?url=%2Fassets%2Fimages%2Fplaceholder.webp&w=640&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Fplaceholder.webp&w=1080&q=75 2x"
+                            style="color: transparent;"
+                            width="480"
+                          />
+                          <div
+                            class="absolute inset-...
+
+      131 |         await selectCategory('Flower')
+      132 |
+    > 133 |         expect(await screen.findByText('Budget Flower')).toBeInTheDocument()
+          |                             ^
+      134 |         fireEvent.change(screen.getByLabelText(/Minimum price/i), { target: { value: '100' } })
+      135 |
+      136 |         expect(
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+      at Object.findByText (__tests__/HomePage.filters.test.tsx:133:29)
+
+Test Suites: 1 failed, 2 passed, 3 total
+Tests:       4 failed, 9 passed, 13 total
+Snapshots:   0 total
+Time:        4.385 s
+Ran all test suites.

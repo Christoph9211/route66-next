@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import type { Product } from '@/types/product'
 import HomePage from '@/components/HomePage'
 
@@ -11,7 +11,7 @@ jest.mock('@/utils/autoContrast', () => ({
     applyAutoContrast: jest.fn(),
 }))
 
-function createMockComponent(testId: string, element: keyof JSX.IntrinsicElements = 'div') {
+function createMockComponent(testId: string, element: React.ElementType = 'div') {
     const MockComponent = (props: Record<string, unknown>) =>
         React.createElement(element, { 'data-testid': testId, ...props })
 
@@ -95,46 +95,54 @@ describe('HomePage filters', () => {
         renderHomePage()
         await selectCategory('Flower')
 
-        expect(await screen.findByText('Budget Flower')).toBeInTheDocument()
+        const productSection = screen.getByRole('region', { name: /Our Premium Hemp Products/i })
+
+        expect(await within(productSection).findByText('Budget Flower')).toBeInTheDocument()
         fireEvent.change(screen.getByLabelText(/Minimum price/i), { target: { value: '30' } })
 
-        expect(screen.queryByText('Budget Flower')).not.toBeInTheDocument()
-        expect(screen.getByText('Premium Flower')).toBeInTheDocument()
+        expect(within(productSection).queryByText('Budget Flower')).not.toBeInTheDocument()
+        expect(within(productSection).getByText('Premium Flower')).toBeInTheDocument()
     })
 
     it('filters out unavailable products when the availability toggle is enabled', async () => {
         renderHomePage()
         await selectCategory('Flower')
 
-        expect(await screen.findByText('Unavailable Flower')).toBeInTheDocument()
+        const productSection = screen.getByRole('region', { name: /Our Premium Hemp Products/i })
+
+        expect(await within(productSection).findByText('Unavailable Flower')).toBeInTheDocument()
         fireEvent.click(screen.getByLabelText(/Only show in-stock items/i))
 
-        expect(screen.queryByText('Unavailable Flower')).not.toBeInTheDocument()
-        expect(screen.getByText('Premium Flower')).toBeInTheDocument()
+        expect(within(productSection).queryByText('Unavailable Flower')).not.toBeInTheDocument()
+        expect(within(productSection).getByText('Premium Flower')).toBeInTheDocument()
     })
 
     it('filters products by potency when the potency filter is enabled', async () => {
         renderHomePage()
         await selectCategory('Flower')
 
-        expect(await screen.findByText('Budget Flower')).toBeInTheDocument()
+        const productSection = screen.getByRole('region', { name: /Our Premium Hemp Products/i })
+
+        expect(await within(productSection).findByText('Budget Flower')).toBeInTheDocument()
         fireEvent.click(screen.getByLabelText(/Enable potency range filter/i))
         fireEvent.change(screen.getByLabelText(/Minimum potency/i), { target: { value: '26' } })
         fireEvent.change(screen.getByLabelText(/Maximum potency/i), { target: { value: '30' } })
 
-        expect(screen.queryByText('Budget Flower')).not.toBeInTheDocument()
-        expect(screen.getByText('Premium Flower')).toBeInTheDocument()
+        expect(within(productSection).queryByText('Budget Flower')).not.toBeInTheDocument()
+        expect(within(productSection).getByText('Premium Flower')).toBeInTheDocument()
     })
 
     it('shows a friendly message when no products match the filters', async () => {
         renderHomePage()
         await selectCategory('Flower')
 
-        expect(await screen.findByText('Budget Flower')).toBeInTheDocument()
+        const productSection = screen.getByRole('region', { name: /Our Premium Hemp Products/i })
+
+        expect(await within(productSection).findByText('Budget Flower')).toBeInTheDocument()
         fireEvent.change(screen.getByLabelText(/Minimum price/i), { target: { value: '100' } })
 
         expect(
-            screen.getByText(
+            within(productSection).getByText(
                 'No products match your current filters. Try widening your search or selecting another category.'
             )
         ).toBeInTheDocument()

@@ -114,6 +114,7 @@ export default function FilterPanel({
                                         className="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-950 dark:text-white"
                                         aria-describedby="price-filter-help"
                                         disabled={filtersDisabled}
+                                        suppressHydrationWarning
                                     />
                                 </div>
                                 <div>
@@ -133,6 +134,7 @@ export default function FilterPanel({
                                         className="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-950 dark:text-white"
                                         aria-describedby="price-filter-help"
                                         disabled={filtersDisabled}
+                                        suppressHydrationWarning
                                     />
                                 </div>
                                 <p
@@ -156,6 +158,7 @@ export default function FilterPanel({
                                     onChange={onInStockToggle}
                                     checked={filters.onlyInStock}
                                     disabled={filtersDisabled}
+                                    suppressHydrationWarning
                                 />
                                 Only show in-stock items
                             </label>
@@ -172,6 +175,7 @@ export default function FilterPanel({
                                         onChange={onPotencyToggle}
                                         checked={filters.potencyEnabled}
                                         disabled={filtersDisabled}
+                                        suppressHydrationWarning
                                     />
                                     Enable potency range filter
                                 </label>
@@ -194,6 +198,7 @@ export default function FilterPanel({
                                             className="w-full"
                                             disabled={filtersDisabled || !filters.potencyEnabled}
                                             aria-valuetext={`${filters.minPotency}%`}
+                                            suppressHydrationWarning
                                         />
                                     </div>
                                     <div>
@@ -214,6 +219,7 @@ export default function FilterPanel({
                                             className="w-full"
                                             disabled={filtersDisabled || !filters.potencyEnabled}
                                             aria-valuetext={`${filters.maxPotency}%`}
+                                            suppressHydrationWarning
                                         />
                                     </div>
                                 </div>

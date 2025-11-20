@@ -1,7 +1,7 @@
-// app/layout.tsx
 import './globals.css'
 import { Metadata } from 'next'
 import type { Viewport } from 'next'
+import { Inter } from 'next/font/google'
 import CanonicalUrl from '@/components/CanonicalUrl'
 import AgeGate from '@/components/AgeGate'
 import AnalyticsConsentGate from '@/components/AnalyticsConsentGate'
@@ -11,6 +11,12 @@ import './styles/fa/brands.min.css'
 import './styles/fa/regular.min.css'
 import './styles/fa/solid.min.css'
 import './styles/fa/icons.min.css'
+
+const inter = Inter({
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-inter',
+})
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
@@ -40,14 +46,14 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  themeColor: 'black',
+    width: 'device-width',
+    initialScale: 1,
+    themeColor: 'black',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang="en" suppressHydrationWarning className={inter.variable}>
             <head>
                 {/* Self-hosted Font Awesome for better performance */}
                 <link rel="preload" as="font" href="/webfonts/fa-solid-900.woff2" type="font/woff2" crossOrigin="anonymous" />
