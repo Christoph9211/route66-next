@@ -75,6 +75,21 @@ const nextConfig: NextConfig = {
     }
     return buildId
   },
+
+  publicRuntimeConfig: {
+    clover: {
+      merchantId: process.env.CLOVER_MERCHANT_ID,
+    },
+  },
+  serverRuntimeConfig: {
+    clover: {
+      merchantId: process.env.CLOVER_MERCHANT_ID,
+      apiKey: process.env.CLOVER_API_KEY,
+      baseUrl: process.env.CLOVER_BASE_URL,
+      webhookSecret: process.env.CLOVER_WEBHOOK_SECRET,
+      allowedOrigins: process.env.CLOVER_ALLOWED_ORIGINS,
+    },
+  },
 }
 
 export default nextConfig
