@@ -83,7 +83,7 @@ function FooterNavigation() {
     ]
 
     return (
-        <footer className="auto-contrast bg-slate-900 text-white border-t border-slate-800">
+        <footer className="bg-slate-900 text-white border-t border-slate-800">
             <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 {/* Main Footer Content */}
                 <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
@@ -157,7 +157,7 @@ function FooterNavigation() {
                                     <li key={link.label}>
                                         <a
                                             href={link.href}
-                                            className="text-sm text-slate-300 transition-colors hover:text-emerald-400"
+                                            className="text-sm text-slate-300 dark:text-slate-200 transition-colors hover:text-emerald-400"
                                         >
                                             {link.label}
                                         </a>

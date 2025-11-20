@@ -20,7 +20,7 @@ export default function TermsOfServicePage() {
         <h2 className="mb-2 mt-6 text-2xl font-semibold">Privacy</h2>
         <p className="mb-4">
           Our{' '}
-          <a href="/privacy-policy" className="text-blue-600 underline">
+          <a href="/privacy-policy" className="text-blue-600 underline dark:text-blue-400">
             Privacy Policy
           </a>{' '}
           describes how we collect, use, and share your information. By
