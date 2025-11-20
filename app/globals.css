@@ -312,7 +312,6 @@ button {
   color: #0b5c52;
 }
 
-.dark .policy-content,
 @media (prefers-color-scheme: dark) {
   .policy-content {
     color: var(--color-text-primary);
@@ -334,11 +333,6 @@ body[data-modal-open="true"] {
   position: fixed;
   width: 100%;
   height: 100%;
-}
-
-* {
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
 }
 
 html {

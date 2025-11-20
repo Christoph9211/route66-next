@@ -64,9 +64,9 @@ export default function HeroSection() {
 
                     <a
                         href="tel:+15736776418"
-                        className="group rounded-full glass px-10 py-4 text-base font-bold text-white transition-all hover:bg-white/20 hover:scale-105 focus-enhanced"
+                        className="group relative overflow-hidden rounded-full bg-emerald-600 px-10 py-4 text-base font-bold text-white shadow-theme-lg transition-all hover:bg-emerald-500 hover:scale-105 hover:shadow-theme-glow focus-enhanced"
                     >
-                        <span className="flex items-center">
+                        <span className="relative z-10 flex items-center">
                             <i className="fas fa-phone mr-2 group-hover:animate-pulse" />
                             (573) 677-6418
                         </span>

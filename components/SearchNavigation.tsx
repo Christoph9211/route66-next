@@ -6,7 +6,13 @@ import { slugify } from '@/utils/slugify'
 import { scrollToSection } from '@/utils/scrollToSection'
 import type { Product } from '@/types/product'
 
-function SearchNavigation() {
+type SearchNavigationTone = 'onLight' | 'onDark'
+
+interface SearchNavigationProps {
+    tone?: SearchNavigationTone
+}
+
+function SearchNavigation({ tone = 'onLight' }: SearchNavigationProps) {
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState('')
     const [results, setResults] = useState<Product[]>([])
@@ -500,13 +506,19 @@ function SearchNavigation() {
         return () => document.removeEventListener('pointerdown', handlePointerDown)
     }, [closeSearch, isOpen])
 
+    const triggerTextClasses =
+        tone === 'onDark'
+            ? 'text-white hover:text-green-100 dark:text-white dark:hover:text-green-300'
+            : 'text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400'
+    const triggerClasses = `focus-enhanced flex items-center px-3 py-2 text-sm transition-colors ${triggerTextClasses}`
+
     return (
         <div className="relative">
             <AccessibilityAnnouncer message={announceMessage} />
             <button
                 type="button"
                 onClick={() => (isOpen ? closeSearch() : openSearch())}
-                className="focus-enhanced flex items-center px-3 py-2 text-sm text-gray-700 transition-colors hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
+                className={triggerClasses}
                 aria-label="Search products"
                 aria-expanded={isOpen}
                 aria-controls="search-navigation-dialog"

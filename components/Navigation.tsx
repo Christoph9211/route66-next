@@ -197,16 +197,29 @@ function Navigation() {
 
     const mobileMenuAriaHidden = !isMenuOpen && !shouldRenderMobileMenu ? true : undefined
     const mobileMenuItemTabIndex = isMenuOpen ? 0 : -1
+    const headerClasses = `fixed left-0 right-0 top-0 z-50 text-white transition-all duration-500 ${isScrolled
+        ? 'glass-dark border-b border-white/10 py-2 shadow-theme-md'
+        : 'bg-transparent py-4'
+        }`
+    const brandTitleClass = 'text-xl font-bold text-white drop-shadow-lg'
+    const brandSubtitleClass = 'text-xs text-gray-200'
+    const desktopNavBaseClass =
+        'focus-enhanced flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200'
+    const desktopNavActiveClass = 'bg-white/20 text-white shadow-theme-sm'
+    const desktopNavInactiveClass =
+        'text-white hover:bg-white/10 hover:text-white dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-green-300'
+    const contactLinkClass =
+        'text-white hover:text-green-100 dark:text-gray-200 dark:hover:text-green-300'
+    const mobileToggleClass =
+        'text-white hover:bg-white/10 hover:text-white dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-green-300'
+    const searchTone = 'onDark'
 
     return (
         <>
             {/* Main Navigation Header */}
             <header
                 id="navigation"
-                className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${isScrolled
-                    ? 'glass dark:glass-dark shadow-theme-md py-2'
-                    : 'bg-transparent py-4'
-                    }`}
+                className={headerClasses}
             >
                 <nav role="navigation" aria-label="Primary" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 items-center justify-between">
@@ -220,10 +233,10 @@ function Navigation() {
                                     />
                                 </div>
                                 <div className="hidden sm:block">
-                                    <span className="text-xl font-bold text-gray-900 dark:text-white">
+                                    <span className={brandTitleClass}>
                                         Route 66 Hemp
                                     </span>
-                                    <div className="text-xs text-gray-600 dark:text-gray-300">
+                                    <div className={brandSubtitleClass}>
                                         St Robert, MO
                                     </div>
                                 </div>
@@ -264,9 +277,9 @@ function Navigation() {
                                                     ? activeDropdown === item.id ? 'true' : 'false'
                                                     : undefined
                                             }
-                                            className={`focus-enhanced flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ${activeSection === item.id
-                                                ? 'bg-green-700 text-white'
-                                                : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'
+                                            className={`${desktopNavBaseClass} ${activeSection === item.id
+                                                ? desktopNavActiveClass
+                                                : desktopNavInactiveClass
                                                 }`}
                                         >
                                             <i
@@ -285,52 +298,52 @@ function Navigation() {
 
                                         {/* Desktop Dropdown */}
                                         {item.submenu && (
+                                        <div
+                                            className={`absolute left-0 mt-2 w-48 rounded-xl border border-white/10 bg-gray-900/90 text-white shadow-theme-xl backdrop-blur-md transition-all duration-300 ${activeDropdown === item.id
+                                                ? 'visible opacity-100 translate-y-0'
+                                                : 'invisible opacity-0 -translate-y-2 pointer-events-none'
+                                                }`}
+                                            role="menu"
+                                            aria-label={`${item.label} submenu`}
+                                        >
                                             <div
-                                                className={`absolute left-0 mt-2 w-48 font-bold rounded-xl glass dark:glass-dark shadow-theme-xl ring-1 ring-black/5 transition-all duration-300 ${activeDropdown === item.id
-                                                    ? 'visible opacity-100 translate-y-0'
-                                                    : 'invisible opacity-0 -translate-y-2 pointer-events-none'
-                                                    }`}
-                                                role="menu"
-                                                aria-label={`${item.label} submenu`}
+                                                className="flex flex-col py-1 font-semibold"
+                                                role="none"
                                             >
-                                                <div
-                                                    className="flex flex-col py-1 font-semibold"
-                                                    role="none"
-                                                >
-                                                    {item.submenu.map((subItem) => {
-                                                        const categorySlug = slugify(
-                                                            subItem.category
-                                                        )
-                                                        return (
-                                                            <a
-                                                                key={
-                                                                    subItem.label
-                                                                }
-                                                                href="#products"
-                                                                onClick={(e) =>
-                                                                    handleNavClick(
-                                                                        e,
-                                                                        'products',
-                                                                        item.id,
-                                                                        {
-                                                                            categorySlug,
-                                                                            categoryName:
-                                                                                subItem.category,
-                                                                        }
-                                                                    )
-                                                                }
-                                                                className="block px-4 py-2 text-black dark:text-gray-300 hover:bg-green-100 hover:text-green-700 dark:hover:bg-gray-700 dark:hover:text-green-300"
-                                                                role="menuitem"
-                                                            >
-                                                                {
-                                                                    subItem.label
-                                                                }
-                                                            </a>
-                                                        )
-                                                    }
-                                                    )}
-                                                </div>
+                                                {item.submenu.map((subItem) => {
+                                                    const categorySlug = slugify(
+                                                        subItem.category
+                                                    )
+                                                    return (
+                                                        <a
+                                                            key={
+                                                                subItem.label
+                                                            }
+                                                            href="#products"
+                                                            onClick={(e) =>
+                                                                handleNavClick(
+                                                                    e,
+                                                                    'products',
+                                                                    item.id,
+                                                                    {
+                                                                        categorySlug,
+                                                                        categoryName:
+                                                                            subItem.category,
+                                                                    }
+                                                                )
+                                                            }
+                                                            className="block px-4 py-2 text-white hover:bg-white/10 hover:text-white"
+                                                            role="menuitem"
+                                                        >
+                                                            {
+                                                                subItem.label
+                                                            }
+                                                        </a>
+                                                    )
+                                                }
+                                                )}
                                             </div>
+                                        </div>
                                         )}
                                     </div>
                                 ))}
@@ -340,13 +353,13 @@ function Navigation() {
                         {/* Contact Info & Mobile Menu Button */}
                         <div className="flex items-center space-x-4">
                             {/* Search Component */}
-                            <SearchNavigation />
+                            <SearchNavigation tone={searchTone} />
 
                             {/* Quick Contact (Desktop) */}
                             <div className="hidden items-center space-x-4 text-sm lg:flex">
                                 <a
                                     href="tel:+15736776418"
-                                    className="flex items-center text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-400"
+                                    className={`flex items-center ${contactLinkClass}`}
                                 >
                                     <i
                                         className="fas fa-phone mr-1"
@@ -362,7 +375,7 @@ function Navigation() {
                                 onClick={toggleMenu}
                                 aria-expanded={isMenuOpen}
                                 aria-controls="mobile-menu"
-                                className="focus-enhanced inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-green-100 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500 md:hidden dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300"
+                                className={`focus-enhanced inline-flex items-center justify-center rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500 md:hidden ${mobileToggleClass}`}
                             >
                                 <span className="sr-only">{isMenuOpen ? 'Close main menu' : 'Open main menu'}</span>
                                 <i
