@@ -204,8 +204,8 @@ function Navigation() {
             <header
                 id="navigation"
                 className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${isScrolled
-                        ? 'glass dark:glass-dark shadow-theme-md py-2'
-                        : 'bg-transparent py-4'
+                    ? 'glass dark:glass-dark shadow-theme-md py-2'
+                    : 'bg-transparent py-4'
                     }`}
             >
                 <nav role="navigation" aria-label="Primary" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -265,12 +265,12 @@ function Navigation() {
                                                     : undefined
                                             }
                                             className={`focus-enhanced flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ${activeSection === item.id
-                                                    ? 'bg-green-700 text-white'
-                                                    : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'
+                                                ? 'bg-green-700 text-white'
+                                                : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'
                                                 }`}
                                         >
                                             <i
-                                                className={`${item.icon} mr-2 text-sm auto-contrast`}
+                                                className={`${item.icon} mr-2 text-sm`}
                                                 aria-hidden="true"
                                             />
                                             {item.label}
@@ -287,8 +287,8 @@ function Navigation() {
                                         {item.submenu && (
                                             <div
                                                 className={`absolute left-0 mt-2 w-48 font-bold rounded-xl glass dark:glass-dark shadow-theme-xl ring-1 ring-black/5 transition-all duration-300 ${activeDropdown === item.id
-                                                        ? 'visible opacity-100 translate-y-0'
-                                                        : 'invisible opacity-0 -translate-y-2 pointer-events-none'
+                                                    ? 'visible opacity-100 translate-y-0'
+                                                    : 'invisible opacity-0 -translate-y-2 pointer-events-none'
                                                     }`}
                                                 role="menu"
                                                 aria-label={`${item.label} submenu`}
@@ -401,8 +401,8 @@ function Navigation() {
                                             }
                                             tabIndex={mobileMenuItemTabIndex}
                                             className={`focus-enhanced flex items-center rounded-md px-3 py-2 text-base font-medium transition-colors ${activeSection === item.id
-                                                    ? 'bg-green-700 text-white'
-                                                    : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'
+                                                ? 'bg-green-700 text-white'
+                                                : 'text-gray-700 hover:bg-green-100 hover:text-green-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-green-300'
                                                 }`}
                                         >
                                             <i
@@ -415,7 +415,7 @@ function Navigation() {
                                         {/* Mobile Submenu */}
                                         {item.submenu && (
                                             <div
-                                                className="auto-contrast ml-6 mt-1 space-y-1"
+                                                className="ml-6 mt-1 space-y-1"
                                                 role="menu"
                                                 aria-label={`${item.label} submenu`}
                                             >

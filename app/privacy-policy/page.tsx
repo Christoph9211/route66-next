@@ -9,7 +9,7 @@ export default function PrivacyPolicyPage() {
   return (
     <>
       <main className="policy-content mx-auto max-w-4xl p-4">
-        <h1 className="auto-contrast mb-4 text-3xl font-bold">
+        <h1 className="mb-4 text-3xl font-bold">
           Route 66 Hemp Privacy Policy
         </h1>
         <p className="mb-4">

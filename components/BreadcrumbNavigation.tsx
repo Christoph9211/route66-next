@@ -22,7 +22,7 @@ interface BreadcrumbNavigationProps {
 
 function BreadcrumbNavigation({ currentPage, category, productName }: BreadcrumbNavigationProps): React.JSX.Element | null {
     const breadcrumbs = [
-         { currentPage: 'Home' as string | null, category: 'Home' as string | null, productName: null as string | null, label: 'Home', href: '#home' as string | null, icon: 'fas fa-home' },
+        { currentPage: 'Home' as string | null, category: 'Home' as string | null, productName: null as string | null, label: 'Home', href: '#home' as string | null, icon: 'fas fa-home' },
     ];
 
     // Add category if provided
@@ -44,7 +44,7 @@ function BreadcrumbNavigation({ currentPage, category, productName }: Breadcrumb
             category: null,
             productName: productName,
             label: productName || currentPage,
-            href: null, 
+            href: null,
             icon: '',
         });
     }
@@ -52,15 +52,15 @@ function BreadcrumbNavigation({ currentPage, category, productName }: Breadcrumb
     if (breadcrumbs.length <= 1) return null
 
     return (
-        <nav className="auto-contrast bg-gray-50 py-3 dark:bg-gray-800" aria-label="Breadcrumb">
+        <nav className="bg-gray-50 py-3 dark:bg-gray-800" aria-label="Breadcrumb">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <ol className="flex items-center space-x-2 text-sm">
                     {breadcrumbs.map((crumb, index) => (
                         <li key={index} className="flex items-center">
                             {index > 0 && (
-                                <i 
-                                    className="fas fa-chevron-right mx-2 text-xs text-gray-400" 
-                                    aria-hidden="true" 
+                                <i
+                                    className="fas fa-chevron-right mx-2 text-xs text-gray-400"
+                                    aria-hidden="true"
                                 />
                             )}
                             {crumb.href ? (

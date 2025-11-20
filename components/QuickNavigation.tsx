@@ -74,7 +74,7 @@ function QuickNavigation() {
             <div className="flex flex-col space-y-2">
                 <a
                     href="tel:+15736776418"
-                    className="focus-enhanced auto-contrast flex h-12 w-12 items-center justify-center rounded-full bg-green-600 text-white shadow-lg transition-colors hover:bg-green-700"
+                    className="focus-enhanced flex h-12 w-12 items-center justify-center rounded-full bg-green-600 text-white shadow-lg transition-colors hover:bg-green-700"
                     aria-label="Call Route 66 Hemp"
                     tabIndex={focusableTabIndex}
                 >
