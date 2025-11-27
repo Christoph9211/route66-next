@@ -110,10 +110,12 @@ async function createCloverPayment({
     orderId,
     total,
     currency,
+    source,
 }: {
     orderId: string
     total: number
     currency: string
+    source?: string
 }) {
     const paymentUrl = `${cloverConfig.baseUrl}/v3/merchants/${cloverConfig.merchantId}/payments`
     const response = await fetch(paymentUrl, {
@@ -126,6 +128,7 @@ async function createCloverPayment({
             orderId,
             amount: total,
             currency,
+            source,
         }),
     })
 
@@ -162,7 +165,7 @@ async function handleCheckout(req: NextRequest) {
     }
 
     try {
-        const { items, total, currency, customer, shipping } =
+        const { items, total, currency, customer, shipping, source } =
             validateCartPayload(payload)
 
         const cartHash = buildCartHash(payload)
@@ -187,6 +190,7 @@ async function handleCheckout(req: NextRequest) {
             orderId: order.id,
             total,
             currency,
+            source: source as string,
         })
 
         const transaction = {

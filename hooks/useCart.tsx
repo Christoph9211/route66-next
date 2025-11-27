@@ -25,6 +25,7 @@ interface CartContextType {
         details: {
             customer: CheckoutCustomer
             shipping: ShippingAddress
+            source?: string
         }
     ) => Promise<CheckoutResponse>
     isOpen: boolean
@@ -156,9 +157,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         async ({
             customer,
             shipping,
+            source,
         }: {
             customer: CheckoutCustomer
             shipping: ShippingAddress
+            source?: string
         }): Promise<CheckoutResponse> => {
             if (cart.items.length === 0) {
                 throw new Error('Cannot checkout with an empty cart')
@@ -170,6 +173,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 total: cart.total,
                 customer,
                 shipping,
+                source,
             }
 
             const response = await fetch('/api/checkout', {
