@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import getConfig from 'next/config'
+
 import {
     buildCartHash,
     validateCartPayload,
@@ -19,24 +19,12 @@ interface CloverConfig {
     allowedOrigins?: string
 }
 
-const { serverRuntimeConfig } = getConfig()
 const cloverConfig: CloverConfig = {
-    merchantId:
-        serverRuntimeConfig?.clover?.merchantId ||
-        process.env.CLOVER_MERCHANT_ID ||
-        '',
-    apiKey:
-        serverRuntimeConfig?.clover?.apiKey || process.env.CLOVER_API_KEY || '',
-    baseUrl:
-        serverRuntimeConfig?.clover?.baseUrl ||
-        process.env.CLOVER_BASE_URL ||
-        'https://sandbox.dev.clover.com',
-    webhookSecret:
-        serverRuntimeConfig?.clover?.webhookSecret ||
-        process.env.CLOVER_WEBHOOK_SECRET,
-    allowedOrigins:
-        serverRuntimeConfig?.clover?.allowedOrigins ||
-        process.env.CLOVER_ALLOWED_ORIGINS,
+    merchantId: process.env.CLOVER_MERCHANT_ID || '',
+    apiKey: process.env.CLOVER_API_KEY || '',
+    baseUrl: process.env.CLOVER_BASE_URL || 'https://sandbox.dev.clover.com',
+    webhookSecret: process.env.CLOVER_WEBHOOK_SECRET,
+    allowedOrigins: process.env.CLOVER_ALLOWED_ORIGINS,
 }
 
 function enforceHttps(req: NextRequest) {
@@ -163,10 +151,10 @@ async function handleCheckout(req: NextRequest) {
     const originError = enforceOrigin(req)
     if (originError) return originError
 
-    let payload: any
+    let payload: unknown
     try {
         payload = await req.json()
-    } catch (error) {
+    } catch {
         return NextResponse.json(
             { error: 'Invalid JSON payload.' },
             { status: 400 }
@@ -262,7 +250,7 @@ async function handleWebhook(req: NextRequest) {
         }
 
         return NextResponse.json({ received: true })
-    } catch (error) {
+    } catch {
         return NextResponse.json(
             { error: 'Invalid webhook payload' },
             { status: 400 }

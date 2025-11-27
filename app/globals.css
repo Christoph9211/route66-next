@@ -3,37 +3,54 @@
 /* Theme variables */
 :root {
   /* Vibrant Emerald/Teal Primary */
-  --color-primary: #10b981; /* Emerald 500 */
-  --color-primary-hover: #059669; /* Emerald 600 */
-  --color-primary-light: #d1fae5; /* Emerald 100 */
+  --color-primary: #10b981;
+  /* Emerald 500 */
+  --color-primary-hover: #059669;
+  /* Emerald 600 */
+  --color-primary-light: #d1fae5;
+  /* Emerald 100 */
 
   /* Deep Blue/Indigo Secondary */
-  --color-secondary: #4f46e5; /* Indigo 600 */
-  --color-secondary-hover: #4338ca; /* Indigo 700 */
-  --color-secondary-light: #e0e7ff; /* Indigo 100 */
+  --color-secondary: #4f46e5;
+  /* Indigo 600 */
+  --color-secondary-hover: #4338ca;
+  /* Indigo 700 */
+  --color-secondary-light: #e0e7ff;
+  /* Indigo 100 */
 
   /* Warm Amber Accent */
-  --color-accent: #f59e0b; /* Amber 500 */
-  --color-accent-hover: #d97706; /* Amber 600 */
-  --color-accent-light: #fef3c7; /* Amber 100 */
+  --color-accent: #f59e0b;
+  /* Amber 500 */
+  --color-accent-hover: #d97706;
+  /* Amber 600 */
+  --color-accent-light: #fef3c7;
+  /* Amber 100 */
 
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-error: #ef4444;
 
   --color-bg-primary: #ffffff;
-  --color-bg-secondary: #f8fafc; /* Slate 50 */
-  --color-bg-tertiary: #f1f5f9; /* Slate 100 */
+  --color-bg-secondary: #f8fafc;
+  /* Slate 50 */
+  --color-bg-tertiary: #f1f5f9;
+  /* Slate 100 */
   --color-bg-elevated: #ffffff;
 
-  --color-text-primary: #0f172a; /* Slate 900 */
-  --color-text-secondary: #475569; /* Slate 600 */
-  --color-text-tertiary: #94a3b8; /* Slate 400 */
+  --color-text-primary: #0f172a;
+  /* Slate 900 */
+  --color-text-secondary: #475569;
+  /* Slate 600 */
+  --color-text-tertiary: #94a3b8;
+  /* Slate 400 */
   --color-text-inverse: #ffffff;
 
-  --color-border-primary: #e2e8f0; /* Slate 200 */
-  --color-border-secondary: #cbd5e1; /* Slate 300 */
-  --color-border-focus: #10b981; /* Emerald 500 */
+  --color-border-primary: #e2e8f0;
+  /* Slate 200 */
+  --color-border-secondary: #cbd5e1;
+  /* Slate 300 */
+  --color-border-focus: #10b981;
+  /* Emerald 500 */
 
   /* Soft, layered shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -45,35 +62,55 @@
 
 /* Dark mode variables - Rich Deep Slate */
 .dark {
-  --color-primary: #34d399; /* Emerald 400 */
-  --color-primary-hover: #10b981; /* Emerald 500 */
-  --color-primary-light: #064e3b; /* Emerald 900 */
+  --color-primary: #34d399;
+  /* Emerald 400 */
+  --color-primary-hover: #10b981;
+  /* Emerald 500 */
+  --color-primary-light: #064e3b;
+  /* Emerald 900 */
 
-  --color-secondary: #818cf8; /* Indigo 400 */
-  --color-secondary-hover: #6366f1; /* Indigo 500 */
-  --color-secondary-light: #1e1b4b; /* Indigo 950 */
+  --color-secondary: #818cf8;
+  /* Indigo 400 */
+  --color-secondary-hover: #6366f1;
+  /* Indigo 500 */
+  --color-secondary-light: #1e1b4b;
+  /* Indigo 950 */
 
-  --color-accent: #fbbf24; /* Amber 400 */
-  --color-accent-hover: #f59e0b; /* Amber 500 */
-  --color-accent-light: #451a03; /* Amber 950 */
+  --color-accent: #fbbf24;
+  /* Amber 400 */
+  --color-accent-hover: #f59e0b;
+  /* Amber 500 */
+  --color-accent-light: #451a03;
+  /* Amber 950 */
 
   --color-success: #34d399;
   --color-warning: #fbbf24;
   --color-error: #f87171;
 
-  --color-bg-primary: #0f172a; /* Slate 900 */
-  --color-bg-secondary: #1e293b; /* Slate 800 */
-  --color-bg-tertiary: #334155; /* Slate 700 */
-  --color-bg-elevated: #1e293b; /* Slate 800 */
+  --color-bg-primary: #0f172a;
+  /* Slate 900 */
+  --color-bg-secondary: #1e293b;
+  /* Slate 800 */
+  --color-bg-tertiary: #334155;
+  /* Slate 700 */
+  --color-bg-elevated: #1e293b;
+  /* Slate 800 */
 
-  --color-text-primary: #f8fafc; /* Slate 50 */
-  --color-text-secondary: #cbd5e1; /* Slate 300 */
-  --color-text-tertiary: #94a3b8; /* Slate 400 */
-  --color-text-inverse: #0f172a; /* Slate 900 */
+  --color-text-primary: #f8fafc;
+  /* Slate 50 */
+  --color-text-secondary: #cbd5e1;
+  /* Slate 300 */
+  --color-text-tertiary: #94a3b8;
+  /* Slate 400 */
+  --color-text-inverse: #0f172a;
+  /* Slate 900 */
 
-  --color-border-primary: #334155; /* Slate 700 */
-  --color-border-secondary: #475569; /* Slate 600 */
-  --color-border-focus: #34d399; /* Emerald 400 */
+  --color-border-primary: #334155;
+  /* Slate 700 */
+  --color-border-secondary: #475569;
+  /* Slate 600 */
+  --color-border-focus: #34d399;
+  /* Emerald 400 */
 
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
@@ -85,38 +122,82 @@
 /* Glassmorphism Utilities */
 .glass {
   background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .glass-dark {
   background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Utility classes using CSS variables */
-.bg-theme-primary { background-color: var(--color-bg-primary); }
-.bg-theme-secondary { background-color: var(--color-bg-secondary); }
-.bg-theme-tertiary { background-color: var(--color-bg-tertiary); }
-.bg-theme-elevated { background-color: var(--color-bg-elevated); }
+.bg-theme-primary {
+  background-color: var(--color-bg-primary);
+}
 
-.text-theme-primary { color: var(--color-text-primary); }
-.text-theme-secondary { color: var(--color-text-secondary); }
-.text-theme-tertiary { color: var(--color-text-tertiary); }
-.text-theme-inverse { color: var(--color-text-inverse); }
+.bg-theme-secondary {
+  background-color: var(--color-bg-secondary);
+}
 
-.border-theme-primary { border-color: var(--color-border-primary); }
-.border-theme-secondary { border-color: var(--color-border-secondary); }
-.border-theme-focus { border-color: var(--color-border-focus); }
+.bg-theme-tertiary {
+  background-color: var(--color-bg-tertiary);
+}
 
-.shadow-theme-sm { box-shadow: var(--shadow-sm); }
-.shadow-theme-md { box-shadow: var(--shadow-md); }
-.shadow-theme-lg { box-shadow: var(--shadow-lg); }
-.shadow-theme-xl { box-shadow: var(--shadow-xl); }
-.shadow-theme-glow { box-shadow: var(--shadow-glow); }
+.bg-theme-elevated {
+  background-color: var(--color-bg-elevated);
+}
+
+.text-theme-primary {
+  color: var(--color-text-primary);
+}
+
+.text-theme-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-theme-tertiary {
+  color: var(--color-text-tertiary);
+}
+
+.text-theme-inverse {
+  color: var(--color-text-inverse);
+}
+
+.border-theme-primary {
+  border-color: var(--color-border-primary);
+}
+
+.border-theme-secondary {
+  border-color: var(--color-border-secondary);
+}
+
+.border-theme-focus {
+  border-color: var(--color-border-focus);
+}
+
+.shadow-theme-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-theme-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-theme-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.shadow-theme-xl {
+  box-shadow: var(--shadow-xl);
+}
+
+.shadow-theme-glow {
+  box-shadow: var(--shadow-glow);
+}
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
@@ -137,6 +218,7 @@
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+
   .theme-transition,
   .theme-transition *,
   .theme-transition *:before,
@@ -162,7 +244,8 @@
 /* Improved hover transitions */
 .product-card {
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, opacity 0.2s ease;
-  padding-top: 2.5rem; /* extra space for the banner */
+  padding-top: 2.5rem;
+  /* extra space for the banner */
 }
 
 .product-card:hover {
@@ -182,7 +265,8 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   z-index: 10;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 
@@ -219,6 +303,7 @@ button,
 
 /* Improved touch targets for mobile */
 @media (max-width: 768px) {
+
   nav a,
   nav button {
     min-height: 44px;
@@ -243,9 +328,17 @@ button,
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 .animate-float {
@@ -253,8 +346,15 @@ button,
 }
 
 @keyframes pulse-soft {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
 }
 
 .animate-pulse-soft {
@@ -263,6 +363,7 @@ button,
 
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
