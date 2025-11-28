@@ -6,6 +6,9 @@ import CanonicalUrl from '@/components/CanonicalUrl'
 import AgeGate from '@/components/AgeGate'
 import AnalyticsConsentGate from '@/components/AnalyticsConsentGate'
 import SkipLinks from '@/components/SkipLinks'
+import { CartProvider } from '@/hooks/useCart'
+import CartDrawer from '@/components/CartDrawer'
+import CartPage from '@/components/CartPage'
 import './styles/fa/fontawesome.min.css'
 import './styles/fa/brands.min.css'
 import './styles/fa/regular.min.css'
@@ -62,12 +65,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <CanonicalUrl />
             </head>
             <body className="bg-gray-50 font-sans antialiased dark:bg-gray-900 transition-colors duration-300">
-                <SkipLinks />
-                <AgeGate />
-                <div data-site-content>
-                    {children}
-                    <AnalyticsConsentGate />
-                </div>
+                <CartProvider>
+                    <SkipLinks />
+                    <AgeGate />
+                    <div data-site-content>
+                        {children}
+                        <AnalyticsConsentGate />
+                    </div>
+                    <CartDrawer />
+                    <CartPage />
+                </CartProvider>
             </body>
         </html>
     )

@@ -71,9 +71,21 @@ function getInitialCart(): Cart {
  * @return {ReactNode} The context provider component.
  */
 export function CartProvider({ children }: { children: React.ReactNode }) {
-    const [cart, setCart] = useState(getInitialCart)
+    const [cart, setCart] = useState<Cart>({
+        items: [],
+        subtotal: 0,
+        total: 0,
+        currency: 'USD',
+    })
     const [isOpen, setIsOpen] = useState(false)
     const [isPageOpen, setIsPageOpen] = useState(false)
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setCart(getInitialCart())
+        }, 0)
+        return () => clearTimeout(timer)
+    }, [])
 
 
     /**

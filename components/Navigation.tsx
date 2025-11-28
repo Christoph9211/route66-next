@@ -4,6 +4,7 @@ import LocalBusinessInfo from './LocalBusinessInfo'
 import SearchNavigation from './SearchNavigation'
 import { slugify } from '../utils/slugify'
 import { scrollToSection } from '../utils/scrollToSection'
+import { useCart } from '../hooks/useCart'
 
 /**
  * Navigation component for the header of the website.
@@ -11,6 +12,7 @@ import { scrollToSection } from '../utils/scrollToSection'
  * @return {JSX.Element} The navigation component.
  */
 function Navigation() {
+    const { cart, openCart } = useCart()
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [activeSection, setActiveSection] = useState('home')
@@ -298,52 +300,52 @@ function Navigation() {
 
                                         {/* Desktop Dropdown */}
                                         {item.submenu && (
-                                        <div
-                                            className={`absolute left-0 mt-2 w-48 rounded-xl border border-white/10 bg-gray-900/90 text-white shadow-theme-xl backdrop-blur-md transition-all duration-300 ${activeDropdown === item.id
-                                                ? 'visible opacity-100 translate-y-0'
-                                                : 'invisible opacity-0 -translate-y-2 pointer-events-none'
-                                                }`}
-                                            role="menu"
-                                            aria-label={`${item.label} submenu`}
-                                        >
                                             <div
-                                                className="flex flex-col py-1 font-semibold"
-                                                role="none"
+                                                className={`absolute left-0 mt-2 w-48 rounded-xl border border-white/10 bg-gray-900/90 text-white shadow-theme-xl backdrop-blur-md transition-all duration-300 ${activeDropdown === item.id
+                                                    ? 'visible opacity-100 translate-y-0'
+                                                    : 'invisible opacity-0 -translate-y-2 pointer-events-none'
+                                                    }`}
+                                                role="menu"
+                                                aria-label={`${item.label} submenu`}
                                             >
-                                                {item.submenu.map((subItem) => {
-                                                    const categorySlug = slugify(
-                                                        subItem.category
-                                                    )
-                                                    return (
-                                                        <a
-                                                            key={
-                                                                subItem.label
-                                                            }
-                                                            href="#products"
-                                                            onClick={(e) =>
-                                                                handleNavClick(
-                                                                    e,
-                                                                    'products',
-                                                                    item.id,
-                                                                    {
-                                                                        categorySlug,
-                                                                        categoryName:
-                                                                            subItem.category,
-                                                                    }
-                                                                )
-                                                            }
-                                                            className="block px-4 py-2 text-white hover:bg-white/10 hover:text-white"
-                                                            role="menuitem"
-                                                        >
-                                                            {
-                                                                subItem.label
-                                                            }
-                                                        </a>
-                                                    )
-                                                }
-                                                )}
+                                                <div
+                                                    className="flex flex-col py-1 font-semibold"
+                                                    role="none"
+                                                >
+                                                    {item.submenu.map((subItem) => {
+                                                        const categorySlug = slugify(
+                                                            subItem.category
+                                                        )
+                                                        return (
+                                                            <a
+                                                                key={
+                                                                    subItem.label
+                                                                }
+                                                                href="#products"
+                                                                onClick={(e) =>
+                                                                    handleNavClick(
+                                                                        e,
+                                                                        'products',
+                                                                        item.id,
+                                                                        {
+                                                                            categorySlug,
+                                                                            categoryName:
+                                                                                subItem.category,
+                                                                        }
+                                                                    )
+                                                                }
+                                                                className="block px-4 py-2 text-white hover:bg-white/10 hover:text-white"
+                                                                role="menuitem"
+                                                            >
+                                                                {
+                                                                    subItem.label
+                                                                }
+                                                            </a>
+                                                        )
+                                                    }
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
                                         )}
                                     </div>
                                 ))}
@@ -354,6 +356,21 @@ function Navigation() {
                         <div className="flex items-center space-x-4">
                             {/* Search Component */}
                             <SearchNavigation tone={searchTone} />
+
+                            {/* Cart Icon */}
+                            <button
+                                type="button"
+                                onClick={openCart}
+                                aria-label="Shopping cart"
+                                className={`focus-enhanced relative inline-flex items-center justify-center rounded-md p-2 ${mobileToggleClass}`}
+                            >
+                                <i className="fas fa-shopping-cart text-xl" aria-hidden="true" />
+                                {cart.items.length > 0 && (
+                                    <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-xs font-bold text-white">
+                                        {cart.items.reduce((sum, item) => sum + item.qty, 0)}
+                                    </span>
+                                )}
+                            </button>
 
                             {/* Quick Contact (Desktop) */}
                             <div className="hidden items-center space-x-4 text-sm lg:flex">
